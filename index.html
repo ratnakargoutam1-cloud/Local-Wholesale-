@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Local Wholesale - Login / Signup</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <main class="container">
+    <section class="hero">
+      <div class="logo">LW</div>
+      <h1>Local Wholesale</h1>
+      <p>Apne local wholesaler se direct order karein.</p>
+    </section>
+
+    <section class="card">
+      <div class="tabs">
+        <button id="loginTab" class="tab active" onclick="showForm('login')">Login</button>
+        <button id="signupTab" class="tab" onclick="showForm('signup')">Signup</button>
+      </div>
+
+      <div class="role-grid compact">
+        <button id="retailerRole" class="role active" onclick="selectRole('retailer')">
+          <span>🛍️</span><strong>Dukandaar</strong><small>Order karein</small>
+        </button>
+        <button id="wholesalerRole" class="role" onclick="selectRole('wholesaler')">
+          <span>🏪</span><strong>Wholesaler</strong><small>Products sell karein</small>
+        </button>
+      </div>
+
+      <form id="authForm" onsubmit="handleSubmit(event)">
+        <label id="nameLabel" class="hidden">Naam / Shop Name</label>
+        <input id="name" class="hidden" type="text" placeholder="Apna naam ya shop name">
+
+        <label>Mobile Number</label>
+        <input id="mobile" type="tel" inputmode="numeric" maxlength="10" placeholder="10 digit mobile number" required>
+
+        <label id="emailLabel" class="hidden">Email (optional)</label>
+        <input id="email" class="hidden" type="email" placeholder="example@email.com">
+
+        <label>Password</label>
+        <input id="password" type="password" placeholder="Password" required>
+
+        <label id="confirmLabel" class="hidden">Confirm Password</label>
+        <input id="confirm" class="hidden" type="password" placeholder="Password dobara dalein">
+
+        <button class="primary" id="submitBtn" type="submit">Login →</button>
+      </form>
+
+      <p id="message" class="message"></p>
+      <p class="note">🔒 Account aur profile Supabase database se connect hain.</p>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

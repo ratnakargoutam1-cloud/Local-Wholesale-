@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Local Wholesale - Add Product</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}.back{border:0;background:#eef2f7;padding:9px 12px;border-radius:10px;cursor:pointer}.logout{border:0;background:#fff1f1;color:#c62828;padding:9px 12px;border-radius:10px;cursor:pointer}.preview{width:100%;height:190px;border:2px dashed #d8dee8;border-radius:14px;display:grid;place-items:center;overflow:hidden;margin-top:8px;background:#fafbfc}.preview img{width:100%;height:100%;object-fit:cover}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.success{color:#18794e}.danger{color:#c62828}.small{font-size:12px;color:#667085}.primary:disabled{opacity:.6;cursor:not-allowed}
+</style>
+</head>
+<body>
+<main class="container">
+  <div class="header"><button class="back" onclick="location.href='index.html'">← Home</button><strong>Local Wholesale</strong><button class="logout" onclick="logout()">Logout</button></div>
+  <section class="card">
+    <h2 style="margin-top:0">➕ Product Add Karein</h2>
+    <p class="small">Sirf wholesaler apne products yahan add kar sakta hai.</p>
+    <form id="productForm" onsubmit="addProduct(event)">
+      <label>Product Photo</label><input id="photo" type="file" accept="image/*"><div id="preview" class="preview">📷 Photo preview</div>
+      <label>Category</label><select id="category" required><option value="">Category select karein</option><option>Kirana/Grocery</option><option>Cold Drinks/Beverages</option><option>Cosmetics</option><option>Stationery</option><option>Electrical</option><option>Other</option></select>
+      <label>Product Name</label><input id="productName" type="text" placeholder="Jaise: Surf Excel 1kg" required>
+      <div class="grid2"><div><label>Price (₹)</label><input id="price" type="number" min="0" step="0.01" required></div><div><label>Unit</label><select id="unit" required><option value="piece">Piece</option><option value="packet">Packet</option><option value="box">Box</option><option value="kg">Kg</option><option value="gram">Gram</option><option value="litre">Litre</option><option value="dozen">Dozen</option></select></div></div>
+      <label>Stock</label><input id="stock" type="number" min="0" step="0.01" value="0" required>
+      <label>Description</label><textarea id="description" rows="4" placeholder="Product ki jankari"></textarea>
+      <button class="primary" id="saveBtn" type="submit">Product Save Karein →</button>
+    </form>
+    <p id="message" class="message"></p>
+  </section>
+</main>
+<script>
+const SUPABASE_URL='https://izxvsvyvvtbaxtxgcfav.supabase.co';
+const SUPABASE_KEY='sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI';
+const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+let userId=null;
+const msg=document.getElementById('message');
+
+document.getElementById('photo').addEventListener('change',e=>{const f=e.target.files[0];if(f){const img=document.createElement('img');img.src=URL.createObjectURL(f);const p=document.getElementById('preview');p.innerHTML='';p.appendChild(img)}});
+async function init(){
+ const {data:{user}}=await supabaseClient.auth.getUser();
+ if(!user){location.href='index.html';return}
+ userId=user.id;
+ const {data:profile,error}=await supabaseClient.from('profiles').select('role').eq('id',user.id).single();
+ if(error||!profile||profile.role!=='wholesaler'){msg.textContent='⚠️ Ye page sirf wholesaler ke liye hai.';document.getElementById('productForm').style.display='none';}
+}
+async function addProduct(e){
+ e.preventDefault();msg.textContent='';const btn=document.getElementById('saveBtn');btn.disabled=true;btn.textContent='Saving...';
+ try{
+  const file=document.getElementById('photo').files[0];let image_url=null;
+  if(file){const ext=(file.name.split('.').pop()||'jpg').toLowerCase();const path=`${userId}/${crypto.randomUUID()}.${ext}`;const {error:uploadError}=await supabaseClient.storage.from('product-images').upload(path,file,{upsert:false,contentType:file.type});if(uploadError)throw uploadError;const {data:urlData}=supabaseClient.storage.from('product-images').getPublicUrl(path);image_url=urlData.publicUrl;}
+  const {error}=await supabaseClient.from('products').insert({wholesaler_id:userId,category:document.getElementById('category').value,product_name:document.getElementById('productName').value.trim(),price:Number(document.getElementById('price').value),unit:document.getElementById('unit').value,stock:Number(document.getElementById('stock').value),description:document.getElementById('description').value.trim()||null,image_url});
+  if(error)throw error;msg.textContent='✅ Product successfully save ho gaya!';msg.className='message success';document.getElementById('productForm').reset();document.getElementById('preview').textContent='📷 Photo preview';
+ }catch(err){msg.textContent='⚠️ '+(err.message||'Product save nahi hua.');msg.className='message danger';}finally{btn.disabled=false;btn.textContent='Product Save Karein →'}
+}
+async function logout(){await supabaseClient.auth.signOut();location.href='index.html'}
+init();
+</script>
+</body></html>
