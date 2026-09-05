@@ -1,3 +1,4 @@
+const supabaseClient = window.supabase.createClient(...)
 let selectedRole = null;
 
 function selectRole(role) {
