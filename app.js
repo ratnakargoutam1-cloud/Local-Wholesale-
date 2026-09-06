@@ -160,14 +160,9 @@ const { data: profile, error: profileError } = await supabase
   .single();
 
 if (profileError) throw profileError;
-
-message.textContent = '✅ Login successful!';
+   
+    message.textContent = '✅ Login successful!';
 
 setTimeout(() => {
-  if (profile.role === 'retailer') {
-    window.location.href = 'retailer.html';
-  } else if (profile.role === 'wholesaler') {
-    window.location.href = 'add-product.html';
-  }
+  window.location.href = 'retailer.html';
 }, 500);
-      
