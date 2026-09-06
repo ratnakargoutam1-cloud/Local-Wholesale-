@@ -21,7 +21,7 @@ function getSupabase() {
 }
 
 
-// LOGIN / SIGNUP TAB
+// LOGIN / SIGNUP
 function showForm(selectedMode) {
   mode = selectedMode;
 
@@ -38,6 +38,7 @@ function showForm(selectedMode) {
   const confirmInput = document.getElementById('confirm');
 
   const submitBtn = document.getElementById('submitBtn');
+  const message = document.getElementById('message');
 
   if (mode === 'signup') {
     loginTab.classList.remove('active');
@@ -69,19 +70,24 @@ function showForm(selectedMode) {
     submitBtn.textContent = 'Login';
   }
 
-  document.getElementById('message').textContent = '';
+  message.textContent = '';
 }
 
 
-// ROLE SELECTION
+// ROLE
 function selectRole(selectedRole) {
   role = selectedRole;
 
   const retailer = document.getElementById('retailerRole');
   const wholesaler = document.getElementById('wholesalerRole');
 
-  retailer.classList.toggle('active', role === 'retailer');
-  wholesaler.classList.toggle('active', role === 'wholesaler');
+  if (retailer) {
+    retailer.classList.toggle('active', role === 'retailer');
+  }
+
+  if (wholesaler) {
+    wholesaler.classList.toggle('active', role === 'wholesaler');
+  }
 }
 
 
@@ -105,15 +111,29 @@ async function handleSubmit(event) {
       throw new Error('Mobile number aur password enter karein.');
     }
 
-    // Mobile ko Supabase ke liye email format mein use kar rahe hain
-    const email = mobile.replace(/\D/g, '') + '@localwholesale.app';
+    const cleanMobile = mobile.replace(/\D/g, '');
 
+    if (cleanMobile.length < 10) {
+      throw new Error('Valid 10 digit mobile number enter karein.');
+    }
+
+    const email = cleanMobile + '@localwholesale.app';
+
+
+    // =========================
+    // SIGNUP
+    // =========================
     if (mode === 'signup') {
+
       const name = document.getElementById('name').value.trim();
       const confirm = document.getElementById('confirm').value;
 
       if (!name) {
         throw new Error('Naam enter karein.');
+      }
+
+      if (password.length < 6) {
+        throw new Error('Password kam se kam 6 characters ka hona chahiye.');
       }
 
       if (password !== confirm) {
@@ -125,7 +145,9 @@ async function handleSubmit(event) {
         password: password
       });
 
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
 
       if (!data.user) {
         throw new Error('Account create nahi hua.');
@@ -137,32 +159,65 @@ async function handleSubmit(event) {
           id: data.user.id,
           full_name: name,
           role: role,
-          mobile: mobile
+          mobile: cleanMobile
         });
 
-      if (profileError) throw profileError;
+      if (profileError) {
+        throw profileError;
+      }
 
-      message.textContent =
-        '✅ Account successfully create ho gaya!';
+      message.textContent = '✅ Account successfully create ho gaya!';
 
-    } else {
-const { data, error } = await supabase.auth.signInWithPassword({
-  email: email,
-  password: password
-});
+      setTimeout(() => {
+        window.location.href = 'retailer.html';
+      }, 800);
 
-if (error) throw error;
+      return;
+    }
 
-const { data: profile, error: profileError } = await supabase
-  .from('profiles')
-  .select('role')
-  .eq('id', data.user.id)
-  .single();
 
-if (profileError) throw profileError;
-   
+    // =========================
+    // LOGIN
+    // =========================
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password
+    });
+
+    if (error) {
+      throw error;
+    }
+
+    if (!data.user) {
+      throw new Error('Login failed.');
+    }
+
     message.textContent = '✅ Login successful!';
 
-setTimeout(() => {
-  window.location.href = 'retailer.html';
-}, 500);
+    setTimeout(() => {
+      window.location.href = 'retailer.html';
+    }, 800);
+
+  } catch (error) {
+
+    console.error('Local Wholesale Error:', error);
+
+    message.textContent = '❌ ' + error.message;
+
+  } finally {
+
+    submitBtn.disabled = false;
+
+  }
+}
+
+
+// DEFAULT
+document.addEventListener('DOMContentLoaded', function () {
+
+  selectRole('retailer');
+
+  showForm('login');
+
+});
