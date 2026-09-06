@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Product - Local Wholesale</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <main class="container">
+    <h1>➕ Add Product</h1>
+    <p>Apne shop ka product add karein.</p>
+
+    <form id="productForm">
+      <label>Product Photo</label>
+      <input id="photo" type="file" accept="image/*">
+
+      <label>Category</label>
+      <select id="category" required>
+        <option value="">Select Category</option>
+        <option>Kirana</option>
+        <option>Cold Drinks</option>
+        <option>Cosmetics</option>
+        <option>Stationery</option>
+        <option>Electrical</option>
+        <option>Other</option>
+      </select>
+
+      <label>Product Name</label>
+      <input id="productName" type="text" placeholder="Product name" required>
+
+      <label>Price</label>
+      <input id="price" type="number" min="0" step="0.01" placeholder="Price" required>
+
+      <label>Unit</label>
+      <select id="unit" required>
+        <option value="piece">Piece</option>
+        <option value="packet">Packet</option>
+        <option value="box">Box</option>
+        <option value="kg">Kg</option>
+        <option value="gram">Gram</option>
+        <option value="litre">Litre</option>
+        <option value="dozen">Dozen</option>
+      </select>
+
+      <label>Stock</label>
+      <input id="stock" type="number" min="0" step="0.01" placeholder="Stock" required>
+
+      <label>Description</label>
+      <textarea id="description" rows="4" placeholder="Product description"></textarea>
+
+      <button id="saveBtn" type="submit">Save Product</button>
+      <p id="message"></p>
+    </form>
+
+    <button type="button" id="backBtn">← Back to Dashboard</button>
+    <button type="button" id="logoutBtn">Logout</button>
+  </main>
+
+  <script>
+    const SUPABASE_URL = 'https://izxvsvyvvtbaxtxgcfav.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI';
+    const BUCKET_NAME = 'Product image';
+
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const message = document.getElementById('message');
+    const saveBtn = document.getElementById('saveBtn');
+
+    function showMessage(text, success = false) {
+      message.textContent = text;
+      message.style.color = success ? 'green' : 'red';
+    }
+
+    async function checkWholesaler() {
+      const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+      if (userError || !user) {
+        window.location.href = 'index.html';
+        return null;
+      }
+
+      const { data: profile, error } = await supabaseClient
+        .from('profiles')
+        .select('role')
+        .eq('id', user.id)
+        .single();
+
+      if (error) throw error;
+      if (profile.role !== 'wholesaler') {
+        throw new Error('Sirf Wholesaler product add kar sakta hai.');
+      }
+
+      return user;
+    }
+
+    document.getElementById('productForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      saveBtn.disabled = true;
+      showMessage('Saving product...');
+
+      try {
+        const user = await checkWholesaler();
+        if (!user) return;
+
+        const category = document.getElementById('category').value;
+        const productName = document.getElementById('productName').value.trim();
+        const price = Number(document.getElementById('price').value);
+        const unit = document.getElementById('unit').value;
+        const stock = Number(document.getElementById('stock').value);
+        const description = document.getElementById('description').value.trim();
+        const photo = document.getElementById('photo').files[0];
+
+        let imageUrl = null;
+
+        if (photo) {
+          const extension = photo.name.includes('.') ? photo.name.split('.').pop().toLowerCase() : 'jpg';
+          const filePath = `${user.id}/${Date.now()}.${extension}`;
+
+          const { error: uploadError } = await supabaseClient.storage
+            .from(BUCKET_NAME)
+            .upload(filePath, photo, {
+              cacheControl: '3600',
+              upsert: false,
+              contentType: photo.type || undefined
+            });
+
+          if (uploadError) throw new Error('Image upload failed: ' + uploadError.message);
+
+          const { data: publicData } = supabaseClient.storage
+            .from(BUCKET_NAME)
+            .getPublicUrl(filePath);
+
+          imageUrl = publicData.publicUrl;
+        }
+
+        const { error: productError } = await supabaseClient
+          .from('products')
+          .insert({
+            wholesaler_id: user.id,
+            category,
+            product_name: productName,
+            description: description || null,
+            price,
+            unit,
+            stock,
+            image_url: imageUrl,
+            is_active: true
+          });
+
+        if (productError) throw new Error('Product save failed: ' + productError.message);
+
+        document.getElementById('productForm').reset();
+        showMessage('✅ Product successfully added!', true);
+      } catch (error) {
+        console.error(error);
+        showMessage('❌ ' + error.message);
+      } finally {
+        saveBtn.disabled = false;
+      }
+    });
+
+    document.getElementById('backBtn').addEventListener('click', () => {
+      window.location.href = 'wholesaler.html';
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      await supabaseClient.auth.signOut();
+      window.location.href = 'index.html';
+    });
+
+    checkWholesaler().catch(error => {
+      console.error(error);
+      showMessage('❌ ' + error.message);
+    });
+  </script>
+</body>
+</html>
