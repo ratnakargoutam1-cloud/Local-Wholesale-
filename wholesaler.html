@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wholesaler Dashboard - Local Wholesale</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="container">
+    <section class="card">
+      <h1>🏪 Wholesaler Dashboard</h1>
+      <p id="welcome">Welcome, Wholesaler</p>
+
+      <div class="dashboard-grid">
+        <button type="button" onclick="window.location.href='add-product.html'">➕ Add Product</button>
+        <button type="button" onclick="alert('Orders section coming soon.')">📦 Orders</button>
+        <button type="button" onclick="alert('My Products section coming soon.')">🛍️ My Products</button>
+        <button type="button" onclick="alert('Customers section coming soon.')">👥 Customers</button>
+        <button type="button" onclick="alert('Delivery section coming soon.')">🚚 Delivery Status</button>
+      </div>
+
+      <p id="message" class="message"></p>
+      <button type="button" id="logoutBtn">Logout</button>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = 'https://izxvsvyvvtbaxtxgcfav.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI';
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function loadDashboard() {
+      const { data: { user }, error } = await supabaseClient.auth.getUser();
+      if (error || !user) {
+        window.location.href = 'index.html';
+        return;
+      }
+
+      const { data: profile, error: profileError } = await supabaseClient
+        .from('profiles')
+        .select('full_name, shop_name, role')
+        .eq('id', user.id)
+        .single();
+
+      if (profileError || !profile || profile.role !== 'wholesaler') {
+        await supabaseClient.auth.signOut();
+        window.location.href = 'index.html';
+        return;
+      }
+
+      document.getElementById('welcome').textContent =
+        `Welcome, ${profile.full_name || 'Wholesaler'}${profile.shop_name ? ' • ' + profile.shop_name : ''}`;
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      await supabaseClient.auth.signOut();
+      window.location.href = 'index.html';
+    });
+
+    loadDashboard();
+  </script>
+</body>
+</html>
