@@ -146,28 +146,28 @@ async function handleSubmit(event) {
         '✅ Account successfully create ho gaya!';
 
     } else {
-
-      const { error } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password
-      });
-
-      if (error) throw error;
-
-      message.textContent = '✅ Login successful!';
-    }
-
-  } catch (error) {
-    console.error(error);
-    message.textContent = '❌ ' + error.message;
-  }
-
-  submitBtn.disabled = false;
-}
-
-
-// DEFAULT SETTINGS
-document.addEventListener('DOMContentLoaded', function () {
-  selectRole('retailer');
-  showForm('login');
+const { data, error } = await supabase.auth.signInWithPassword({
+  email: email,
+  password: password
 });
+
+if (error) throw error;
+
+const { data: profile, error: profileError } = await supabase
+  .from('profiles')
+  .select('role')
+  .eq('id', data.user.id)
+  .single();
+
+if (profileError) throw profileError;
+
+message.textContent = '✅ Login successful!';
+
+setTimeout(() => {
+  if (profile.role === 'retailer') {
+    window.location.href = 'retailer.html';
+  } else if (profile.role === 'wholesaler') {
+    window.location.href = 'add-product.html';
+  }
+}, 500);
+      
