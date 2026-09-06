@@ -8,7 +8,7 @@ let role = 'retailer';
 function getSupabase() {
   if (!supabaseClient) {
     if (!window.supabase || !window.supabase.createClient) {
-      throw new Error('Supabase load nahi hua. Internet connection check karein.');
+      throw new Error('Supabase load nahi hua.');
     }
 
     supabaseClient = window.supabase.createClient(
@@ -20,23 +20,17 @@ function getSupabase() {
   return supabaseClient;
 }
 
-
-// LOGIN / SIGNUP
 function showForm(selectedMode) {
   mode = selectedMode;
 
   const loginTab = document.getElementById('loginTab');
   const signupTab = document.getElementById('signupTab');
-
   const nameLabel = document.getElementById('nameLabel');
   const nameInput = document.getElementById('name');
-
   const emailLabel = document.getElementById('emailLabel');
   const emailInput = document.getElementById('email');
-
   const confirmLabel = document.getElementById('confirmLabel');
   const confirmInput = document.getElementById('confirm');
-
   const submitBtn = document.getElementById('submitBtn');
   const message = document.getElementById('message');
 
@@ -73,25 +67,16 @@ function showForm(selectedMode) {
   message.textContent = '';
 }
 
-
-// ROLE
 function selectRole(selectedRole) {
   role = selectedRole;
 
-  const retailer = document.getElementById('retailerRole');
-  const wholesaler = document.getElementById('wholesalerRole');
+  document.getElementById('retailerRole')
+    ?.classList.toggle('active', role === 'retailer');
 
-  if (retailer) {
-    retailer.classList.toggle('active', role === 'retailer');
-  }
-
-  if (wholesaler) {
-    wholesaler.classList.toggle('active', role === 'wholesaler');
-  }
+  document.getElementById('wholesalerRole')
+    ?.classList.toggle('active', role === 'wholesaler');
 }
 
-
-// LOGIN / SIGNUP SUBMIT
 async function handleSubmit(event) {
   event.preventDefault();
 
@@ -107,10 +92,6 @@ async function handleSubmit(event) {
     const mobile = document.getElementById('mobile').value.trim();
     const password = document.getElementById('password').value;
 
-    if (!mobile || !password) {
-      throw new Error('Mobile number aur password enter karein.');
-    }
-
     const cleanMobile = mobile.replace(/\D/g, '');
 
     if (cleanMobile.length < 10) {
@@ -119,12 +100,7 @@ async function handleSubmit(event) {
 
     const email = cleanMobile + '@localwholesale.app';
 
-
-    // =========================
-    // SIGNUP
-    // =========================
     if (mode === 'signup') {
-
       const name = document.getElementById('name').value.trim();
       const confirm = document.getElementById('confirm').value;
 
@@ -145,13 +121,8 @@ async function handleSubmit(event) {
         password: password
       });
 
-      if (error) {
-        throw error;
-      }
-
-      if (!data.user) {
-        throw new Error('Account create nahi hua.');
-      }
+      if (error) throw error;
+      if (!data.user) throw new Error('Account create nahi hua.');
 
       const { error: profileError } = await supabase
         .from('profiles')
@@ -162,62 +133,57 @@ async function handleSubmit(event) {
           mobile: cleanMobile
         });
 
-      if (profileError) {
-        throw profileError;
-      }
+      if (profileError) throw profileError;
 
       message.textContent = '✅ Account successfully create ho gaya!';
 
       setTimeout(() => {
-        window.location.href = 'retailer.html';
+        if (role === 'wholesaler') {
+          window.location.href = 'wholesaler.html';
+        } else {
+          window.location.href = 'retailer.html';
+        }
       }, 800);
 
       return;
     }
 
-
-    // =========================
     // LOGIN
-    // =========================
-
     const { data, error } = await supabase.auth.signInWithPassword({
       email: email,
       password: password
     });
 
-    if (error) {
-      throw error;
-    }
+    if (error) throw error;
+    if (!data.user) throw new Error('Login failed.');
 
-    if (!data.user) {
-      throw new Error('Login failed.');
-    }
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', data.user.id)
+      .single();
+
+    if (profileError) throw profileError;
 
     message.textContent = '✅ Login successful!';
 
     setTimeout(() => {
-      window.location.href = 'retailer.html';
+      if (profile.role === 'wholesaler') {
+        window.location.href = 'wholesaler.html';
+      } else {
+        window.location.href = 'retailer.html';
+      }
     }, 800);
 
   } catch (error) {
-
     console.error('Local Wholesale Error:', error);
-
     message.textContent = '❌ ' + error.message;
-
   } finally {
-
     submitBtn.disabled = false;
-
   }
 }
 
-
-// DEFAULT
 document.addEventListener('DOMContentLoaded', function () {
-
   selectRole('retailer');
-
   showForm('login');
-
 });
