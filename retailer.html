@@ -170,7 +170,19 @@
       background: #aaa;
       cursor: not-allowed;
     }
+<!-- MY ORDERS -->
+<button
+  type="button"
+  onclick="showMyOrders()"
+  style="width:100%; margin-top:15px; padding:12px; border:none; border-radius:10px; background:#2563eb; color:white; cursor:pointer;"
+>
+  📦 My Orders
+</button>
 
+<section id="myOrdersSection" style="display:none; margin-top:15px;">
+  <h2>📦 My Orders</h2>
+  <div id="myOrdersList"></div>
+</section>
     .cart-bar {
       position: sticky;
       bottom: 10px;
