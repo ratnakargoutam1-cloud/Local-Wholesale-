@@ -1,178 +1,672 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Product - Local Wholesale</title>
+  <title>Local Wholesale - Add Product</title>
+
   <link rel="stylesheet" href="style.css">
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    .preview {
+      width: 100%;
+      height: 200px;
+      border: 2px dashed #ccc;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      margin: 10px 0 20px;
+      background: #fafafa;
+    }
+
+    .preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .buttons button {
+      padding: 10px 14px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .success {
+      color: green;
+      font-weight: bold;
+    }
+
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+
+    #saveBtn:disabled {
+      opacity: 0.6;
+    }
+  </style>
 </head>
+
 <body>
+
   <main class="container">
-    <h1>➕ Add Product</h1>
-    <p>Apne shop ka product add karein.</p>
 
-    <form id="productForm">
-      <label>Product Photo</label>
-      <input id="photo" type="file" accept="image/*">
+    <section class="card">
 
-      <label>Category</label>
-      <select id="category" required>
-        <option value="">Select Category</option>
-        <option>Kirana</option>
-        <option>Cold Drinks</option>
-        <option>Cosmetics</option>
-        <option>Stationery</option>
-        <option>Electrical</option>
-        <option>Other</option>
-      </select>
+      <div class="buttons">
+        <button type="button" onclick="goDashboard()">
+          ← Dashboard
+        </button>
 
-      <label>Product Name</label>
-      <input id="productName" type="text" placeholder="Product name" required>
+        <button type="button" onclick="logout()">
+          Logout
+        </button>
+      </div>
 
-      <label>Price</label>
-      <input id="price" type="number" min="0" step="0.01" placeholder="Price" required>
+      <h2>➕ Product Add Karein</h2>
 
-      <label>Unit</label>
-      <select id="unit" required>
-        <option value="piece">Piece</option>
-        <option value="packet">Packet</option>
-        <option value="box">Box</option>
-        <option value="kg">Kg</option>
-        <option value="gram">Gram</option>
-        <option value="litre">Litre</option>
-        <option value="dozen">Dozen</option>
-      </select>
+      <p>
+        Apne wholesale shop ka product yahan add karein.
+      </p>
 
-      <label>Stock</label>
-      <input id="stock" type="number" min="0" step="0.01" placeholder="Stock" required>
+      <form id="productForm">
 
-      <label>Description</label>
-      <textarea id="description" rows="4" placeholder="Product description"></textarea>
+        <!-- IMAGE -->
+        <label>Product Photo</label>
 
-      <button id="saveBtn" type="submit">Save Product</button>
+        <input
+          type="file"
+          id="photo"
+          accept="image/*"
+        >
+
+        <div id="preview" class="preview">
+          📷 Photo Preview
+        </div>
+
+
+        <!-- CATEGORY -->
+        <label>Category</label>
+
+        <select id="category" required>
+
+          <option value="">
+            Category Select Karein
+          </option>
+
+          <option value="Kirana/Grocery">
+            Kirana / Grocery
+          </option>
+
+          <option value="Cold Drinks/Beverages">
+            Cold Drinks / Beverages
+          </option>
+
+          <option value="Cosmetics">
+            Cosmetics
+          </option>
+
+          <option value="Stationery">
+            Stationery
+          </option>
+
+          <option value="Electrical">
+            Electrical
+          </option>
+
+          <option value="Other">
+            Other
+          </option>
+
+        </select>
+
+
+        <!-- PRODUCT NAME -->
+        <label>Product Name</label>
+
+        <input
+          type="text"
+          id="productName"
+          placeholder="Jaise: Surf Excel 1kg"
+          required
+        >
+
+
+        <!-- PRICE -->
+        <label>Price (₹)</label>
+
+        <input
+          type="number"
+          id="price"
+          min="0"
+          step="0.01"
+          placeholder="100"
+          required
+        >
+
+
+        <!-- UNIT -->
+        <label>Unit</label>
+
+        <select id="unit" required>
+
+          <option value="piece">
+            Piece
+          </option>
+
+          <option value="packet">
+            Packet
+          </option>
+
+          <option value="box">
+            Box
+          </option>
+
+          <option value="kg">
+            Kg
+          </option>
+
+          <option value="gram">
+            Gram
+          </option>
+
+          <option value="litre">
+            Litre
+          </option>
+
+          <option value="dozen">
+            Dozen
+          </option>
+
+        </select>
+
+
+        <!-- STOCK -->
+        <label>Stock</label>
+
+        <input
+          type="number"
+          id="stock"
+          min="0"
+          step="0.01"
+          value="0"
+          required
+        >
+
+
+        <!-- DESCRIPTION -->
+        <label>Description</label>
+
+        <textarea
+          id="description"
+          rows="4"
+          placeholder="Product ki jankari..."
+        ></textarea>
+
+
+        <!-- SAVE -->
+        <button
+          type="submit"
+          id="saveBtn"
+          class="primary"
+        >
+          Product Save Karein →
+        </button>
+
+      </form>
+
       <p id="message"></p>
-    </form>
 
-    <button type="button" id="backBtn">← Back to Dashboard</button>
-    <button type="button" id="logoutBtn">Logout</button>
+    </section>
+
   </main>
 
-  <script>
-    const SUPABASE_URL = 'https://izxvsvyvvtbaxtxgcfav.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI';
-    const BUCKET_NAME = 'Product image';
 
-    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+<script>
 
-    const message = document.getElementById('message');
-    const saveBtn = document.getElementById('saveBtn');
+/* ================================
+   SUPABASE SETUP
+================================ */
 
-    function showMessage(text, success = false) {
-      message.textContent = text;
-      message.style.color = success ? 'green' : 'red';
+const SUPABASE_URL =
+  "https://izxvsvyvvtbaxtxgcfav.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI";
+
+const BUCKET =
+  "Product image";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+let userId = null;
+
+
+/* ================================
+   ELEMENTS
+================================ */
+
+const form =
+  document.getElementById("productForm");
+
+const photo =
+  document.getElementById("photo");
+
+const preview =
+  document.getElementById("preview");
+
+const saveBtn =
+  document.getElementById("saveBtn");
+
+const message =
+  document.getElementById("message");
+
+
+/* ================================
+   IMAGE PREVIEW
+================================ */
+
+photo.addEventListener(
+  "change",
+  function () {
+
+    const file =
+      photo.files[0];
+
+    if (!file) {
+
+      preview.innerHTML =
+        "📷 Photo Preview";
+
+      return;
     }
 
-    async function checkWholesaler() {
-      const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
-      if (userError || !user) {
-        window.location.href = 'index.html';
-        return null;
-      }
 
-      const { data: profile, error } = await supabaseClient
-        .from('profiles')
-        .select('role')
-        .eq('id', user.id)
-        .single();
+    if (!file.type.startsWith("image/")) {
 
-      if (error) throw error;
-      if (profile.role !== 'wholesaler') {
-        throw new Error('Sirf Wholesaler product add kar sakta hai.');
-      }
+      preview.innerHTML =
+        "⚠️ Sirf image select karein";
 
-      return user;
+      photo.value = "";
+
+      return;
     }
 
-    document.getElementById('productForm').addEventListener('submit', async (event) => {
-      event.preventDefault();
-      saveBtn.disabled = true;
-      showMessage('Saving product...');
 
-      try {
-        const user = await checkWholesaler();
-        if (!user) return;
+    const image =
+      document.createElement("img");
 
-        const category = document.getElementById('category').value;
-        const productName = document.getElementById('productName').value.trim();
-        const price = Number(document.getElementById('price').value);
-        const unit = document.getElementById('unit').value;
-        const stock = Number(document.getElementById('stock').value);
-        const description = document.getElementById('description').value.trim();
-        const photo = document.getElementById('photo').files[0];
+    image.src =
+      URL.createObjectURL(file);
 
-        let imageUrl = null;
+    image.onload = function () {
 
-        if (photo) {
-          const extension = photo.name.includes('.') ? photo.name.split('.').pop().toLowerCase() : 'jpg';
-          const filePath = `${user.id}/${Date.now()}.${extension}`;
+      URL.revokeObjectURL(
+        image.src
+      );
 
-          const { error: uploadError } = await supabaseClient.storage
-            .from(BUCKET_NAME)
-            .upload(filePath, photo, {
-              cacheControl: '3600',
-              upsert: false,
-              contentType: photo.type || undefined
-            });
+    };
 
-          if (uploadError) throw new Error('Image upload failed: ' + uploadError.message);
 
-          const { data: publicData } = supabaseClient.storage
-            .from(BUCKET_NAME)
-            .getPublicUrl(filePath);
+    preview.innerHTML = "";
 
-          imageUrl = publicData.publicUrl;
+    preview.appendChild(image);
+
+  }
+);
+
+
+/* ================================
+   CHECK LOGIN
+================================ */
+
+async function checkUser() {
+
+  const {
+    data: {
+      user
+    }
+  } =
+    await supabaseClient.auth.getUser();
+
+
+  if (!user) {
+
+    window.location.href =
+      "index.html";
+
+    return;
+
+  }
+
+
+  userId =
+    user.id;
+
+
+  /* CHECK WHOLESALER ROLE */
+
+  const {
+    data: profile,
+    error
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single();
+
+
+  if (
+    error ||
+    !profile ||
+    profile.role !== "wholesaler"
+  ) {
+
+    message.innerText =
+      "⚠️ Ye page sirf wholesaler ke liye hai.";
+
+    message.className =
+      "error";
+
+    form.style.display =
+      "none";
+
+  }
+
+}
+
+
+/* ================================
+   SAVE PRODUCT
+================================ */
+
+form.addEventListener(
+  "submit",
+  async function (event) {
+
+    /* VERY IMPORTANT */
+    event.preventDefault();
+    event.stopPropagation();
+
+
+    message.innerText = "";
+
+    saveBtn.disabled =
+      true;
+
+    saveBtn.innerText =
+      "Saving...";
+
+
+    try {
+
+      /* ==========================
+         GET FORM DATA
+      ========================== */
+
+      const category =
+        document.getElementById(
+          "category"
+        ).value;
+
+      const productName =
+        document.getElementById(
+          "productName"
+        ).value.trim();
+
+      const price =
+        Number(
+          document.getElementById(
+            "price"
+          ).value
+        );
+
+      const unit =
+        document.getElementById(
+          "unit"
+        ).value;
+
+      const stock =
+        Number(
+          document.getElementById(
+            "stock"
+          ).value
+        );
+
+      const description =
+        document.getElementById(
+          "description"
+        ).value.trim();
+
+
+      /* ==========================
+         IMAGE UPLOAD
+      ========================== */
+
+      let imageUrl = null;
+
+
+      const file =
+        photo.files[0];
+
+
+      if (file) {
+
+        const extension =
+          (
+            file.name
+              .split(".")
+              .pop() ||
+            "jpg"
+          ).toLowerCase();
+
+
+        const filePath =
+          userId +
+          "/" +
+          crypto.randomUUID() +
+          "." +
+          extension;
+
+
+        const {
+          error: uploadError
+        } =
+          await supabaseClient
+            .storage
+            .from(BUCKET)
+            .upload(
+              filePath,
+              file,
+              {
+                upsert: false,
+                contentType: file.type
+              }
+            );
+
+
+        if (uploadError) {
+
+          throw uploadError;
+
         }
 
-        const { error: productError } = await supabaseClient
-          .from('products')
+
+        /* ========================
+           PUBLIC IMAGE URL
+        ======================== */
+
+        const {
+          data: publicUrlData
+        } =
+          supabaseClient
+            .storage
+            .from(BUCKET)
+            .getPublicUrl(
+              filePath
+            );
+
+
+        imageUrl =
+          publicUrlData.publicUrl;
+
+      }
+
+
+      /* ==========================
+         INSERT PRODUCT
+      ========================== */
+
+      const {
+        error: productError
+      } =
+        await supabaseClient
+          .from("products")
           .insert({
-            wholesaler_id: user.id,
-            category,
-            product_name: productName,
-            description: description || null,
-            price,
-            unit,
-            stock,
-            image_url: imageUrl,
-            is_active: true
+
+            wholesaler_id:
+              userId,
+
+            category:
+              category,
+
+            product_name:
+              productName,
+
+            description:
+              description || null,
+
+            price:
+              price,
+
+            unit:
+              unit,
+
+            stock:
+              stock,
+
+            image_url:
+              imageUrl
+
           });
 
-        if (productError) throw new Error('Product save failed: ' + productError.message);
 
-        document.getElementById('productForm').reset();
-        showMessage('✅ Product successfully added!', true);
-      } catch (error) {
-        console.error(error);
-        showMessage('❌ ' + error.message);
-      } finally {
-        saveBtn.disabled = false;
+      if (productError) {
+
+        throw productError;
+
       }
-    });
 
-    document.getElementById('backBtn').addEventListener('click', () => {
-      window.location.href = 'wholesaler.html';
-    });
 
-    document.getElementById('logoutBtn').addEventListener('click', async () => {
-      await supabaseClient.auth.signOut();
-      window.location.href = 'index.html';
-    });
+      /* ==========================
+         SUCCESS
+      ========================== */
 
-    checkWholesaler().catch(error => {
-      console.error(error);
-      showMessage('❌ ' + error.message);
-    });
-  </script>
+      message.innerText =
+        "✅ Product successfully save ho gaya!";
+
+      message.className =
+        "success";
+
+
+      form.reset();
+
+
+      preview.innerHTML =
+        "📷 Photo Preview";
+
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "PRODUCT ERROR:",
+        error
+      );
+
+
+      message.innerText =
+        "⚠️ " +
+        (
+          error.message ||
+          "Product save nahi hua."
+        );
+
+
+      message.className =
+        "error";
+
+    }
+
+
+    finally {
+
+      saveBtn.disabled =
+        false;
+
+      saveBtn.innerText =
+        "Product Save Karein →";
+
+    }
+
+  }
+);
+
+
+/* ================================
+   DASHBOARD
+================================ */
+
+function goDashboard() {
+
+  window.location.href =
+    "wholesaler.html";
+
+}
+
+
+/* ================================
+   LOGOUT
+================================ */
+
+async function logout() {
+
+  await supabaseClient
+    .auth
+    .signOut();
+
+
+  window.location.href =
+    "index.html";
+
+}
+
+
+/* ================================
+   START
+================================ */
+
+checkUser();
+
+</script>
+
 </body>
 </html>
