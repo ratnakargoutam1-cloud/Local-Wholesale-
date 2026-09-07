@@ -959,30 +959,44 @@
         }
       );
 
-  }
-async function showMyOrders() {
+  async function showMyOrders() {
 
-  const section = document.getElementById("myOrdersSection");
-  const list = document.getElementById("myOrdersList");
+  const section =
+    document.getElementById("myOrdersSection");
+
+  const list =
+    document.getElementById("myOrdersList");
 
   section.style.display = "block";
-  section.scrollIntoView({ behavior: "smooth" });
+
+  section.scrollIntoView({
+    behavior: "smooth"
+  });
 
   list.innerHTML =
     '<div class="message">📦 Orders load हो रहे हैं...</div>';
 
+
   const {
     data: { user },
     error: userError
-  } = await supabaseClient.auth.getUser();
+  } =
+    await supabaseClient.auth.getUser();
+
 
   if (userError || !user) {
+
     list.innerHTML =
       '<div class="message">❌ Login required.</div>';
+
     return;
   }
 
-  const { data: orders, error } =
+
+  const {
+    data: orders,
+    error
+  } =
     await supabaseClient
       .from("orders")
       .select(`
@@ -994,9 +1008,13 @@ async function showMyOrders() {
         created_at
       `)
       .eq("retailer_id", user.id)
-      .order("created_at", { ascending: false });
+      .order("created_at", {
+        ascending: false
+      });
+
 
   if (error) {
+
     console.error(error);
 
     list.innerHTML =
@@ -1008,15 +1026,24 @@ async function showMyOrders() {
     return;
   }
 
+
   if (!orders || orders.length === 0) {
+
     list.innerHTML =
       '<div class="message">📦 अभी कोई order नहीं है।</div>';
+
     return;
   }
 
-  const orderIds = orders.map(order => order.id);
 
-  const { data: items, error: itemsError } =
+  const orderIds =
+    orders.map(order => order.id);
+
+
+  const {
+    data: items,
+    error: itemsError
+  } =
     await supabaseClient
       .from("order_items")
       .select(`
@@ -1028,7 +1055,9 @@ async function showMyOrders() {
       `)
       .in("order_id", orderIds);
 
+
   if (itemsError) {
+
     console.error(itemsError);
 
     list.innerHTML =
@@ -1040,55 +1069,199 @@ async function showMyOrders() {
     return;
   }
 
+
   const itemsByOrder = {};
+
 
   (items || []).forEach(item => {
 
     if (!itemsByOrder[item.order_id]) {
+
       itemsByOrder[item.order_id] = [];
+
     }
 
     itemsByOrder[item.order_id].push(item);
 
   });
 
-  list.innerHTML = orders.map(order => {
 
-    const orderItems =
-      itemsByOrder[order.id] || [];
+  list.innerHTML =
+    orders.map(order => {
 
-    const date =
-      new Date(order.created_at)
-        .toLocaleString("en-IN");
+      const orderItems =
+        itemsByOrder[order.id] || [];
 
-    const productsHtml =
-      orderItems.map(item => {
 
-        const image =
-          item.image_url
-            ? `
-              <img
-                src="${escapeHtml(item.image_url)}"
-                style="width:65px;height:65px;object-fit:cover;border-radius:8px;"
-              >
-            `
-            : `
-              <div style="width:65px;height:65px;background:#eee;border-radius:8px;display:flex;align-items:center;justify-content:center;">
-                📦
+      const date =
+        new Date(order.created_at)
+          .toLocaleString("en-IN");
+
+
+      const productsHtml =
+        orderItems.map(item => {
+
+          const image =
+            item.image_url
+              ? `
+                <img
+                  src="${escapeHtml(item.image_url)}"
+                  style="
+                    width:65px;
+                    height:65px;
+                    object-fit:cover;
+                    border-radius:8px;
+                  "
+                >
+              `
+              : `
+                <div
+                  style="
+                    width:65px;
+                    height:65px;
+                    background:#eee;
+                    border-radius:8px;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                  "
+                >
+                  📦
+                </div>
+              `;
+
+
+          return `
+            <div
+              style="
+                display:flex;
+                gap:10px;
+                align-items:center;
+                margin-top:10px;
+                padding:10px;
+                background:#f7f7f7;
+                border-radius:10px;
+              "
+            >
+
+              ${image}
+
+              <div>
+
+                <strong>
+                  ${escapeHtml(item.product_name)}
+                </strong>
+
+                <div>
+                  Qty:
+                  ${Number(item.quantity || 0)}
+                </div>
+
+                <div>
+                  ₹${Number(item.price || 0).toFixed(2)}
+                </div>
+
               </div>
-            `;
 
-        return `
-          <div style="display:flex;gap:10px;align-items:center;margin-top:10px;padding:10px;background:#f7f7f7;border-radius:10px;">
+            </div>
+          `;
 
-            ${image}
+        }).join("");
 
-            <div>
-              <strong>
-                ${escapeHtml(item.product_name)}
+
+      return `
+        <div
+          style="
+            background:white;
+            padding:15px;
+            border-radius:12px;
+            margin-bottom:15px;
+            box-shadow:0 2px 8px rgba(0,0,0,.07);
+          "
+        >
+
+          <strong>
+            📦 Order #${escapeHtml(
+              order.id.substring(0, 8)
+            )}
+          </strong>
+
+
+          <div
+            style="
+              font-size:12px;
+              color:#666;
+              margin-top:5px;
+            "
+          >
+            ${escapeHtml(date)}
+          </div>
+
+
+          <div style="margin-top:10px;">
+
+            <strong>
+              Total:
+              ₹${Number(order.total || 0).toFixed(2)}
+            </strong>
+
+          </div>
+
+
+          <div style="margin-top:8px;">
+
+            📋 Order Status:
+
+            <strong>
+              ${escapeHtml(order.status || "pending")}
+            </strong>
+
+          </div>
+
+
+          <div style="margin-top:5px;">
+
+            🚚 Delivery:
+
+            <strong>
+              ${escapeHtml(
+                order.delivery_status || "pending"
+              )}
+            </strong>
+
+          </div>
+
+
+          <div style="margin-top:5px;">
+
+            💳 Payment:
+
+            <strong>
+              ${escapeHtml(
+                order.payment_status || "pending"
+              )}
+            </strong>
+
+          </div>
+
+
+          <h3>
+            🛍️ Products
+          </h3>
+
+
+          ${
+            productsHtml ||
+            "<p>No product details.</p>"
+          }
+
+        </div>
+      `;
+
+    }).join("");
 
 }
-
+  
   /* ================================
      START
   ================================= */
