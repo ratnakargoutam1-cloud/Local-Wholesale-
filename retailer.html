@@ -314,8 +314,27 @@
     class="products"
   ></div>
 
+  <!-- MY ORDERS -->
+
+  <button
+    type="button"
+    onclick="showMyOrders()"
+    style="width:100%; margin-top:15px; padding:12px; border:none; border-radius:10px; background:#2563eb; color:white; cursor:pointer;"
+  >
+    📦 My Orders
+  </button>
+
+  <section
+    id="myOrdersSection"
+    style="display:none; margin-top:15px;"
+  >
+    <h2>📦 My Orders</h2>
+    <div id="myOrdersList"></div>
+  </section>
+
 
   <!-- CART -->
+
 
   <div class="cart-bar">
 
@@ -1079,60 +1098,6 @@ async function showMyOrders() {
             <div>
               <strong>
                 ${escapeHtml(item.product_name)}
-              </strong>
-
-              <div>
-                Qty: ${Number(item.quantity || 0)}
-              </div>
-
-              <div>
-                ₹${Number(item.price || 0).toFixed(2)}
-              </div>
-            </div>
-
-          </div>
-        `;
-
-      }).join("");
-
-    return `
-      <div style="background:white;padding:15px;border-radius:12px;margin-bottom:15px;box-shadow:0 2px 8px rgba(0,0,0,.07);">
-
-        <strong>
-          📦 Order #${escapeHtml(order.id.substring(0,8))}
-        </strong>
-
-        <div style="font-size:12px;color:#666;margin-top:5px;">
-          ${escapeHtml(date)}
-        </div>
-
-        <div style="margin-top:10px;">
-          <strong>Total: ₹${Number(order.total || 0).toFixed(2)}</strong>
-        </div>
-
-        <div style="margin-top:8px;">
-          📋 Order Status:
-          <strong>${escapeHtml(order.status)}</strong>
-        </div>
-
-        <div style="margin-top:5px;">
-          🚚 Delivery:
-          <strong>${escapeHtml(order.delivery_status)}</strong>
-        </div>
-
-        <div style="margin-top:5px;">
-          💳 Payment:
-          <strong>${escapeHtml(order.payment_status)}</strong>
-        </div>
-
-        <h3>🛍️ Products</h3>
-
-        ${productsHtml || "<p>No product details.</p>"}
-
-      </div>
-    `;
-
-  }).join("");
 
 }
 
