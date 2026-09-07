@@ -647,24 +647,14 @@ async function placeOrder() {
       /* ORDER ITEMS */
 
       const orderItems =
-        items.map(item => ({
-
-          order_id:
-            order.id,
-
-          product_id:
-            item.id,
-
-          product_name:
-            item.product_name,
-
-          quantity:
-            Number(item.qty),
-
-          price:
-            Number(item.price)
-
-        }));
+  items.map(item => ({
+    order_id: order.id,
+    product_id: item.id,
+    product_name: item.product_name,
+    image_url: item.image_url || null,
+    quantity: Number(item.qty),
+    price: Number(item.price)
+  }));
 
 
       const {
