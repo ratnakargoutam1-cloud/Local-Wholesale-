@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Local Wholesale - Cart</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
+
     * {
       box-sizing: border-box;
     }
@@ -58,9 +64,10 @@
     .cart-img {
       width: 75px;
       height: 75px;
-      object-fit: cover;
+      object-fit: contain;
       border-radius: 10px;
       background: #eee;
+      padding: 3px;
     }
 
     .details {
@@ -157,7 +164,35 @@
       text-align: center;
       padding: 15px;
     }
+
+    .limit-box {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 9px;
+      background: #fff7ed;
+      color: #9a3412;
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+
+      .cart-item {
+        align-items: flex-start;
+      }
+
+      .cart-img {
+        width: 65px;
+        height: 65px;
+      }
+
+      .header {
+        gap: 10px;
+      }
+
+    }
+
   </style>
+
 </head>
 
 <body>
@@ -165,7 +200,10 @@
 <div class="container">
 
   <div class="header">
-    <strong>🛒 My Cart</strong>
+
+    <strong>
+      🛒 My Cart
+    </strong>
 
     <button
       class="back"
@@ -173,9 +211,12 @@
     >
       ← Products
     </button>
+
   </div>
 
+
   <div id="cart"></div>
+
 
   <div
     id="summary"
@@ -185,18 +226,54 @@
 
     <div class="row">
       <span>Items</span>
-      <strong id="itemsCount">0</strong>
+
+      <strong id="itemsCount">
+        0
+      </strong>
     </div>
+
 
     <div class="row">
-      <span>Subtotal</span>
-      <strong id="subtotal">₹0.00</strong>
+
+      <span>
+        Subtotal
+      </span>
+
+      <strong id="subtotal">
+        ₹0.00
+      </strong>
+
     </div>
 
+
     <div class="row total">
-      <span>Total</span>
-      <strong id="total">₹0.00</strong>
+
+      <span>
+        Total
+      </span>
+
+      <strong id="total">
+        ₹0.00
+      </strong>
+
     </div>
+
+
+    <div class="limit-box">
+
+      ℹ️ हर wholesaler के लिए minimum order
+      <strong>₹1,000</strong>
+      और maximum order
+      <strong>₹10,000</strong>
+      है।
+
+      <br><br>
+
+      अगर cart में अलग-अलग wholesalers के products हैं,
+      तो प्रत्येक wholesaler का order अलग बनेगा।
+
+    </div>
+
 
     <button
       id="placeOrderBtn"
@@ -213,11 +290,18 @@
 
 <script>
 
+
+/* =========================
+   SUPABASE
+========================= */
+
 const SUPABASE_URL =
   "https://izxvsvyvvtbaxtxgcfav.supabase.co";
 
+
 const SUPABASE_KEY =
   "sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI";
+
 
 const supabaseClient =
   window.supabase.createClient(
@@ -239,12 +323,14 @@ async function init() {
     data: {
       user
     }
-  } = await supabaseClient.auth.getUser();
+  } =
+    await supabaseClient.auth.getUser();
 
 
   if (!user) {
 
-    location.href = "index.html";
+    location.href =
+      "index.html";
 
     return;
   }
@@ -252,16 +338,21 @@ async function init() {
 
   const {
     data: profile
-  } = await supabaseClient
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .single();
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single();
 
 
-  if (!profile || profile.role !== "retailer") {
+  if (
+    !profile ||
+    profile.role !== "retailer"
+  ) {
 
-    document.getElementById("cart").innerHTML =
+    document.getElementById("cart")
+      .innerHTML =
       '<div class="empty">⚠️ यह page केवल Retailer के लिए है।</div>';
 
     return;
@@ -279,12 +370,42 @@ async function init() {
 
 function loadCart() {
 
+  try {
+
+    cart =
+      JSON.parse(
+        localStorage.getItem(
+          "localWholesaleCart"
+        ) || "[]"
+      );
+
+  } catch (error) {
+
+    cart = [];
+
+  }
+
+
   cart =
-    JSON.parse(
-      localStorage.getItem(
-        "localWholesaleCart"
-      ) || "[]"
-    );
+    cart.map(item => ({
+
+      ...item,
+
+      qty:
+        Math.max(
+          1,
+          Number(item.qty || 1)
+        ),
+
+      price:
+        Number(item.price || 0),
+
+      unit:
+        item.unit ||
+        item.selected_unit ||
+        "piece"
+
+    }));
 
 
   renderCart();
@@ -301,6 +422,7 @@ function renderCart() {
   const box =
     document.getElementById("cart");
 
+
   const summary =
     document.getElementById("summary");
 
@@ -308,12 +430,22 @@ function renderCart() {
   if (cart.length === 0) {
 
     box.innerHTML = `
+
       <div class="empty">
-        <div style="font-size:45px;">🛒</div>
 
-        <h3>Cart खाली है</h3>
+        <div
+          style="font-size:45px;"
+        >
+          🛒
+        </div>
 
-        <p>पहले कोई product Cart में add करें।</p>
+        <h3>
+          Cart खाली है
+        </h3>
+
+        <p>
+          पहले कोई product Cart में add करें।
+        </p>
 
         <button
           class="back"
@@ -321,102 +453,162 @@ function renderCart() {
         >
           Products देखें
         </button>
+
       </div>
+
     `;
 
-    summary.style.display = "none";
+
+    summary.style.display =
+      "none";
+
 
     return;
   }
 
 
-  summary.style.display = "block";
+  summary.style.display =
+    "block";
 
 
   box.innerHTML =
-    cart.map((item, index) => {
+    cart.map(
+      (item, index) => {
 
-      const image =
-        item.image_url
+        const image =
+          item.image_url
 
-        ?
+          ?
 
-        `<img
-          class="cart-img"
-          src="${escapeHtml(item.image_url)}"
-        >`
+          `
+          <img
+            class="cart-img"
+            src="${escapeHtml(
+              item.image_url
+            )}"
+            alt="Product"
+          >
+          `
 
-        :
+          :
 
-        `<div class="cart-img"
-             style="
-               display:flex;
-               align-items:center;
-               justify-content:center;
-               font-size:30px;
-             ">
-           📦
-         </div>`;
+          `
+          <div
+            class="cart-img"
+            style="
+              display:flex;
+              align-items:center;
+              justify-content:center;
+              font-size:30px;
+            "
+          >
+            📦
+          </div>
+          `;
 
 
-      return `
+        const unit =
+          item.unit ||
+          item.selected_unit ||
+          "piece";
 
-        <div class="cart-item">
 
-          ${image}
+        const price =
+          Number(
+            item.price || 0
+          );
 
-          <div class="details">
 
-            <div class="name">
-              ${escapeHtml(
-                item.product_name
-              )}
-            </div>
+        const qty =
+          Number(
+            item.qty || 0
+          );
 
-            <div class="price">
-              ₹${Number(
-                item.price
-              ).toFixed(2)}
-              /
-              ${escapeHtml(
-                item.unit || "piece"
-              )}
-            </div>
 
-            <div class="quantity">
+        const lineTotal =
+          price * qty;
+
+
+        return `
+
+          <div class="cart-item">
+
+            ${image}
+
+
+            <div class="details">
+
+              <div class="name">
+
+                ${escapeHtml(
+                  item.product_name
+                )}
+
+              </div>
+
+
+              <div class="price">
+
+                ₹${price.toFixed(2)}
+                /
+                ${escapeHtml(unit)}
+
+              </div>
+
+
+              <div
+                style="
+                  margin-top:4px;
+                  font-size:14px;
+                "
+              >
+
+                Product Total:
+                <strong>
+                  ₹${lineTotal.toFixed(2)}
+                </strong>
+
+              </div>
+
+
+              <div class="quantity">
+
+                <button
+                  onclick="changeQty(${index}, -1)"
+                >
+                  −
+                </button>
+
+
+                <strong>
+                  ${qty}
+                </strong>
+
+
+                <button
+                  onclick="changeQty(${index}, 1)"
+                >
+                  +
+                </button>
+
+              </div>
+
 
               <button
-                onclick="changeQty(${index}, -1)"
+                class="remove"
+                onclick="removeItem(${index})"
               >
-                −
-              </button>
-
-              <strong>
-                ${item.qty}
-              </strong>
-
-              <button
-                onclick="changeQty(${index}, 1)"
-              >
-                +
+                🗑 Remove
               </button>
 
             </div>
-
-            <button
-              class="remove"
-              onclick="removeItem(${index})"
-            >
-              🗑 Remove
-            </button>
 
           </div>
 
-        </div>
+        `;
 
-      `;
-
-    }).join("");
+      }
+    ).join("");
 
 
   updateSummary();
@@ -428,14 +620,30 @@ function renderCart() {
    QUANTITY
 ========================= */
 
-function changeQty(index, amount) {
+function changeQty(
+  index,
+  amount
+) {
 
-  cart[index].qty += amount;
+  if (!cart[index]) {
+    return;
+  }
 
 
-  if (cart[index].qty <= 0) {
+  cart[index].qty =
+    Number(
+      cart[index].qty || 0
+    ) + amount;
 
-    cart.splice(index, 1);
+
+  if (
+    cart[index].qty <= 0
+  ) {
+
+    cart.splice(
+      index,
+      1
+    );
 
   }
 
@@ -451,7 +659,11 @@ function changeQty(index, amount) {
 
 function removeItem(index) {
 
-  cart.splice(index, 1);
+  cart.splice(
+    index,
+    1
+  );
+
 
   saveCart();
 
@@ -468,6 +680,7 @@ function saveCart() {
     "localWholesaleCart",
     JSON.stringify(cart)
   );
+
 
   renderCart();
 
@@ -487,30 +700,43 @@ function updateSummary() {
 
   cart.forEach(item => {
 
-    count += Number(item.qty);
+    const qty =
+      Number(
+        item.qty || 0
+      );
+
+    const price =
+      Number(
+        item.price || 0
+      );
+
+
+    count += qty;
 
     total +=
-      Number(item.price) *
-      Number(item.qty);
+      price * qty;
 
   });
 
 
   document.getElementById(
     "itemsCount"
-  ).innerText = count;
+  ).innerText =
+    count;
 
 
   document.getElementById(
     "subtotal"
   ).innerText =
-    "₹" + total.toFixed(2);
+    "₹" +
+    total.toFixed(2);
 
 
   document.getElementById(
     "total"
   ).innerText =
-    "₹" + total.toFixed(2);
+    "₹" +
+    total.toFixed(2);
 
 }
 
@@ -521,9 +747,13 @@ function updateSummary() {
 
 async function placeOrder() {
 
-  if (cart.length === 0) {
+  if (
+    cart.length === 0
+  ) {
 
-    alert("Cart खाली है।");
+    alert(
+      "Cart खाली है।"
+    );
 
     return;
   }
@@ -535,7 +765,9 @@ async function placeOrder() {
     );
 
 
-  btn.disabled = true;
+  btn.disabled =
+    true;
+
 
   btn.innerText =
     "Order place हो रहा है...";
@@ -543,54 +775,91 @@ async function placeOrder() {
 
   try {
 
-    /* USER */
+    /* =====================
+       USER
+    ===================== */
 
     const {
       data: {
         user
       }
-    } = await supabaseClient.auth.getUser();
+    } =
+      await supabaseClient.auth.getUser();
 
 
     if (!user) {
 
-      location.href = "index.html";
+      location.href =
+        "index.html";
 
       return;
     }
 
 
-    /*
-      एक Cart में अलग-अलग wholesaler
-      हो सकते हैं।
-
-      इसलिए wholesaler के हिसाब से
-      अलग order बनाएंगे।
-    */
+    /* =====================
+       GROUP BY WHOLESALER
+    ===================== */
 
     const groups = {};
 
 
     cart.forEach(item => {
 
-      if (!groups[item.wholesaler_id]) {
+      if (
+        !item.wholesaler_id
+      ) {
+        return;
+      }
 
-        groups[item.wholesaler_id] = [];
+
+      if (
+        !groups[
+          item.wholesaler_id
+        ]
+      ) {
+
+        groups[
+          item.wholesaler_id
+        ] = [];
 
       }
 
-      groups[item.wholesaler_id].push(item);
+
+      groups[
+        item.wholesaler_id
+      ].push(item);
 
     });
 
 
+    const wholesalerIds =
+      Object.keys(groups);
+
+
+    if (
+      wholesalerIds.length === 0
+    ) {
+
+      throw new Error(
+        "Cart में wholesaler information नहीं मिली।"
+      );
+
+    }
+
+
+    /* =====================
+       CREATE EACH ORDER
+    ===================== */
+
     for (
       const wholesalerId
-      of Object.keys(groups)
+      of wholesalerIds
     ) {
 
       const items =
-        groups[wholesalerId];
+        groups[
+          wholesalerId
+        ];
 
 
       let total = 0;
@@ -599,42 +868,85 @@ async function placeOrder() {
       items.forEach(item => {
 
         total +=
-          Number(item.price) *
-          Number(item.qty);
+          Number(
+            item.price || 0
+          ) *
+          Number(
+            item.qty || 0
+          );
 
       });
 
 
-      /* CREATE ORDER */
+      total =
+        Number(
+          total.toFixed(2)
+        );
+
+
+      /* =====================
+         MINIMUM
+      ===================== */
+
+      if (
+        total < 1000
+      ) {
+
+        throw new Error(
+          `Minimum order ₹1,000 है। इस wholesaler का order अभी ₹${total.toFixed(2)} है।`
+        );
+
+      }
+
+
+      /* =====================
+         MAXIMUM
+      ===================== */
+
+      if (
+        total > 10000
+      ) {
+
+        throw new Error(
+          `Maximum order ₹10,000 है। इस wholesaler का order ₹${total.toFixed(2)} है।`
+        );
+
+      }
+
+
+      /* =====================
+         CREATE ORDER
+      ===================== */
 
       const {
         data: order,
         error: orderError
-      } = await supabaseClient
-        .from("orders")
-        .insert({
+      } =
+        await supabaseClient
+          .from("orders")
+          .insert({
 
-          retailer_id:
-            user.id,
+            retailer_id:
+              user.id,
 
-          wholesaler_id:
-            wholesalerId,
+            wholesaler_id:
+              wholesalerId,
 
-          total:
-            total,
+            total:
+              total,
 
-          status:
-            "pending",
+            status:
+              "pending",
 
-          delivery_status:
-            "pending",
+            delivery_status:
+              "pending",
 
-          payment_status:
-            "cod"
+            payment_status:
+              "cod"
 
-        })
-        .select()
-        .single();
+          })
+          .select()
+          .single();
 
 
       if (orderError) {
@@ -644,24 +956,60 @@ async function placeOrder() {
       }
 
 
-      /* ORDER ITEMS */
+      /* =====================
+         ORDER ITEMS
+      ===================== */
 
       const orderItems =
-  items.map(item => ({
-    order_id: order.id,
-    product_id: item.id,
-    product_name: item.product_name,
-    image_url: item.image_url || null,
-    quantity: Number(item.qty),
-    price: Number(item.price)
-  }));
+        items.map(item => {
+
+          const unit =
+            item.unit ||
+            item.selected_unit ||
+            "piece";
+
+
+          return {
+
+            order_id:
+              order.id,
+
+            product_id:
+              item.id,
+
+            product_name:
+              item.product_name,
+
+            image_url:
+              item.image_url ||
+              null,
+
+            quantity:
+              Number(
+                item.qty || 0
+              ),
+
+            price:
+              Number(
+                item.price || 0
+              ),
+
+            unit:
+              unit
+
+          };
+
+        });
 
 
       const {
         error: itemError
-      } = await supabaseClient
-        .from("order_items")
-        .insert(orderItems);
+      } =
+        await supabaseClient
+          .from("order_items")
+          .insert(
+            orderItems
+          );
 
 
       if (itemError) {
@@ -673,7 +1021,9 @@ async function placeOrder() {
     }
 
 
-    /* CLEAR CART */
+    /* =====================
+       CLEAR CART
+    ===================== */
 
     localStorage.removeItem(
       "localWholesaleCart"
@@ -691,12 +1041,14 @@ async function placeOrder() {
     location.href =
       "retailer.html";
 
-
   }
+
 
   catch (error) {
 
-    console.error(error);
+    console.error(
+      error
+    );
 
 
     alert(
@@ -705,7 +1057,9 @@ async function placeOrder() {
     );
 
 
-    btn.disabled = false;
+    btn.disabled =
+      false;
+
 
     btn.innerText =
       "✅ Place Order";
@@ -721,18 +1075,29 @@ async function placeOrder() {
 
 function escapeHtml(value) {
 
-  return String(value ?? "")
+  return String(
+    value ?? ""
+  )
     .replace(
       /[&<>"']/g,
       function(char) {
 
         return {
 
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#039;"
+          "&":
+            "&amp;",
+
+          "<":
+            "&lt;",
+
+          ">":
+            "&gt;",
+
+          '"':
+            "&quot;",
+
+          "'":
+            "&#039;"
 
         }[char];
 
