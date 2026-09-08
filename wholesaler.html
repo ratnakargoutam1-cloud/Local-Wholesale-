@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="hi">
+
 <head>
 
   <meta charset="UTF-8">
@@ -208,18 +209,68 @@
 
     .order-item {
       display: flex;
-      gap: 10px;
-      align-items: center;
+      gap: 12px;
+      align-items: flex-start;
       border-top: 1px solid #eee;
-      padding: 10px 0;
+      padding: 12px 0;
+      margin-top: 10px;
     }
 
     .order-item img {
-      width: 60px;
-      height: 60px;
-      object-fit: cover;
+      width: 75px;
+      height: 75px;
+      object-fit: contain;
+      border-radius: 8px;
+      background: #f3f4f6;
+      padding: 3px;
+      flex-shrink: 0;
+    }
+
+    .order-item-details {
+      flex: 1;
+    }
+
+    .order-item-name {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
+
+    .order-detail-line {
+      margin-top: 5px;
+      font-size: 14px;
+    }
+
+    .product-total {
+      margin-top: 6px;
+      font-weight: bold;
+      font-size: 15px;
+    }
+
+    .order-total-box {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 9px;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .order-id-box {
+      background: #f3f4f6;
+      padding: 8px;
       border-radius: 7px;
-      background: #eee;
+      word-break: break-all;
+      font-size: 12px;
+      margin-top: 8px;
+    }
+
+    .status-box {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      background: #f9fafb;
     }
 
     .status-select {
@@ -249,1631 +300,1313 @@
         grid-template-columns: 1fr;
       }
 
+      .order-item {
+        align-items: flex-start;
+      }
+
+      .order-item img {
+        width: 65px;
+        height: 65px;
+      }
+
     }
 
   </style>
 
 </head>
 
+
 <body>
 
-  <div class="topbar">
 
-    <h1>🏪 Local Wholesale</h1>
+<div class="topbar">
+
+  <h1>
+    🏪 Local Wholesale
+  </h1>
+
+  <button
+    class="logout-btn"
+    onclick="logout()"
+  >
+    🚪 Logout
+  </button>
+
+</div>
+
+
+<div class="container">
+
+
+<div class="welcome">
+
+  <h2>
+    👋 Welcome Wholesaler
+  </h2>
+
+  <div id="shopInfo">
+    Shop loading...
+  </div>
+
+</div>
+
+
+<!-- DASHBOARD STATS -->
+
+<div class="stats">
+
+  <div class="stat-card">
+
+    📦 Products
+
+    <strong id="totalProducts">
+      0
+    </strong>
+
+  </div>
+
+
+  <div class="stat-card">
+
+    🧾 Orders
+
+    <strong id="totalOrders">
+      0
+    </strong>
+
+  </div>
+
+
+  <div class="stat-card">
+
+    👥 Customers
+
+    <strong id="totalCustomers">
+      0
+    </strong>
+
+  </div>
+
+
+  <div class="stat-card">
+
+    💰 Sales
+
+    <strong id="totalSales">
+      ₹0
+    </strong>
+
+  </div>
+
+</div>
+
+
+<!-- ACTIONS -->
+
+<div class="actions">
+
+  <button
+    class="action-btn"
+    onclick="showSection('productsSection'); loadProducts();"
+  >
+    📦 My Products
+  </button>
+
+
+  <button
+    class="action-btn"
+    onclick="location.href='add-product.html'"
+  >
+    ➕ Add Product
+  </button>
+
+
+  <button
+    class="action-btn"
+    onclick="showSection('ordersSection'); loadOrders();"
+  >
+    🧾 Orders
+  </button>
+
+
+  <button
+    class="action-btn"
+    onclick="showSection('customersSection'); loadCustomers();"
+  >
+    👥 Customers
+  </button>
+
+
+  <button
+    class="action-btn"
+    onclick="showSection('deliverySection'); loadDeliveryOrders();"
+  >
+    🚚 Delivery Status
+  </button>
+
+
+  <button
+    class="action-btn"
+    onclick="showSection('hisabSection'); loadHisab();"
+  >
+    💰 Hisaab
+  </button>
+
+</div>
+
+
+<!-- PRODUCTS -->
+
+<section
+  id="productsSection"
+  class="section"
+>
+
+  <h2>
+    📦 My Products
+  </h2>
+
+  <div id="productsList">
+
+    <div class="message">
+      Products load हो रहे हैं...
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ORDERS -->
+
+<section
+  id="ordersSection"
+  class="section"
+>
+
+  <h2>
+    🧾 Orders
+  </h2>
+
+  <div id="ordersList">
+
+    <div class="message">
+      Orders load हो रहे हैं...
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- CUSTOMERS -->
+
+<section
+  id="customersSection"
+  class="section"
+>
+
+  <h2>
+    👥 Customers
+  </h2>
+
+  <div id="customersList">
+
+    <div class="message">
+      Customers load हो रहे हैं...
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- DELIVERY -->
+
+<section
+  id="deliverySection"
+  class="section"
+>
+
+  <h2>
+    🚚 Delivery Status
+  </h2>
+
+  <div id="deliveryList">
+
+    <div class="message">
+      Orders load हो रहे हैं...
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- HISAB -->
+
+<section
+  id="hisabSection"
+  class="section"
+>
+
+  <h2>
+    💰 Customer Hisaab
+  </h2>
+
+
+  <select id="hisabCustomer">
+
+    <option value="">
+      Customer चुनें
+    </option>
+
+  </select>
+
+
+  <div
+    id="hisabSummary"
+    style="display:none;"
+  >
+
+    <div class="customer-card">
+
+      <h3 id="hisabCustomerName">
+        Customer
+      </h3>
+
+
+      <p>
+
+        💰 Total Purchase:
+
+        <strong id="hisabTotal">
+          ₹0.00
+        </strong>
+
+      </p>
+
+
+      <p>
+
+        ✅ Paid:
+
+        <strong id="hisabPaid">
+          ₹0.00
+        </strong>
+
+      </p>
+
+
+      <p>
+
+        ⏳ Remaining:
+
+        <strong id="hisabRemaining">
+          ₹0.00
+        </strong>
+
+      </p>
+
+    </div>
+
+
+    <h3>
+      💵 Add Payment
+    </h3>
+
+
+    <input
+      id="paymentAmount"
+      type="number"
+      min="0.01"
+      step="0.01"
+      placeholder="Payment amount"
+    >
+
+
+    <select id="paymentMethod">
+
+      <option value="cash">
+        💵 Cash
+      </option>
+
+      <option value="upi">
+        📱 UPI
+      </option>
+
+      <option value="bank">
+        🏦 Bank
+      </option>
+
+      <option value="other">
+        💳 Other
+      </option>
+
+    </select>
+
+
+    <input
+      id="paymentNote"
+      type="text"
+      placeholder="Note (optional)"
+    >
+
 
     <button
-      class="logout-btn"
-      onclick="logout()"
+      class="save-btn"
+      onclick="addPayment()"
     >
-      🚪 Logout
+      💾 Save Payment
     </button>
 
-  </div>
+
+    <h3>
+      📜 Payment History
+    </h3>
 
 
-  <div class="container">
+    <div id="paymentHistory">
 
-    <div class="welcome">
-
-      <h2>
-        👋 Welcome Wholesaler
-      </h2>
-
-      <div id="shopInfo">
-        Shop loading...
+      <div class="message">
+        Customer चुनें।
       </div>
 
     </div>
-
-
-    <!-- DASHBOARD STATS -->
-
-    <div class="stats">
-
-      <div class="stat-card">
-        📦 Products
-        <strong id="totalProducts">0</strong>
-      </div>
-
-      <div class="stat-card">
-        🧾 Orders
-        <strong id="totalOrders">0</strong>
-      </div>
-
-      <div class="stat-card">
-        👥 Customers
-        <strong id="totalCustomers">0</strong>
-      </div>
-
-      <div class="stat-card">
-        💰 Sales
-        <strong id="totalSales">₹0</strong>
-      </div>
-
-    </div>
-
-
-    <!-- ACTIONS -->
-
-    <div class="actions">
-
-      <button
-        class="action-btn"
-        onclick="showSection('productsSection'); loadProducts();"
-      >
-        📦 My Products
-      </button>
-
-      <button
-        class="action-btn"
-        onclick="location.href='add-product.html'"
-      >
-        ➕ Add Product
-      </button>
-
-      <button
-        class="action-btn"
-        onclick="showSection('ordersSection'); loadOrders();"
-      >
-        🧾 Orders
-      </button>
-
-      <button
-        class="action-btn"
-        onclick="showSection('customersSection'); loadCustomers();"
-      >
-        👥 Customers
-      </button>
-
-      <button
-        class="action-btn"
-        onclick="showSection('deliverySection'); loadDeliveryOrders();"
-      >
-        🚚 Delivery Status
-      </button>
-
-      <button
-        class="action-btn"
-        onclick="showSection('hisabSection'); loadHisab();"
-      >
-        💰 Hisaab
-      </button>
-
-    </div>
-
-
-    <!-- ========================= -->
-    <!-- PRODUCTS -->
-    <!-- ========================= -->
-
-    <section
-      id="productsSection"
-      class="section"
-    >
-
-      <h2>📦 My Products</h2>
-
-      <div id="productsList">
-        <div class="message">
-          Products load हो रहे हैं...
-        </div>
-      </div>
-
-    </section>
-
-
-    <!-- ========================= -->
-    <!-- ORDERS -->
-    <!-- ========================= -->
-
-    <section
-      id="ordersSection"
-      class="section"
-    >
-
-      <h2>🧾 Orders</h2>
-
-      <div id="ordersList">
-        <div class="message">
-          Orders load हो रहे हैं...
-        </div>
-      </div>
-
-    </section>
-
-
-    <!-- ========================= -->
-    <!-- CUSTOMERS -->
-    <!-- ========================= -->
-
-    <section
-      id="customersSection"
-      class="section"
-    >
-
-      <h2>👥 Customers</h2>
-
-      <div id="customersList">
-        <div class="message">
-          Customers load हो रहे हैं...
-        </div>
-      </div>
-
-    </section>
-
-
-    <!-- ========================= -->
-    <!-- DELIVERY -->
-    <!-- ========================= -->
-
-    <section
-      id="deliverySection"
-      class="section"
-    >
-
-      <h2>🚚 Delivery Status</h2>
-
-      <div id="deliveryList">
-        <div class="message">
-          Orders load हो रहे हैं...
-        </div>
-      </div>
-
-    </section>
-
-
-    <!-- ========================= -->
-    <!-- HISAB -->
-    <!-- ========================= -->
-
-    <section
-      id="hisabSection"
-      class="section"
-    >
-
-      <h2>💰 Customer Hisaab</h2>
-
-      <select id="hisabCustomer">
-
-        <option value="">
-          Customer चुनें
-        </option>
-
-      </select>
-
-
-      <div
-        id="hisabSummary"
-        style="display:none;"
-      >
-
-        <div class="customer-card">
-
-          <h3 id="hisabCustomerName">
-            Customer
-          </h3>
-
-          <p>
-            💰 Total Purchase:
-            <strong id="hisabTotal">
-              ₹0.00
-            </strong>
-          </p>
-
-          <p>
-            ✅ Paid:
-            <strong id="hisabPaid">
-              ₹0.00
-            </strong>
-          </p>
-
-          <p>
-            ⏳ Remaining:
-            <strong id="hisabRemaining">
-              ₹0.00
-            </strong>
-          </p>
-
-        </div>
-
-
-        <h3>
-          💵 Add Payment
-        </h3>
-
-        <input
-          id="paymentAmount"
-          type="number"
-          min="0.01"
-          step="0.01"
-          placeholder="Payment amount"
-        >
-
-
-        <select id="paymentMethod">
-
-          <option value="cash">
-            💵 Cash
-          </option>
-
-          <option value="upi">
-            📱 UPI
-          </option>
-
-          <option value="bank">
-            🏦 Bank
-          </option>
-
-          <option value="other">
-            💳 Other
-          </option>
-
-        </select>
-
-
-        <input
-          id="paymentNote"
-          type="text"
-          placeholder="Note (optional)"
-        >
-
-
-        <button
-          class="save-btn"
-          onclick="addPayment()"
-        >
-          💾 Save Payment
-        </button>
-
-
-        <h3>
-          📜 Payment History
-        </h3>
-
-        <div id="paymentHistory">
-
-          <div class="message">
-            Customer चुनें।
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
 
   </div>
 
+</section>
 
-  <!-- ========================= -->
-  <!-- JAVASCRIPT -->
-  <!-- ========================= -->
 
-  <script>
+</div>
 
-    // =========================
-    // SUPABASE
-    // =========================
 
-    const SUPABASE_URL =
-      "https://izxvsvyvvtbaxtxgcfav.supabase.co";
+<script>
 
-    const SUPABASE_KEY =
-      "sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI";
 
-    const supabaseClient =
-      window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
+/* =========================
+   SUPABASE
+========================= */
+
+const SUPABASE_URL =
+  "https://izxvsvyvvtbaxtxgcfav.supabase.co";
+
+
+const SUPABASE_KEY =
+  "sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI";
+
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+let currentUser = null;
+
+
+/* =========================
+   ESCAPE HTML
+========================= */
+
+function escapeHtml(value) {
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+
+    return "";
+
+  }
+
+
+  return String(value)
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+/* =========================
+   SHOW SECTION
+========================= */
+
+function showSection(
+  sectionId
+) {
+
+  document
+    .querySelectorAll(
+      ".section"
+    )
+    .forEach(
+      section => {
+
+        section.classList.remove(
+          "active"
+        );
+
+      }
+    );
+
+
+  const section =
+    document.getElementById(
+      sectionId
+    );
+
+
+  if (section) {
+
+    section.classList.add(
+      "active"
+    );
+
+  }
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+/* =========================
+   INIT
+========================= */
+
+async function init() {
+
+  const {
+    data: {
+      session
+    }
+  } =
+    await supabaseClient.auth.getSession();
+
+
+  if (!session) {
+
+    location.href =
+      "index.html";
+
+    return;
+  }
+
+
+  currentUser =
+    session.user;
+
+
+  await loadShopInfo();
+
+  await loadDashboardStats();
+
+}
+
+
+/* =========================
+   SHOP INFO
+========================= */
+
+async function loadShopInfo() {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select(`
+        full_name,
+        shop_name,
+        mobile,
+        role
+      `)
+      .eq(
+        "id",
+        currentUser.id
+      )
+      .single();
+
+
+  if (error) {
+
+    document.getElementById(
+      "shopInfo"
+    ).textContent =
+      "Shop information नहीं मिली।";
+
+    return;
+  }
+
+
+  document.getElementById(
+    "shopInfo"
+  ).innerHTML = `
+
+    👤 ${escapeHtml(
+      data.full_name ||
+      "Wholesaler"
+    )}
+
+    <br>
+
+    🏪 ${escapeHtml(
+      data.shop_name ||
+      "Shop"
+    )}
+
+    <br>
+
+    📱 ${escapeHtml(
+      data.mobile ||
+      ""
+    )}
+
+  `;
+
+}
+
+
+/* =========================
+   DASHBOARD STATS
+========================= */
+
+async function loadDashboardStats() {
+
+  const {
+    data: products
+  } =
+    await supabaseClient
+      .from("products")
+      .select("id")
+      .eq(
+        "wholesaler_id",
+        currentUser.id
       );
 
 
-    let currentUser = null;
+  document.getElementById(
+    "totalProducts"
+  ).textContent =
+    (products || []).length;
 
 
-    // =========================
-    // ESCAPE HTML
-    // =========================
-
-    function escapeHtml(value) {
-
-      if (value === null || value === undefined) {
-        return "";
-      }
-
-      return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
-    }
+  const {
+    data: orders
+  } =
+    await supabaseClient
+      .from("orders")
+      .select(`
+        id,
+        retailer_id,
+        total
+      `)
+      .eq(
+        "wholesaler_id",
+        currentUser.id
+      );
 
 
-    // =========================
-    // SHOW SECTION
-    // =========================
-
-    function showSection(sectionId) {
-
-      document
-        .querySelectorAll(".section")
-        .forEach(section => {
-          section.classList.remove("active");
-        });
-
-      const section =
-        document.getElementById(sectionId);
-
-      if (section) {
-        section.classList.add("active");
-      }
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-
-    }
+  const orderList =
+    orders || [];
 
 
-    // =========================
-    // INIT
-    // =========================
-
-    async function init() {
-
-      const {
-        data: {
-          session
-        }
-      } =
-        await supabaseClient.auth.getSession();
-
-      if (!session) {
-
-        location.href = "index.html";
-
-        return;
-      }
-
-      currentUser =
-        session.user;
-
-      await loadShopInfo();
-
-      await loadDashboardStats();
-
-    }
+  document.getElementById(
+    "totalOrders"
+  ).textContent =
+    orderList.length;
 
 
-    // =========================
-    // SHOP INFO
-    // =========================
-
-    async function loadShopInfo() {
-
-      const {
-        data,
-        error
-      } =
-        await supabaseClient
-          .from("profiles")
-          .select(`
-            full_name,
-            shop_name,
-            mobile,
-            role
-          `)
-          .eq("id", currentUser.id)
-          .single();
-
-      if (error) {
-
-        document.getElementById("shopInfo")
-          .textContent =
-          "Shop information नहीं मिली।";
-
-        return;
-      }
-
-      document.getElementById("shopInfo")
-        .innerHTML = `
-          👤 ${escapeHtml(
-            data.full_name || "Wholesaler"
-          )}
-          <br>
-          🏪 ${escapeHtml(
-            data.shop_name || "Shop"
-          )}
-          <br>
-          📱 ${escapeHtml(
-            data.mobile || ""
-          )}
-        `;
-
-    }
+  const customerIds =
+    [
+      ...new Set(
+        orderList.map(
+          order =>
+            order.retailer_id
+        )
+      )
+    ];
 
 
-    // =========================
-    // DASHBOARD STATS
-    // =========================
-
-    async function loadDashboardStats() {
-
-      const {
-        data: products
-      } =
-        await supabaseClient
-          .from("products")
-          .select("id")
-          .eq(
-            "wholesaler_id",
-            currentUser.id
-          );
-
-      document.getElementById("totalProducts")
-        .textContent =
-        (products || []).length;
+  document.getElementById(
+    "totalCustomers"
+  ).textContent =
+    customerIds.length;
 
 
-      const {
-        data: orders
-      } =
-        await supabaseClient
-          .from("orders")
-          .select(`
-            id,
-            retailer_id,
-            total
-          `)
-          .eq(
-            "wholesaler_id",
-            currentUser.id
-          );
-
-      const orderList =
-        orders || [];
-
-      document.getElementById("totalOrders")
-        .textContent =
-        orderList.length;
+  let sales = 0;
 
 
-      const customerIds =
-        [
-          ...new Set(
-            orderList.map(
-              order => order.retailer_id
-            )
-          )
-        ];
+  orderList.forEach(
+    order => {
 
-      document.getElementById("totalCustomers")
-        .textContent =
-        customerIds.length;
-
-
-      let sales = 0;
-
-      orderList.forEach(order => {
-
-        sales += Number(
+      sales +=
+        Number(
           order.total || 0
         );
 
-      });
-
-      document.getElementById("totalSales")
-        .textContent =
-        "₹" + sales.toFixed(2);
-
     }
+  );
 
 
-    // =========================
-    // PRODUCTS
-    // =========================
+  document.getElementById(
+    "totalSales"
+  ).textContent =
+    "₹" +
+    sales.toFixed(2);
 
-    async function loadProducts() {
-
-      const box =
-        document.getElementById(
-          "productsList"
-        );
-
-      box.innerHTML =
-        '<div class="message">Products load हो रहे हैं...</div>';
+}
 
 
-      const {
-        data,
-        error
-      } =
-        await supabaseClient
-          .from("products")
-          .select(`
-            id,
-            category,
-            product_name,
-            description,
-            price,
-            unit,
-            stock,
-            image_url,
-            is_active
-          `)
-          .eq(
-            "wholesaler_id",
-            currentUser.id
-          )
-          .order(
-            "created_at",
-            {
-              ascending: false
-            }
-          );
+/* =========================
+   PRODUCTS
+========================= */
+
+async function loadProducts() {
+
+  const box =
+    document.getElementById(
+      "productsList"
+    );
 
 
-      if (error) {
+  box.innerHTML =
+    '<div class="message">Products load हो रहे हैं...</div>';
 
-        box.innerHTML =
-          `<div class="message">
-            ❌ ${escapeHtml(
-              error.message
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("products")
+      .select(`
+        id,
+        category,
+        product_name,
+        description,
+        price,
+        unit,
+        stock,
+        image_url,
+        is_active
+      `)
+      .eq(
+        "wholesaler_id",
+        currentUser.id
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
+
+
+  if (error) {
+
+    box.innerHTML =
+      `<div class="message">
+        ❌ ${escapeHtml(
+          error.message
+        )}
+      </div>`;
+
+    return;
+  }
+
+
+  if (
+    !data ||
+    data.length === 0
+  ) {
+
+    box.innerHTML =
+      `<div class="message">
+
+        अभी कोई product नहीं है।
+
+        <br><br>
+
+        ➕ Add Product पर click करके product जोड़ें।
+
+      </div>`;
+
+    return;
+  }
+
+
+  box.innerHTML =
+    `<div class="product-grid">
+
+      ${data.map(
+        product => `
+
+        <div class="product-card">
+
+          ${
+            product.image_url
+            ?
+
+            `
+              <img
+                src="${escapeHtml(
+                  product.image_url
+                )}"
+                alt="Product"
+              >
+            `
+
+            :
+
+            `
+              <div
+                style="
+                  height:150px;
+                  display:flex;
+                  align-items:center;
+                  justify-content:center;
+                  background:#eee;
+                  border-radius:8px;
+                  font-size:45px;
+                "
+              >
+                📦
+              </div>
+            `
+          }
+
+
+          <h3>
+
+            ${escapeHtml(
+              product.product_name
             )}
-          </div>`;
 
-        return;
-      }
+          </h3>
 
 
-      if (!data || data.length === 0) {
+          <p>
 
-        box.innerHTML =
-          `<div class="message">
-            अभी कोई product नहीं है।
-            <br><br>
-            ➕ Add Product पर click करके product जोड़ें।
-          </div>`;
+            📂 Category:
 
-        return;
-      }
+            ${escapeHtml(
+              product.category
+            )}
+
+          </p>
 
 
-      box.innerHTML =
-        `<div class="product-grid">
+          <p>
 
-          ${data.map(product => `
+            💰 Price:
 
-            <div class="product-card">
+            ₹${Number(
+              product.price || 0
+            ).toFixed(2)}
 
-              ${
-                product.image_url
-                ?
-                `
-                  <img
-                    src="${escapeHtml(
-                      product.image_url
-                    )}"
-                    alt="Product"
-                  >
-                `
-                :
-                `
-                  <div
-                    style="
-                      height:150px;
-                      display:flex;
-                      align-items:center;
-                      justify-content:center;
-                      background:#eee;
-                      border-radius:8px;
-                      font-size:45px;
-                    "
-                  >
-                    📦
-                  </div>
-                `
-              }
+            /
+
+            ${escapeHtml(
+              product.unit ||
+              "piece"
+            )}
+
+          </p>
 
 
-              <h3>
-                ${escapeHtml(
-                  product.product_name
-                )}
-              </h3>
+          <p>
+
+            📦 Stock:
+
+            ${Number(
+              product.stock || 0
+            )}
+
+          </p>
 
 
+          ${
+            product.description
+            ?
+
+            `
               <p>
-                📂 Category:
-                ${escapeHtml(
-                  product.category
+                📝 ${escapeHtml(
+                  product.description
                 )}
               </p>
+            `
+
+            :
+
+            ""
+          }
 
 
-              <p>
-                💰 Price:
-                ₹${Number(
-                  product.price || 0
-                ).toFixed(2)}
-                /
-                ${escapeHtml(
-                  product.unit || "piece"
-                )}
-              </p>
+          <button
+            class="edit"
+            onclick="editProduct(
+              '${product.id}',
+              ${Number(
+                product.price || 0
+              )},
+              ${Number(
+                product.stock || 0
+              )}
+            )"
+          >
+            ✏️ Edit
+          </button>
 
 
-              <p>
-                📦 Stock:
-                ${Number(
-                  product.stock || 0
-                )}
-              </p>
+          <button
+            class="delete"
+            onclick="deleteProduct(
+              '${product.id}'
+            )"
+          >
+            🗑️ Delete
+          </button>
+
+        </div>
+
+      `
+      ).join("")}
+
+    </div>`;
+
+}
 
 
-              ${
-                product.description
-                ?
-                `
-                  <p>
-                    📝 ${escapeHtml(
-                      product.description
-                    )}
-                  </p>
-                `
-                :
-                ""
-              }
+/* =========================
+   EDIT PRODUCT
+========================= */
+
+async function editProduct(
+  productId,
+  oldPrice,
+  oldStock
+) {
+
+  const newPrice =
+    prompt(
+      "नई price डालें:",
+      oldPrice
+    );
 
 
-              <button
-                class="edit"
-                onclick="editProduct('${product.id}', ${Number(product.price || 0)}, ${Number(product.stock || 0)})"
-              >
-                ✏️ Edit
-              </button>
+  if (
+    newPrice === null
+  ) {
+
+    return;
+
+  }
 
 
-              <button
-                class="delete"
-                onclick="deleteProduct('${product.id}')"
-              >
-                🗑️ Delete
-              </button>
-
-            </div>
-
-          `).join("")}
-
-        </div>`;
-
-    }
-
-
-    // =========================
-    // EDIT PRODUCT
-    // =========================
-
-    async function editProduct(
-      productId,
-      oldPrice,
+  const newStock =
+    prompt(
+      "नई stock quantity डालें:",
       oldStock
-    ) {
-
-      const newPrice =
-        prompt(
-          "नई price डालें:",
-          oldPrice
-        );
-
-      if (newPrice === null) {
-        return;
-      }
+    );
 
 
-      const newStock =
-        prompt(
-          "नई stock quantity डालें:",
-          oldStock
-        );
+  if (
+    newStock === null
+  ) {
 
-      if (newStock === null) {
-        return;
-      }
+    return;
+
+  }
 
 
-      const price =
-        Number(newPrice);
-
-      const stock =
-        Number(newStock);
-
-
-      if (
-        !Number.isFinite(price) ||
-        price < 0
-      ) {
-
-        alert(
-          "Valid price डालें।"
-        );
-
-        return;
-      }
+  const price =
+    Number(
+      newPrice
+    );
 
 
-      if (
-        !Number.isFinite(stock) ||
-        stock < 0
-      ) {
-
-        alert(
-          "Valid stock डालें।"
-        );
-
-        return;
-      }
+  const stock =
+    Number(
+      newStock
+    );
 
 
-      const {
-        error
-      } =
-        await supabaseClient
-          .from("products")
-          .update({
-            price: price,
-            stock: stock,
-            updated_at:
-              new Date().toISOString()
-          })
-          .eq(
-            "id",
-            productId
-          )
-          .eq(
-            "wholesaler_id",
-            currentUser.id
-          );
+  if (
+    !Number.isFinite(price) ||
+    price < 0
+  ) {
+
+    alert(
+      "Valid price डालें।"
+    );
+
+    return;
+
+  }
 
 
-      if (error) {
+  if (
+    !Number.isFinite(stock) ||
+    stock < 0
+  ) {
 
-        alert(
-          "Update failed: " +
+    alert(
+      "Valid stock डालें।"
+    );
+
+    return;
+
+  }
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("products")
+      .update({
+
+        price:
+          price,
+
+        stock:
+          stock,
+
+        updated_at:
+          new Date().toISOString()
+
+      })
+      .eq(
+        "id",
+        productId
+      )
+      .eq(
+        "wholesaler_id",
+        currentUser.id
+      );
+
+
+  if (error) {
+
+    alert(
+      "Update failed: " +
+      error.message
+    );
+
+    return;
+  }
+
+
+  alert(
+    "Product updated successfully! ✅"
+  );
+
+
+  await loadProducts();
+
+  await loadDashboardStats();
+
+}
+
+
+/* =========================
+   DELETE PRODUCT
+========================= */
+
+async function deleteProduct(
+  productId
+) {
+
+  const yes =
+    confirm(
+      "क्या आप इस product को delete करना चाहते हैं?"
+    );
+
+
+  if (!yes) {
+
+    return;
+
+  }
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("products")
+      .delete()
+      .eq(
+        "id",
+        productId
+      )
+      .eq(
+        "wholesaler_id",
+        currentUser.id
+      );
+
+
+  if (error) {
+
+    alert(
+      "Delete failed: " +
+      error.message
+    );
+
+    return;
+
+  }
+
+
+  alert(
+    "Product deleted. ✅"
+  );
+
+
+  await loadProducts();
+
+  await loadDashboardStats();
+
+}
+
+
+/* =========================
+   ORDERS
+========================= */
+
+async function loadOrders() {
+
+  const box =
+    document.getElementById(
+      "ordersList"
+    );
+
+
+  box.innerHTML =
+    '<div class="message">Orders load हो रहे हैं...</div>';
+
+
+  const {
+    data: orders,
+    error
+  } =
+    await supabaseClient
+      .from("orders")
+      .select(`
+        id,
+        retailer_id,
+        total,
+        status,
+        delivery_status,
+        payment_status,
+        created_at
+      `)
+      .eq(
+        "wholesaler_id",
+        currentUser.id
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
+
+
+  if (error) {
+
+    box.innerHTML =
+      `<div class="message">
+        ❌ ${escapeHtml(
           error.message
-        );
+        )}
+      </div>`;
 
-        return;
-      }
+    return;
 
-
-      alert(
-        "Product updated successfully! ✅"
-      );
+  }
 
 
-      await loadProducts();
+  if (
+    !orders ||
+    orders.length === 0
+  ) {
 
-      await loadDashboardStats();
+    box.innerHTML =
+      '<div class="message">अभी कोई order नहीं है।</div>';
 
-    }
+    return;
 
-
-    // =========================
-    // DELETE PRODUCT
-    // =========================
-
-    async function deleteProduct(
-      productId
-    ) {
-
-      const yes =
-        confirm(
-          "क्या आप इस product को delete करना चाहते हैं?"
-        );
+  }
 
 
-      if (!yes) {
-        return;
-      }
-
-
-      const {
-        error
-      } =
-        await supabaseClient
-          .from("products")
-          .delete()
-          .eq(
-            "id",
-            productId
-          )
-          .eq(
-            "wholesaler_id",
-            currentUser.id
-          );
-
-
-      if (error) {
-
-        alert(
-          "Delete failed: " +
-          error.message
-        );
-
-        return;
-      }
-
-
-      alert(
-        "Product deleted. ✅"
-      );
-
-
-      await loadProducts();
-
-      await loadDashboardStats();
-
-    }
-
-
-    // =========================
-    // ORDERS
-    // =========================
-
-    async function loadOrders() {
-
-      const box =
-        document.getElementById(
-          "ordersList"
-        );
-
-      box.innerHTML =
-        '<div class="message">Orders load हो रहे हैं...</div>';
-
-
-      const {
-        data: orders,
-        error
-      } =
-        await supabaseClient
-          .from("orders")
-          .select(`
-            id,
-            retailer_id,
-            total,
-            status,
-            delivery_status,
-            payment_status,
-            created_at
-          `)
-          .eq(
-            "wholesaler_id",
-            currentUser.id
-          )
-          .order(
-            "created_at",
-            {
-              ascending: false
-            }
-          );
-
-
-      if (error) {
-
-        box.innerHTML =
-          `<div class="message">
-            ❌ ${escapeHtml(
-              error.message
-            )}
-          </div>`;
-
-        return;
-      }
-
-
-      if (!orders || orders.length === 0) {
-
-        box.innerHTML =
-          '<div class="message">अभी कोई order नहीं है।</div>';
-
-        return;
-      }
-
-
-      const retailerIds =
-        [
-          ...new Set(
-            orders.map(
-              order => order.retailer_id
-            )
-          )
-        ];
-
-
-      const {
-        data: profiles
-      } =
-        await supabaseClient
-          .from("profiles")
-          .select(`
-            id,
-            full_name,
-            shop_name,
-            mobile
-          `)
-          .in(
-            "id",
-            retailerIds
-          );
-
-
-      const profileMap = {};
-
-      (profiles || []).forEach(profile => {
-
-        profileMap[profile.id] =
-          profile;
-
-      });
-
-
-      const orderIds =
+  const retailerIds =
+    [
+      ...new Set(
         orders.map(
-          order => order.id
-        );
-
-
-      const {
-        data: items
-      } =
-        await supabaseClient
-          .from("order_items")
-          .select(`
-            order_id,
-            product_name,
-            image_url,
-            quantity,
-            price
-          `)
-          .in(
-            "order_id",
-            orderIds
-          );
-
-
-      const itemMap = {};
-
-
-      (items || []).forEach(item => {
-
-        if (!itemMap[item.order_id]) {
-
-          itemMap[item.order_id] =
-            [];
-
-        }
-
-        itemMap[item.order_id]
-          .push(item);
-
-      });
-
-
-      box.innerHTML =
-        `<div class="order-grid">
-
-          ${orders.map(order => {
-
-            const customer =
-              profileMap[
-                order.retailer_id
-              ];
-
-
-            const orderItems =
-              itemMap[order.id] || [];
-
-
-            const date =
-              new Date(
-                order.created_at
-              ).toLocaleString(
-                "en-IN"
-              );
-
-
-            return `
-
-              <div class="order-card">
-
-                <h3>
-                  🧾 Order #
-                  ${escapeHtml(
-                    order.id.substring(
-                      0,
-                      8
-                    )
-                  )}
-                </h3>
-
-
-                <p>
-                  👤 Customer:
-                  ${escapeHtml(
-                    customer?.full_name ||
-                    "Retailer"
-                  )}
-                </p>
-
-
-                <p>
-                  🏪 Shop:
-                  ${escapeHtml(
-                    customer?.shop_name ||
-                    "Not available"
-                  )}
-                </p>
-
-
-                <p>
-                  📱 Mobile:
-                  ${escapeHtml(
-                    customer?.mobile ||
-                    "Not available"
-                  )}
-                </p>
-
-
-                <p>
-                  📅 ${escapeHtml(date)}
-                </p>
-
-
-                <p>
-                  💰 Total:
-                  ₹${Number(
-                    order.total || 0
-                  ).toFixed(2)}
-                </p>
-
-
-                <p>
-                  📌 Status:
-                  <strong>
-                    ${escapeHtml(
-                      order.status ||
-                      "pending"
-                    )}
-                  </strong>
-                </p>
-
-
-                <p>
-                  🚚 Delivery:
-                  <strong>
-                    ${escapeHtml(
-                      order.delivery_status ||
-                      "pending"
-                    )}
-                  </strong>
-                </p>
-
-
-                <p>
-                  💳 Payment:
-                  ${escapeHtml(
-                    order.payment_status ||
-                    "pending"
-                  )}
-                </p>
-
-
-                ${
-                  orderItems.length
-                  ?
-                  orderItems.map(item => `
-
-                    <div class="order-item">
-
-                      ${
-                        item.image_url
-                        ?
-                        `
-                          <img
-                            src="${escapeHtml(
-                              item.image_url
-                            )}"
-                            alt="Product"
-                          >
-                        `
-                        :
-                        `
-                          <div
-                            style="
-                              width:60px;
-                              height:60px;
-                              display:flex;
-                              align-items:center;
-                              justify-content:center;
-                              background:#ddd;
-                              border-radius:7px;
-                            "
-                          >
-                            📦
-                          </div>
-                        `
-                      }
-
-
-                      <div>
-
-                        <strong>
-                          ${escapeHtml(
-                            item.product_name
-                          )}
-                        </strong>
-
-                        <div>
-                          Qty:
-                          ${Number(
-                            item.quantity ||
-                            0
-                          )}
-                        </div>
-
-                        <div>
-                          ₹${Number(
-                            item.price ||
-                            0
-                          ).toFixed(2)}
-                        </div>
-
-                      </div>
-
-                    </div>
-
-                  `).join("")
-                  :
-                  `
-                    <div class="message">
-                      Product details नहीं मिलीं।
-                    </div>
-                  `
-                }
-
-              </div>
-
-            `;
-
-          }).join("")}
-
-        </div>`;
-
-    }
-
-
-    // =========================
-    // CUSTOMERS
-    // =========================
-
-    async function loadCustomers() {
-
-      const box =
-        document.getElementById(
-          "customersList"
-        );
-
-
-      box.innerHTML =
-        '<div class="message">Customers load हो रहे हैं...</div>';
-
-
-      const {
-        data: orders,
-        error
-      } =
-        await supabaseClient
-          .from("orders")
-          .select(`
-            id,
-            retailer_id,
-            total,
-            status,
-            delivery_status,
-            payment_status,
-            created_at
-          `)
-          .eq(
-            "wholesaler_id",
-            currentUser.id
-          )
-          .order(
-            "created_at",
-            {
-              ascending: false
-            }
-          );
-
-
-      if (error) {
-
-        box.innerHTML =
-          `<div class="message">
-            ❌ ${escapeHtml(
-              error.message
-            )}
-          </div>`;
-
-        return;
-      }
-
-
-      if (
-        !orders ||
-        orders.length === 0
-      ) {
-
-        box.innerHTML =
-          '<div class="message">अभी कोई customer order नहीं है।</div>';
-
-        return;
-      }
-
-
-      const ids =
-        [
-          ...new Set(
-            orders.map(
-              order =>
-                order.retailer_id
-            )
-          )
-        ];
-
-
-      const {
-        data: profiles,
-        error: profileError
-      } =
-        await supabaseClient
-          .from("profiles")
-          .select(`
-            id,
-            full_name,
-            shop_name,
-            mobile
-          `)
-          .in(
-            "id",
-            ids
-          );
-
-
-      if (profileError) {
-
-        box.innerHTML =
-          `<div class="message">
-            ❌ ${escapeHtml(
-              profileError.message
-            )}
-          </div>`;
-
-        return;
-      }
-
-
-      const map = {};
-
-
-      (profiles || []).forEach(
-        profile => {
-
-          map[profile.id] =
-            profile;
-
-        }
+          order =>
+            order.retailer_id
+        )
+      )
+    ];
+
+
+  const {
+    data: profiles
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select(`
+        id,
+        full_name,
+        shop_name,
+        mobile
+      `)
+      .in(
+        "id",
+        retailerIds
       );
 
 
-      box.innerHTML =
-        `<div class="customer-grid">
-
-          ${ids.map(id => {
-
-            const customer =
-              map[id];
+  const profileMap = {};
 
 
-            const customerOrders =
-              orders.filter(
-                order =>
-                  order.retailer_id === id
-              );
+  (
+    profiles || []
+  ).forEach(
+    profile => {
 
-
-            let total = 0;
-
-
-            customerOrders.forEach(
-              order => {
-
-                total += Number(
-                  order.total || 0
-                );
-
-              }
-            );
-
-
-            const mobile =
-              customer?.mobile ||
-              "";
-
-
-            return `
-
-              <div class="customer-card">
-
-                <h3>
-                  👤 ${escapeHtml(
-                    customer?.full_name ||
-                    "Retailer"
-                  )}
-                </h3>
-
-
-                <p>
-                  🏪 Shop:
-                  ${escapeHtml(
-                    customer?.shop_name ||
-                    "Not available"
-                  )}
-                </p>
-
-
-                <p>
-                  📱 Mobile:
-                  ${escapeHtml(
-                    customer?.mobile ||
-                    "Not available"
-                  )}
-                </p>
-
-
-                <p>
-                  📦 Orders:
-                  ${customerOrders.length}
-                </p>
-
-
-                <p>
-                  💰 Total:
-                  ₹${total.toFixed(2)}
-                </p>
-
-
-                ${
-                  mobile
-                  ?
-                  `
-                    <a
-                      href="tel:${escapeHtml(
-                        mobile
-                      )}"
-                      style="
-                        display:inline-block;
-                        background:#16a34a;
-                        color:white;
-                        padding:9px 14px;
-                        border-radius:8px;
-                        text-decoration:none;
-                        font-weight:bold;
-                        margin-top:5px;
-                      "
-                    >
-                      📞 Call Customer
-                    </a>
-                  `
-                  :
-                  ""
-                }
-
-
-                <button
-                  class="edit"
-                  style="margin-top:8px;"
-                  onclick="viewCustomerOrders('${id}')"
-                >
-                  🧾 View Orders
-                </button>
-
-
-                <div
-                  id="customerOrders-${id}"
-                  style="
-                    display:none;
-                    margin-top:12px;
-                  "
-                ></div>
-
-              </div>
-
-            `;
-
-          }).join("")}
-
-        </div>`;
+      profileMap[
+        profile.id
+      ] =
+        profile;
 
     }
+  );
 
 
-    // =========================
-    // VIEW CUSTOMER ORDERS
-    // =========================
-
-    async function viewCustomerOrders(
-      retailerId
-    ) {
-
-      const box =
-        document.getElementById(
-          "customerOrders-" +
-          retailerId
-        );
+  const orderIds =
+    orders.map(
+      order =>
+        order.id
+    );
 
 
-      if (!box) {
-        return;
-      }
+  const {
+    data: items,
+    error: itemError
+  } =
+    await supabaseClient
+      .from("order_items")
+      .select(`
+        order_id,
+        product_name,
+        image_url,
+        quantity,
+        price,
+        unit
+      `)
+      .in(
+        "order_id",
+        orderIds
+      );
 
 
-      if (
-        box.style.display ===
-        "block"
-      ) {
+  if (itemError) {
 
-        box.style.display =
-          "none";
+    box.innerHTML =
+      `<div class="message">
 
-        return;
-      }
+        ❌ Order items load नहीं हुए:
 
+        ${escapeHtml(
+          itemError.message
+        )}
 
-      box.style.display =
-        "block";
+      </div>`;
 
+    return;
 
-      box.innerHTML =
-        '<div class="message">Orders load हो रहे हैं...</div>';
+  }
 
 
-      const {
-        data: orders,
-        error
-      } =
-        await supabaseClient
-          .from("orders")
-          .select(`
-            id,
-            total,
-            status,
-            delivery_status,
-            payment_status,
-            created_at
-          `)
-          .eq(
-            "wholesaler_id",
-            currentUser.id
-          )
-          .eq(
-            "retailer_id",
-            retailerId
-          )
-          .order(
-            "created_at",
-            {
-              ascending: false
-            }
-          );
+  const itemMap = {};
 
 
-      if (error) {
-
-        box.innerHTML =
-          `<div class="message">
-            ❌ ${escapeHtml(
-              error.message
-            )}
-          </div>`;
-
-        return;
-      }
-
+  (
+    items || []
+  ).forEach(
+    item => {
 
       if (
-        !orders ||
-        orders.length === 0
+        !itemMap[
+          item.order_id
+        ]
       ) {
 
-        box.innerHTML =
-          '<div class="message">कोई order नहीं मिला।</div>';
+        itemMap[
+          item.order_id
+        ] = [];
 
-        return;
       }
 
 
-      const orderIds =
-        orders.map(
-          order => order.id
-        );
+      itemMap[
+        item.order_id
+      ].push(item);
+
+    }
+  );
 
 
-      const {
-        data: items
-      } =
-        await supabaseClient
-          .from("order_items")
-          .select(`
-            order_id,
-            product_name,
-            image_url,
-            quantity,
-            price
-          `)
-          .in(
-            "order_id",
-            orderIds
-          );
+  box.innerHTML =
+    `<div class="order-grid">
 
+      ${orders.map(
+        order => {
 
-      const itemMap = {};
+          const customer =
+            profileMap[
+              order.retailer_id
+            ];
 
-
-      (items || []).forEach(item => {
-
-        if (!itemMap[item.order_id]) {
-
-          itemMap[item.order_id] =
-            [];
-
-        }
-
-        itemMap[item.order_id]
-          .push(item);
-
-      });
-
-
-      box.innerHTML =
-        orders.map(order => {
 
           const orderItems =
-            itemMap[order.id] ||
-            [];
+            itemMap[
+              order.id
+            ] || [];
 
 
           const date =
@@ -1886,1045 +1619,2139 @@
 
           return `
 
-            <div
-              style="
-                border:1px solid #ddd;
-                padding:10px;
-                border-radius:10px;
-                margin-top:10px;
-              "
-            >
-
-              <strong>
-                🧾 Order #
-                ${escapeHtml(
-                  order.id.substring(
-                    0,
-                    8
-                  )
-                )}
-              </strong>
-
-
-              <p>
-                📅 ${escapeHtml(date)}
-              </p>
-
-
-              <p>
-                💰 Total:
-                ₹${Number(
-                  order.total || 0
-                ).toFixed(2)}
-              </p>
-
-
-              <p>
-                📌 Status:
-                ${escapeHtml(
-                  order.status ||
-                  "pending"
-                )}
-              </p>
-
-
-              <p>
-                🚚 Delivery:
-                ${escapeHtml(
-                  order.delivery_status ||
-                  "pending"
-                )}
-              </p>
-
-
-              <p>
-                💳 Payment:
-                ${escapeHtml(
-                  order.payment_status ||
-                  "pending"
-                )}
-              </p>
-
-
-              ${
-                orderItems.length
-                ?
-                orderItems.map(item => `
-
-                  <div class="order-item">
-
-                    ${
-                      item.image_url
-                      ?
-                      `
-                        <img
-                          src="${escapeHtml(
-                            item.image_url
-                          )}"
-                          alt="Product"
-                        >
-                      `
-                      :
-                      `
-                        <div
-                          style="
-                            width:55px;
-                            height:55px;
-                            display:flex;
-                            align-items:center;
-                            justify-content:center;
-                            background:#ddd;
-                            border-radius:7px;
-                          "
-                        >
-                          📦
-                        </div>
-                      `
-                    }
-
-
-                    <div>
-
-                      <strong>
-                        ${escapeHtml(
-                          item.product_name
-                        )}
-                      </strong>
-
-                      <div>
-                        Qty:
-                        ${Number(
-                          item.quantity || 0
-                        )}
-                      </div>
-
-                      <div>
-                        ₹${Number(
-                          item.price || 0
-                        ).toFixed(2)}
-                      </div>
-
-                    </div>
-
-                  </div>
-
-                `).join("")
-                :
-                `
-                  <div class="message">
-                    Products details नहीं मिलीं।
-                  </div>
-                `
-              }
-
-            </div>
-
-          `;
-
-        }).join("");
-
-    }
-
-
-    // =========================
-    // DELIVERY ORDERS
-    // =========================
-
-    async function loadDeliveryOrders() {
-
-      const box =
-        document.getElementById(
-          "deliveryList"
-        );
-
-
-      box.innerHTML =
-        '<div class="message">Orders load हो रहे हैं...</div>';
-
-
-      const {
-        data: orders,
-        error
-      } =
-        await supabaseClient
-          .from("orders")
-          .select(`
-            id,
-            retailer_id,
-            total,
-            status,
-            delivery_status,
-            payment_status,
-            created_at
-          `)
-          .eq(
-            "wholesaler_id",
-            currentUser.id
-          )
-          .order(
-            "created_at",
-            {
-              ascending: false
-            }
-          );
-
-
-      if (error) {
-
-        box.innerHTML =
-          `<div class="message">
-            ❌ ${escapeHtml(
-              error.message
-            )}
-          </div>`;
-
-        return;
-      }
-
-
-      if (
-        !orders ||
-        orders.length === 0
-      ) {
-
-        box.innerHTML =
-          '<div class="message">कोई order नहीं है।</div>';
-
-        return;
-      }
-
-
-      const ids =
-        [
-          ...new Set(
-            orders.map(
-              order =>
-                order.retailer_id
-            )
-          )
-        ];
-
-
-      const {
-        data: profiles
-      } =
-        await supabaseClient
-          .from("profiles")
-          .select(`
-            id,
-            full_name,
-            shop_name,
-            mobile
-          `)
-          .in(
-            "id",
-            ids
-          );
-
-
-      const map = {};
-
-
-      (profiles || []).forEach(
-        profile => {
-
-          map[profile.id] =
-            profile;
-
-        }
-      );
-
-
-      box.innerHTML =
-        orders.map(order => {
-
-          const customer =
-            map[order.retailer_id];
-
-
-          return `
-
             <div class="order-card">
 
+
               <h3>
-                🧾 Order #
-                ${escapeHtml(
-                  order.id.substring(
-                    0,
-                    8
-                  )
-                )}
+                🧾 New Order
               </h3>
 
 
-              <p>
-                👤 ${escapeHtml(
-                  customer?.full_name ||
-                  "Retailer"
+              <div class="order-id-box">
+
+                🆔 Order ID:
+
+                ${escapeHtml(
+                  order.id
                 )}
-              </p>
+
+              </div>
 
 
               <p>
-                🏪 ${escapeHtml(
-                  customer?.shop_name ||
-                  "Shop"
-                )}
-              </p>
 
-
-              <p>
-                💰 Total:
-                ₹${Number(
-                  order.total || 0
-                ).toFixed(2)}
-              </p>
-
-
-              <label>
-                🚚 Delivery Status
-              </label>
-
-
-              <select
-                id="delivery-${order.id}"
-                class="status-select"
-              >
-
-                <option
-                  value="pending"
-                  ${order.delivery_status === "pending" ? "selected" : ""}
-                >
-                  Pending
-                </option>
-
-                <option
-                  value="preparing"
-                  ${order.delivery_status === "preparing" ? "selected" : ""}
-                >
-                  Preparing
-                </option>
-
-                <option
-                  value="out_for_delivery"
-                  ${order.delivery_status === "out_for_delivery" ? "selected" : ""}
-                >
-                  Out for Delivery
-                </option>
-
-                <option
-                  value="delivered"
-                  ${order.delivery_status === "delivered" ? "selected" : ""}
-                >
-                  Delivered
-                </option>
-
-              </select>
-
-
-              <label>
-                📌 Order Status
-              </label>
-
-
-              <select
-                id="status-${order.id}"
-                class="status-select"
-              >
-
-                <option
-                  value="pending"
-                  ${order.status === "pending" ? "selected" : ""}
-                >
-                  Pending
-                </option>
-
-                <option
-                  value="accepted"
-                  ${order.status === "accepted" ? "selected" : ""}
-                >
-                  Accepted
-                </option>
-
-                <option
-                  value="rejected"
-                  ${order.status === "rejected" ? "selected" : ""}
-                >
-                  Rejected
-                </option>
-
-                <option
-                  value="completed"
-                  ${order.status === "completed" ? "selected" : ""}
-                >
-                  Completed
-                </option>
-
-                <option
-                  value="cancelled"
-                  ${order.status === "cancelled" ? "selected" : ""}
-                >
-                  Cancelled
-                </option>
-
-              </select>
-
-
-              <button
-                class="save-btn"
-                onclick="saveOrderStatus('${order.id}')"
-              >
-                💾 Save Order
-              </button>
-
-            </div>
-
-          `;
-
-        }).join("");
-
-    }
-
-
-    // =========================
-    // SAVE ORDER STATUS
-    // =========================
-
-    async function saveOrderStatus(
-      orderId
-    ) {
-
-      const deliveryStatus =
-        document.getElementById(
-          "delivery-" +
-          orderId
-        ).value;
-
-
-      const status =
-        document.getElementById(
-          "status-" +
-          orderId
-        ).value;
-
-
-      const {
-        error
-      } =
-        await supabaseClient
-          .from("orders")
-          .update({
-            delivery_status:
-              deliveryStatus,
-            status:
-              status
-          })
-          .eq(
-            "id",
-            orderId
-          )
-          .eq(
-            "wholesaler_id",
-            currentUser.id
-          );
-
-
-      if (error) {
-
-        alert(
-          "Order update failed: " +
-          error.message
-        );
-
-        return;
-      }
-
-
-      alert(
-        "Order successfully updated! ✅"
-      );
-
-
-      await loadDeliveryOrders();
-
-      await loadOrders();
-
-      await loadDashboardStats();
-
-    }
-
-
-    // =========================
-    // HISAB
-    // =========================
-
-    async function loadHisab() {
-
-      const select =
-        document.getElementById(
-          "hisabCustomer"
-        );
-
-
-      select.innerHTML =
-        '<option value="">Customer load हो रहे हैं...</option>';
-
-
-      const {
-        data: orders,
-        error
-      } =
-        await supabaseClient
-          .from("orders")
-          .select(
-            "retailer_id"
-          )
-          .eq(
-            "wholesaler_id",
-            currentUser.id
-          );
-
-
-      if (error) {
-
-        select.innerHTML =
-          '<option value="">Customers load नहीं हुए</option>';
-
-        return;
-      }
-
-
-      const ids =
-        [
-          ...new Set(
-            (orders || []).map(
-              order =>
-                order.retailer_id
-            )
-          )
-        ];
-
-
-      if (ids.length === 0) {
-
-        select.innerHTML =
-          '<option value="">कोई customer नहीं है</option>';
-
-        return;
-      }
-
-
-      const {
-        data: profiles
-      } =
-        await supabaseClient
-          .from("profiles")
-          .select(`
-            id,
-            full_name,
-            shop_name,
-            mobile
-          `)
-          .in(
-            "id",
-            ids
-          );
-
-
-      select.innerHTML =
-        '<option value="">Customer चुनें</option>';
-
-
-      (profiles || []).forEach(
-        customer => {
-
-          const option =
-            document.createElement(
-              "option"
-            );
-
-
-          option.value =
-            customer.id;
-
-
-          option.textContent =
-            `${customer.full_name || "Retailer"} - ${customer.shop_name || "Shop"}`;
-
-
-          select.appendChild(
-            option
-          );
-
-        }
-      );
-
-
-      select.onchange =
-        function () {
-
-          if (this.value) {
-
-            loadCustomerHisab(
-              this.value
-            );
-
-          } else {
-
-            document.getElementById(
-              "hisabSummary"
-            ).style.display =
-              "none";
-
-          }
-
-        };
-
-    }
-
-
-    // =========================
-    // CUSTOMER HISAB
-    // =========================
-
-    async function loadCustomerHisab(
-      retailerId
-    ) {
-
-      const summary =
-        document.getElementById(
-          "hisabSummary"
-        );
-
-
-      summary.style.display =
-        "block";
-
-
-      const {
-        data: profile
-      } =
-        await supabaseClient
-          .from("profiles")
-          .select(`
-            full_name,
-            shop_name,
-            mobile
-          `)
-          .eq(
-            "id",
-            retailerId
-          )
-          .single();
-
-
-      document.getElementById(
-        "hisabCustomerName"
-      ).textContent =
-        `👤 ${profile?.full_name || "Retailer"}${profile?.shop_name ? " - " + profile.shop_name : ""}`;
-
-
-      const {
-        data: orders
-      } =
-        await supabaseClient
-          .from("orders")
-          .select(
-            "id, total"
-          )
-          .eq(
-            "wholesaler_id",
-            currentUser.id
-          )
-          .eq(
-            "retailer_id",
-            retailerId
-          );
-
-
-      let totalPurchase = 0;
-
-
-      (orders || []).forEach(
-        order => {
-
-          totalPurchase +=
-            Number(
-              order.total || 0
-            );
-
-        }
-      );
-
-
-      const {
-        data: payments
-      } =
-        await supabaseClient
-          .from("customer_payments")
-          .select(`
-            id,
-            amount,
-            payment_method,
-            note,
-            paid_at
-          `)
-          .eq(
-            "wholesaler_id",
-            currentUser.id
-          )
-          .eq(
-            "retailer_id",
-            retailerId
-          )
-          .order(
-            "paid_at",
-            {
-              ascending: false
-            }
-          );
-
-
-      let paid = 0;
-
-
-      (payments || []).forEach(
-        payment => {
-
-          paid +=
-            Number(
-              payment.amount || 0
-            );
-
-        }
-      );
-
-
-      const remaining =
-        Math.max(
-          totalPurchase - paid,
-          0
-        );
-
-
-      document.getElementById(
-        "hisabTotal"
-      ).textContent =
-        "₹" +
-        totalPurchase.toFixed(2);
-
-
-      document.getElementById(
-        "hisabPaid"
-      ).textContent =
-        "₹" +
-        paid.toFixed(2);
-
-
-      document.getElementById(
-        "hisabRemaining"
-      ).textContent =
-        "₹" +
-        remaining.toFixed(2);
-
-
-      const history =
-        document.getElementById(
-          "paymentHistory"
-        );
-
-
-      if (
-        !payments ||
-        payments.length === 0
-      ) {
-
-        history.innerHTML =
-          '<div class="message">अभी कोई payment नहीं है।</div>';
-
-        return;
-      }
-
-
-      history.innerHTML =
-        payments.map(
-          payment => {
-
-            const date =
-              new Date(
-                payment.paid_at
-              ).toLocaleString(
-                "en-IN"
-              );
-
-
-            return `
-
-              <div class="customer-card">
+                👤 Customer:
 
                 <strong>
-                  💵 ₹${Number(
-                    payment.amount
-                  ).toFixed(2)}
+                  ${escapeHtml(
+                    customer?.full_name ||
+                    "Retailer"
+                  )}
                 </strong>
 
-                <p>
-                  💳 Method:
+              </p>
+
+
+              <p>
+
+                🏪 Shop:
+
+                <strong>
                   ${escapeHtml(
-                    payment.payment_method
+                    customer?.shop_name ||
+                    "Not available"
                   )}
+                </strong>
+
+              </p>
+
+
+              <p>
+
+                📱 Mobile:
+
+                <strong>
+                  ${escapeHtml(
+                    customer?.mobile ||
+                    "Not available"
+                  )}
+                </strong>
+
+              </p>
+
+
+              <p>
+
+                📅 Date/Time:
+
+                ${escapeHtml(
+                  date
+                )}
+
+              </p>
+
+
+              <div class="status-box">
+
+                <p>
+
+                  📌 Order Status:
+
+                  <strong>
+                    ${escapeHtml(
+                      order.status ||
+                      "pending"
+                    )}
+                  </strong>
+
                 </p>
 
-                ${
-                  payment.note
-                  ?
-                  `
-                    <p>
-                      📝 ${escapeHtml(
-                        payment.note
-                      )}
-                    </p>
-                  `
-                  :
-                  ""
-                }
 
                 <p>
-                  📅 ${escapeHtml(
-                    date
-                  )}
+
+                  🚚 Delivery:
+
+                  <strong>
+                    ${escapeHtml(
+                      order.delivery_status ||
+                      "pending"
+                    )}
+                  </strong>
+
+                </p>
+
+
+                <p>
+
+                  💳 Payment:
+
+                  <strong>
+                    ${escapeHtml(
+                      order.payment_status ||
+                      "pending"
+                    )}
+                  </strong>
+
                 </p>
 
               </div>
 
-            `;
 
-          }
-        ).join("");
+              <h4>
+                🛍️ Products
+              </h4>
+
+
+              ${
+                orderItems.length
+
+                ?
+
+                orderItems.map(
+                  item => {
+
+                    const unit =
+                      item.unit ||
+                      "piece";
+
+
+                    const quantity =
+                      Number(
+                        item.quantity ||
+                        0
+                      );
+
+
+                    const price =
+                      Number(
+                        item.price ||
+                        0
+                      );
+
+
+                    const productTotal =
+                      price *
+                      quantity;
+
+
+                    return `
+
+                      <div class="order-item">
+
+
+                        ${
+                          item.image_url
+
+                          ?
+
+                          `
+                            <img
+                              src="${escapeHtml(
+                                item.image_url
+                              )}"
+                              alt="Product"
+                            >
+                          `
+
+                          :
+
+                          `
+                            <div
+                              style="
+                                width:75px;
+                                height:75px;
+                                display:flex;
+                                align-items:center;
+                                justify-content:center;
+                                background:#eee;
+                                border-radius:8px;
+                                font-size:30px;
+                                flex-shrink:0;
+                              "
+                            >
+                              📦
+                            </div>
+                          `
+                        }
+
+
+                        <div class="order-item-details">
+
+
+                          <div class="order-item-name">
+
+                            ${escapeHtml(
+                              item.product_name
+                            )}
+
+                          </div>
+
+
+                          <div class="order-detail-line">
+
+                            🔢 Quantity:
+
+                            <strong>
+
+                              ${quantity}
+
+                              ${escapeHtml(
+                                unit
+                              )}
+
+                            </strong>
+
+                          </div>
+
+
+                          <div class="order-detail-line">
+
+                            💰 Price:
+
+                            ₹${price.toFixed(2)}
+
+                            /
+
+                            ${escapeHtml(
+                              unit
+                            )}
+
+                          </div>
+
+
+                          <div class="product-total">
+
+                            💵 Product Total:
+
+                            ₹${productTotal.toFixed(2)}
+
+                          </div>
+
+
+                        </div>
+
+                      </div>
+
+                    `;
+
+                  }
+                ).join("")
+
+                :
+
+                `
+
+                  <div class="message">
+
+                    Product details नहीं मिलीं।
+
+                  </div>
+
+                `
+              }
+
+
+              <div class="order-total-box">
+
+                💰 Order Total:
+
+                ₹${Number(
+                  order.total || 0
+                ).toFixed(2)}
+
+              </div>
+
+
+            </div>
+
+          `;
+
+        }
+      ).join("")}
+
+    </div>`;
+
+}
+
+
+/* =========================
+   CUSTOMERS
+========================= */
+
+async function loadCustomers() {
+
+  const box =
+    document.getElementById(
+      "customersList"
+    );
+
+
+  box.innerHTML =
+    '<div class="message">Customers load हो रहे हैं...</div>';
+
+
+  const {
+    data: orders,
+    error
+  } =
+    await supabaseClient
+      .from("orders")
+      .select(`
+        id,
+        retailer_id,
+        total,
+        status,
+        delivery_status,
+        payment_status,
+        created_at
+      `)
+      .eq(
+        "wholesaler_id",
+        currentUser.id
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
+
+
+  if (error) {
+
+    box.innerHTML =
+      `<div class="message">
+
+        ❌ ${escapeHtml(
+          error.message
+        )}
+
+      </div>`;
+
+    return;
+
+  }
+
+
+  if (
+    !orders ||
+    orders.length === 0
+  ) {
+
+    box.innerHTML =
+      '<div class="message">अभी कोई customer order नहीं है।</div>';
+
+    return;
+
+  }
+
+
+  const ids =
+    [
+      ...new Set(
+        orders.map(
+          order =>
+            order.retailer_id
+        )
+      )
+    ];
+
+
+  const {
+    data: profiles,
+    error: profileError
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select(`
+        id,
+        full_name,
+        shop_name,
+        mobile
+      `)
+      .in(
+        "id",
+        ids
+      );
+
+
+  if (profileError) {
+
+    box.innerHTML =
+      `<div class="message">
+
+        ❌ ${escapeHtml(
+          profileError.message
+        )}
+
+      </div>`;
+
+    return;
+
+  }
+
+
+  const map = {};
+
+
+  (
+    profiles || []
+  ).forEach(
+    profile => {
+
+      map[
+        profile.id
+      ] =
+        profile;
 
     }
+  );
 
 
-    // =========================
-    // ADD PAYMENT
-    // =========================
+  box.innerHTML =
+    `<div class="customer-grid">
 
-    async function addPayment() {
+      ${ids.map(
+        id => {
 
-      const retailerId =
-        document.getElementById(
-          "hisabCustomer"
-        ).value;
+          const customer =
+            map[id];
 
 
-      if (!retailerId) {
-
-        alert(
-          "पहले customer चुनें।"
-        );
-
-        return;
-      }
+          const customerOrders =
+            orders.filter(
+              order =>
+                order.retailer_id ===
+                id
+            );
 
 
-      const amount =
-        Number(
-          document.getElementById(
-            "paymentAmount"
-          ).value
-        );
+          let total = 0;
 
 
-      if (
-        !amount ||
-        amount <= 0
-      ) {
+          customerOrders.forEach(
+            order => {
 
-        alert(
-          "Valid payment amount डालें।"
-        );
+              total +=
+                Number(
+                  order.total ||
+                  0
+                );
 
-        return;
-      }
-
-
-      const method =
-        document.getElementById(
-          "paymentMethod"
-        ).value;
-
-
-      const note =
-        document.getElementById(
-          "paymentNote"
-        ).value.trim();
-
-
-      const {
-        data: orders
-      } =
-        await supabaseClient
-          .from("orders")
-          .select(
-            "total"
-          )
-          .eq(
-            "wholesaler_id",
-            currentUser.id
-          )
-          .eq(
-            "retailer_id",
-            retailerId
+            }
           );
 
 
-      let totalPurchase = 0;
+          const mobile =
+            customer?.mobile ||
+            "";
 
 
-      (orders || []).forEach(
-        order => {
+          return `
 
-          totalPurchase +=
-            Number(
-              order.total || 0
-            );
+            <div class="customer-card">
 
+
+              <h3>
+
+                👤 ${escapeHtml(
+                  customer?.full_name ||
+                  "Retailer"
+                )}
+
+              </h3>
+
+
+              <p>
+
+                🏪 Shop:
+
+                ${escapeHtml(
+                  customer?.shop_name ||
+                  "Not available"
+                )}
+
+              </p>
+
+
+              <p>
+
+                📱 Mobile:
+
+                ${escapeHtml(
+                  customer?.mobile ||
+                  "Not available"
+                )}
+
+              </p>
+
+
+              <p>
+
+                📦 Orders:
+
+                ${customerOrders.length}
+
+              </p>
+
+
+              <p>
+
+                💰 Total:
+
+                ₹${total.toFixed(2)}
+
+              </p>
+
+
+              ${
+                mobile
+
+                ?
+
+                `
+
+                  <a
+                    href="tel:${escapeHtml(
+                      mobile
+                    )}"
+                    style="
+                      display:inline-block;
+                      background:#16a34a;
+                      color:white;
+                      padding:9px 14px;
+                      border-radius:8px;
+                      text-decoration:none;
+                      font-weight:bold;
+                      margin-top:5px;
+                    "
+                  >
+                    📞 Call Customer
+                  </a>
+
+                `
+
+                :
+
+                ""
+              }
+
+
+              <button
+                class="edit"
+                style="margin-top:8px;"
+                onclick="viewCustomerOrders(
+                  '${id}'
+                )"
+              >
+                🧾 View Orders
+              </button>
+
+
+              <div
+                id="customerOrders-${id}"
+                style="
+                  display:none;
+                  margin-top:12px;
+                "
+              ></div>
+
+
+            </div>
+
+          `;
+
+        }
+      ).join("")}
+
+    </div>`;
+
+}
+
+
+/* =========================
+   VIEW CUSTOMER ORDERS
+========================= */
+
+async function viewCustomerOrders(
+  retailerId
+) {
+
+  const box =
+    document.getElementById(
+      "customerOrders-" +
+      retailerId
+    );
+
+
+  if (!box) {
+
+    return;
+
+  }
+
+
+  if (
+    box.style.display ===
+    "block"
+  ) {
+
+    box.style.display =
+      "none";
+
+    return;
+
+  }
+
+
+  box.style.display =
+    "block";
+
+
+  box.innerHTML =
+    '<div class="message">Orders load हो रहे हैं...</div>';
+
+
+  const {
+    data: orders,
+    error
+  } =
+    await supabaseClient
+      .from("orders")
+      .select(`
+        id,
+        total,
+        status,
+        delivery_status,
+        payment_status,
+        created_at
+      `)
+      .eq(
+        "wholesaler_id",
+        currentUser.id
+      )
+      .eq(
+        "retailer_id",
+        retailerId
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
         }
       );
 
 
-      const {
-        data: payments
-      } =
-        await supabaseClient
-          .from("customer_payments")
-          .select(
-            "amount"
-          )
-          .eq(
-            "wholesaler_id",
-            currentUser.id
-          )
-          .eq(
-            "retailer_id",
-            retailerId
-          );
+  if (error) {
 
+    box.innerHTML =
+      `<div class="message">
 
-      let alreadyPaid = 0;
-
-
-      (payments || []).forEach(
-        payment => {
-
-          alreadyPaid +=
-            Number(
-              payment.amount || 0
-            );
-
-        }
-      );
-
-
-      const remaining =
-        Math.max(
-          totalPurchase -
-          alreadyPaid,
-          0
-        );
-
-
-      if (
-        amount > remaining
-      ) {
-
-        alert(
-          "Payment बाकी amount से ज्यादा नहीं हो सकता।"
-        );
-
-        return;
-      }
-
-
-      const {
-        error
-      } =
-        await supabaseClient
-          .from(
-            "customer_payments"
-          )
-          .insert({
-            wholesaler_id:
-              currentUser.id,
-
-            retailer_id:
-              retailerId,
-
-            amount:
-              amount,
-
-            payment_method:
-              method,
-
-            note:
-              note || null
-          });
-
-
-      if (error) {
-
-        alert(
-          "Payment save failed: " +
+        ❌ ${escapeHtml(
           error.message
-        );
+        )}
 
-        return;
-      }
+      </div>`;
+
+    return;
+
+  }
 
 
-      alert(
-        "Payment successfully saved! ✅"
+  if (
+    !orders ||
+    orders.length === 0
+  ) {
+
+    box.innerHTML =
+      '<div class="message">कोई order नहीं मिला।</div>';
+
+    return;
+
+  }
+
+
+  const orderIds =
+    orders.map(
+      order =>
+        order.id
+    );
+
+
+  const {
+    data: items,
+    error: itemError
+  } =
+    await supabaseClient
+      .from("order_items")
+      .select(`
+        order_id,
+        product_name,
+        image_url,
+        quantity,
+        price,
+        unit
+      `)
+      .in(
+        "order_id",
+        orderIds
       );
 
 
-      document.getElementById(
-        "paymentAmount"
-      ).value = "";
+  if (itemError) {
+
+    box.innerHTML =
+      `<div class="message">
+
+        ❌ Product details load नहीं हुईं:
+
+        ${escapeHtml(
+          itemError.message
+        )}
+
+      </div>`;
+
+    return;
+
+  }
 
 
-      document.getElementById(
-        "paymentNote"
-      ).value = "";
+  const itemMap = {};
 
 
-      await loadCustomerHisab(
+  (
+    items || []
+  ).forEach(
+    item => {
+
+      if (
+        !itemMap[
+          item.order_id
+        ]
+      ) {
+
+        itemMap[
+          item.order_id
+        ] = [];
+
+      }
+
+
+      itemMap[
+        item.order_id
+      ].push(item);
+
+    }
+  );
+
+
+  box.innerHTML =
+    orders.map(
+      order => {
+
+        const orderItems =
+          itemMap[
+            order.id
+          ] || [];
+
+
+        const date =
+          new Date(
+            order.created_at
+          ).toLocaleString(
+            "en-IN"
+          );
+
+
+        return `
+
+          <div
+            style="
+              border:1px solid #ddd;
+              padding:12px;
+              border-radius:10px;
+              margin-top:10px;
+            "
+          >
+
+
+            <strong>
+
+              🧾 Order
+
+            </strong>
+
+
+            <div class="order-id-box">
+
+              🆔 Order ID:
+
+              ${escapeHtml(
+                order.id
+              )}
+
+            </div>
+
+
+            <p>
+
+              📅 Date/Time:
+
+              ${escapeHtml(
+                date
+              )}
+
+            </p>
+
+
+            <p>
+
+              💰 Order Total:
+
+              <strong>
+                ₹${Number(
+                  order.total || 0
+                ).toFixed(2)}
+              </strong>
+
+            </p>
+
+
+            <p>
+
+              📌 Status:
+
+              ${escapeHtml(
+                order.status ||
+                "pending"
+              )}
+
+            </p>
+
+
+            <p>
+
+              🚚 Delivery:
+
+              ${escapeHtml(
+                order.delivery_status ||
+                "pending"
+              )}
+
+            </p>
+
+
+            <p>
+
+              💳 Payment:
+
+              ${escapeHtml(
+                order.payment_status ||
+                "pending"
+              )}
+
+            </p>
+
+
+            ${
+              orderItems.length
+
+              ?
+
+              orderItems.map(
+                item => {
+
+                  const unit =
+                    item.unit ||
+                    "piece";
+
+
+                  const quantity =
+                    Number(
+                      item.quantity ||
+                      0
+                    );
+
+
+                  const price =
+                    Number(
+                      item.price ||
+                      0
+                    );
+
+
+                  const productTotal =
+                    price *
+                    quantity;
+
+
+                  return `
+
+                    <div class="order-item">
+
+
+                      ${
+                        item.image_url
+
+                        ?
+
+                        `
+                          <img
+                            src="${escapeHtml(
+                              item.image_url
+                            )}"
+                            alt="Product"
+                          >
+                        `
+
+                        :
+
+                        `
+                          <div
+                            style="
+                              width:65px;
+                              height:65px;
+                              display:flex;
+                              align-items:center;
+                              justify-content:center;
+                              background:#eee;
+                              border-radius:8px;
+                              font-size:28px;
+                              flex-shrink:0;
+                            "
+                          >
+                            📦
+                          </div>
+                        `
+                      }
+
+
+                      <div class="order-item-details">
+
+
+                        <div class="order-item-name">
+
+                          ${escapeHtml(
+                            item.product_name
+                          )}
+
+                        </div>
+
+
+                        <div class="order-detail-line">
+
+                          🔢 Quantity:
+
+                          <strong>
+
+                            ${quantity}
+
+                            ${escapeHtml(
+                              unit
+                            )}
+
+                          </strong>
+
+                        </div>
+
+
+                        <div class="order-detail-line">
+
+                          💰 Price:
+
+                          ₹${price.toFixed(2)}
+
+                          /
+
+                          ${escapeHtml(
+                            unit
+                          )}
+
+                        </div>
+
+
+                        <div class="product-total">
+
+                          💵 Product Total:
+
+                          ₹${productTotal.toFixed(2)}
+
+                        </div>
+
+
+                      </div>
+
+                    </div>
+
+                  `;
+
+                }
+              ).join("")
+
+              :
+
+              `
+
+                <div class="message">
+
+                  Products details नहीं मिलीं।
+
+                </div>
+
+              `
+            }
+
+
+          </div>
+
+        `;
+
+      }
+    ).join("");
+
+}
+
+
+/* =========================
+   DELIVERY ORDERS
+========================= */
+
+async function loadDeliveryOrders() {
+
+  const box =
+    document.getElementById(
+      "deliveryList"
+    );
+
+
+  box.innerHTML =
+    '<div class="message">Orders load हो रहे हैं...</div>';
+
+
+  const {
+    data: orders,
+    error
+  } =
+    await supabaseClient
+      .from("orders")
+      .select(`
+        id,
+        retailer_id,
+        total,
+        status,
+        delivery_status,
+        payment_status,
+        created_at
+      `)
+      .eq(
+        "wholesaler_id",
+        currentUser.id
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
+
+
+  if (error) {
+
+    box.innerHTML =
+      `<div class="message">
+
+        ❌ ${escapeHtml(
+          error.message
+        )}
+
+      </div>`;
+
+    return;
+
+  }
+
+
+  if (
+    !orders ||
+    orders.length === 0
+  ) {
+
+    box.innerHTML =
+      '<div class="message">कोई order नहीं है।</div>';
+
+    return;
+
+  }
+
+
+  const ids =
+    [
+      ...new Set(
+        orders.map(
+          order =>
+            order.retailer_id
+        )
+      )
+    ];
+
+
+  const {
+    data: profiles
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select(`
+        id,
+        full_name,
+        shop_name,
+        mobile
+      `)
+      .in(
+        "id",
+        ids
+      );
+
+
+  const map = {};
+
+
+  (
+    profiles || []
+  ).forEach(
+    profile => {
+
+      map[
+        profile.id
+      ] =
+        profile;
+
+    }
+  );
+
+
+  box.innerHTML =
+    orders.map(
+      order => {
+
+        const customer =
+          map[
+            order.retailer_id
+          ];
+
+
+        return `
+
+          <div class="order-card">
+
+
+            <h3>
+
+              🧾 Order #
+
+              ${escapeHtml(
+                order.id.substring(
+                  0,
+                  8
+                )
+              )}
+
+            </h3>
+
+
+            <p>
+
+              👤 ${escapeHtml(
+                customer?.full_name ||
+                "Retailer"
+              )}
+
+            </p>
+
+
+            <p>
+
+              🏪 ${escapeHtml(
+                customer?.shop_name ||
+                "Shop"
+              )}
+
+            </p>
+
+
+            <p>
+
+              📱 ${escapeHtml(
+                customer?.mobile ||
+                "Not available"
+              )}
+
+            </p>
+
+
+            <p>
+
+              💰 Total:
+
+              ₹${Number(
+                order.total ||
+                0
+              ).toFixed(2)}
+
+            </p>
+
+
+            <p>
+
+              📅
+
+              ${escapeHtml(
+                new Date(
+                  order.created_at
+                ).toLocaleString(
+                  "en-IN"
+                )
+              )}
+
+            </p>
+
+
+            <label>
+
+              🚚 Delivery Status
+
+            </label>
+
+
+            <select
+              id="delivery-${order.id}"
+              class="status-select"
+            >
+
+              <option
+                value="pending"
+                ${
+                  order.delivery_status ===
+                  "pending"
+                  ?
+                  "selected"
+                  :
+                  ""
+                }
+              >
+                Pending
+              </option>
+
+
+              <option
+                value="preparing"
+                ${
+                  order.delivery_status ===
+                  "preparing"
+                  ?
+                  "selected"
+                  :
+                  ""
+                }
+              >
+                Preparing
+              </option>
+
+
+              <option
+                value="out_for_delivery"
+                ${
+                  order.delivery_status ===
+                  "out_for_delivery"
+                  ?
+                  "selected"
+                  :
+                  ""
+                }
+              >
+                Out for Delivery
+              </option>
+
+
+              <option
+                value="delivered"
+                ${
+                  order.delivery_status ===
+                  "delivered"
+                  ?
+                  "selected"
+                  :
+                  ""
+                }
+              >
+                Delivered
+              </option>
+
+            </select>
+
+
+            <label>
+
+              📌 Order Status
+
+            </label>
+
+
+            <select
+              id="status-${order.id}"
+              class="status-select"
+            >
+
+              <option
+                value="pending"
+                ${
+                  order.status ===
+                  "pending"
+                  ?
+                  "selected"
+                  :
+                  ""
+                }
+              >
+                Pending
+              </option>
+
+
+              <option
+                value="accepted"
+                ${
+                  order.status ===
+                  "accepted"
+                  ?
+                  "selected"
+                  :
+                  ""
+                }
+              >
+                Accepted
+              </option>
+
+
+              <option
+                value="rejected"
+                ${
+                  order.status ===
+                  "rejected"
+                  ?
+                  "selected"
+                  :
+                  ""
+                }
+              >
+                Rejected
+              </option>
+
+
+              <option
+                value="completed"
+                ${
+                  order.status ===
+                  "completed"
+                  ?
+                  "selected"
+                  :
+                  ""
+                }
+              >
+                Completed
+              </option>
+
+
+              <option
+                value="cancelled"
+                ${
+                  order.status ===
+                  "cancelled"
+                  ?
+                  "selected"
+                  :
+                  ""
+                }
+              >
+                Cancelled
+              </option>
+
+            </select>
+
+
+            <button
+              class="save-btn"
+              onclick="saveOrderStatus(
+                '${order.id}'
+              )"
+            >
+              💾 Save Order
+            </button>
+
+
+          </div>
+
+        `;
+
+      }
+    ).join("");
+
+}
+
+
+/* =========================
+   SAVE ORDER STATUS
+========================= */
+
+async function saveOrderStatus(
+  orderId
+) {
+
+  const deliveryStatus =
+    document.getElementById(
+      "delivery-" +
+      orderId
+    ).value;
+
+
+  const status =
+    document.getElementById(
+      "status-" +
+      orderId
+    ).value;
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("orders")
+      .update({
+
+        delivery_status:
+          deliveryStatus,
+
+        status:
+          status
+
+      })
+      .eq(
+        "id",
+        orderId
+      )
+      .eq(
+        "wholesaler_id",
+        currentUser.id
+      );
+
+
+  if (error) {
+
+    alert(
+      "Order update failed: " +
+      error.message
+    );
+
+    return;
+
+  }
+
+
+  alert(
+    "Order successfully updated! ✅"
+  );
+
+
+  await loadDeliveryOrders();
+
+  await loadOrders();
+
+  await loadDashboardStats();
+
+}
+
+
+/* =========================
+   HISAB
+========================= */
+
+async function loadHisab() {
+
+  const select =
+    document.getElementById(
+      "hisabCustomer"
+    );
+
+
+  select.innerHTML =
+    '<option value="">Customer load हो रहे हैं...</option>';
+
+
+  const {
+    data: orders,
+    error
+  } =
+    await supabaseClient
+      .from("orders")
+      .select(
+        "retailer_id"
+      )
+      .eq(
+        "wholesaler_id",
+        currentUser.id
+      );
+
+
+  if (error) {
+
+    select.innerHTML =
+      '<option value="">Customers load नहीं हुए</option>';
+
+    return;
+
+  }
+
+
+  const ids =
+    [
+      ...new Set(
+        (
+          orders || []
+        ).map(
+          order =>
+            order.retailer_id
+        )
+      )
+    ];
+
+
+  if (
+    ids.length === 0
+  ) {
+
+    select.innerHTML =
+      '<option value="">कोई customer नहीं है</option>';
+
+    return;
+
+  }
+
+
+  const {
+    data: profiles
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select(`
+        id,
+        full_name,
+        shop_name,
+        mobile
+      `)
+      .in(
+        "id",
+        ids
+      );
+
+
+  select.innerHTML =
+    '<option value="">Customer चुनें</option>';
+
+
+  (
+    profiles || []
+  ).forEach(
+    customer => {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+
+      option.value =
+        customer.id;
+
+
+      option.textContent =
+        `${
+          customer.full_name ||
+          "Retailer"
+        } - ${
+          customer.shop_name ||
+          "Shop"
+        }`;
+
+
+      select.appendChild(
+        option
+      );
+
+    }
+  );
+
+
+  select.onchange =
+    function() {
+
+      if (
+        this.value
+      ) {
+
+        loadCustomerHisab(
+          this.value
+        );
+
+      }
+
+      else {
+
+        document.getElementById(
+          "hisabSummary"
+        ).style.display =
+          "none";
+
+      }
+
+    };
+
+}
+
+
+/* =========================
+   CUSTOMER HISAB
+========================= */
+
+async function loadCustomerHisab(
+  retailerId
+) {
+
+  const summary =
+    document.getElementById(
+      "hisabSummary"
+    );
+
+
+  summary.style.display =
+    "block";
+
+
+  const {
+    data: profile
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select(`
+        full_name,
+        shop_name,
+        mobile
+      `)
+      .eq(
+        "id",
+        retailerId
+      )
+      .single();
+
+
+  document.getElementById(
+    "hisabCustomerName"
+  ).textContent =
+    `👤 ${
+      profile?.full_name ||
+      "Retailer"
+    }${
+      profile?.shop_name
+      ?
+      " - " +
+      profile.shop_name
+      :
+      ""
+    }`;
+
+
+  const {
+    data: orders
+  } =
+    await supabaseClient
+      .from("orders")
+      .select(
+        "id, total"
+      )
+      .eq(
+        "wholesaler_id",
+        currentUser.id
+      )
+      .eq(
+        "retailer_id",
         retailerId
       );
 
+
+  let totalPurchase = 0;
+
+
+  (
+    orders || []
+  ).forEach(
+    order => {
+
+      totalPurchase +=
+        Number(
+          order.total ||
+          0
+        );
+
     }
+  );
 
 
-    // =========================
-    // LOGOUT
-    // =========================
+  const {
+    data: payments
+  } =
+    await supabaseClient
+      .from("customer_payments")
+      .select(`
+        id,
+        amount,
+        payment_method,
+        note,
+        paid_at
+      `)
+      .eq(
+        "wholesaler_id",
+        currentUser.id
+      )
+      .eq(
+        "retailer_id",
+        retailerId
+      )
+      .order(
+        "paid_at",
+        {
+          ascending: false
+        }
+      );
 
-    async function logout() {
 
-      await supabaseClient.auth.signOut();
+  let paid = 0;
 
-      location.href =
-        "index.html";
+
+  (
+    payments || []
+  ).forEach(
+    payment => {
+
+      paid +=
+        Number(
+          payment.amount ||
+          0
+        );
 
     }
+  );
 
 
-    // =========================
-    // START
-    // =========================
+  const remaining =
+    Math.max(
+      totalPurchase -
+      paid,
+      0
+    );
 
-    init();
 
-  </script>
+  document.getElementById(
+    "hisabTotal"
+  ).textContent =
+    "₹" +
+    totalPurchase.toFixed(2);
+
+
+  document.getElementById(
+    "hisabPaid"
+  ).textContent =
+    "₹" +
+    paid.toFixed(2);
+
+
+  document.getElementById(
+    "hisabRemaining"
+  ).textContent =
+    "₹" +
+    remaining.toFixed(2);
+
+
+  const history =
+    document.getElementById(
+      "paymentHistory"
+    );
+
+
+  if (
+    !payments ||
+    payments.length === 0
+  ) {
+
+    history.innerHTML =
+      '<div class="message">अभी कोई payment नहीं है।</div>';
+
+    return;
+
+  }
+
+
+  history.innerHTML =
+    payments.map(
+      payment => {
+
+        const date =
+          new Date(
+            payment.paid_at
+          ).toLocaleString(
+            "en-IN"
+          );
+
+
+        return `
+
+          <div class="customer-card">
+
+            <strong>
+
+              💵 ₹${Number(
+                payment.amount
+              ).toFixed(2)}
+
+            </strong>
+
+
+            <p>
+
+              💳 Method:
+
+              ${escapeHtml(
+                payment.payment_method
+              )}
+
+            </p>
+
+
+            ${
+              payment.note
+
+              ?
+
+              `
+                <p>
+
+                  📝 ${escapeHtml(
+                    payment.note
+                  )}
+
+                </p>
+              `
+
+              :
+
+              ""
+            }
+
+
+            <p>
+
+              📅 ${escapeHtml(
+                date
+              )}
+
+            </p>
+
+          </div>
+
+        `;
+
+      }
+    ).join("");
+
+}
+
+
+/* =========================
+   ADD PAYMENT
+========================= */
+
+async function addPayment() {
+
+  const retailerId =
+    document.getElementById(
+      "hisabCustomer"
+    ).value;
+
+
+  if (
+    !retailerId
+  ) {
+
+    alert(
+      "पहले customer चुनें।"
+    );
+
+    return;
+
+  }
+
+
+  const amount =
+    Number(
+      document.getElementById(
+        "paymentAmount"
+      ).value
+    );
+
+
+  if (
+    !amount ||
+    amount <= 0
+  ) {
+
+    alert(
+      "Valid payment amount डालें।"
+    );
+
+    return;
+
+  }
+
+
+  const method =
+    document.getElementById(
+      "paymentMethod"
+    ).value;
+
+
+  const note =
+    document.getElementById(
+      "paymentNote"
+    ).value.trim();
+
+
+  const {
+    data: orders
+  } =
+    await supabaseClient
+      .from("orders")
+      .select(
+        "total"
+      )
+      .eq(
+        "wholesaler_id",
+        currentUser.id
+      )
+      .eq(
+        "retailer_id",
+        retailerId
+      );
+
+
+  let totalPurchase = 0;
+
+
+  (
+    orders || []
+  ).forEach(
+    order => {
+
+      totalPurchase +=
+        Number(
+          order.total ||
+          0
+        );
+
+    }
+  );
+
+
+  const {
+    data: payments
+  } =
+    await supabaseClient
+      .from("customer_payments")
+      .select(
+        "amount"
+      )
+      .eq(
+        "wholesaler_id",
+        currentUser.id
+      )
+      .eq(
+        "retailer_id",
+        retailerId
+      );
+
+
+  let alreadyPaid = 0;
+
+
+  (
+    payments || []
+  ).forEach(
+    payment => {
+
+      alreadyPaid +=
+        Number(
+          payment.amount ||
+          0
+        );
+
+    }
+  );
+
+
+  const remaining =
+    Math.max(
+      totalPurchase -
+      alreadyPaid,
+      0
+    );
+
+
+  if (
+    amount > remaining
+  ) {
+
+    alert(
+      "Payment बाकी amount से ज्यादा नहीं हो सकता।"
+    );
+
+    return;
+
+  }
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from(
+        "customer_payments"
+      )
+      .insert({
+
+        wholesaler_id:
+          currentUser.id,
+
+        retailer_id:
+          retailerId,
+
+        amount:
+          amount,
+
+        payment_method:
+          method,
+
+        note:
+          note ||
+          null
+
+      });
+
+
+  if (error) {
+
+    alert(
+      "Payment save failed: " +
+      error.message
+    );
+
+    return;
+
+  }
+
+
+  alert(
+    "Payment successfully saved! ✅"
+  );
+
+
+  document.getElementById(
+    "paymentAmount"
+  ).value =
+    "";
+
+
+  document.getElementById(
+    "paymentNote"
+  ).value =
+    "";
+
+
+  await loadCustomerHisab(
+    retailerId
+  );
+
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+async function logout() {
+
+  await supabaseClient.auth.signOut();
+
+
+  location.href =
+    "index.html";
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+init();
+
+</script>
 
 </body>
+
 </html>
