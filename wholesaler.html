@@ -861,154 +861,366 @@
 
   async function loadCustomers() {
 
-    const box =
-      document.getElementById("customersList");
+  const box = document.getElementById("customersList");
 
-    box.innerHTML =
-      '<div class="message">Customers load हो रहे हैं...</div>';
+  box.innerHTML =
+    '<div class="message">Customers load हो रहे हैं...</div>';
 
-
-    const {
-      data: orders,
-      error
-    } = await supabaseClient
-      .from("orders")
-      .select(`
-        id,
-        retailer_id,
-        total,
-        created_at
-      `)
-      .eq("wholesaler_id", currentUser.id)
-      .order("created_at", {
-        ascending: false
-      });
-
-
-    if (error) {
-
-      box.innerHTML =
-        `<div class="message">
-          ❌ ${escapeHtml(error.message)}
-        </div>`;
-
-      return;
-    }
-
-
-    if (!orders || orders.length === 0) {
-
-      box.innerHTML =
-        '<div class="message">अभी कोई customer order नहीं है।</div>';
-
-      return;
-    }
-
-
-    const ids =
-      [...new Set(
-        orders.map(order => order.retailer_id)
-      )];
-
-
-    const {
-      data: profiles,
-      error: profileError
-    } = await supabaseClient
-      .from("profiles")
-      .select(`
-        id,
-        full_name,
-        shop_name,
-        mobile
-      `)
-      .in("id", ids);
-
-
-    if (profileError) {
-
-      box.innerHTML =
-        `<div class="message">
-          ❌ ${escapeHtml(profileError.message)}
-        </div>`;
-
-      return;
-    }
-
-
-    const map = {};
-
-    (profiles || []).forEach(profile => {
-      map[profile.id] = profile;
+  const {
+    data: orders,
+    error
+  } = await supabaseClient
+    .from("orders")
+    .select(`
+      id,
+      retailer_id,
+      total,
+      status,
+      delivery_status,
+      payment_status,
+      created_at
+    `)
+    .eq("wholesaler_id", currentUser.id)
+    .order("created_at", {
+      ascending: false
     });
 
-
+  if (error) {
     box.innerHTML =
-      ids.map(id => {
-
-        const customer =
-          map[id];
-
-
-        const customerOrders =
-          orders.filter(
-            order =>
-              order.retailer_id === id
-          );
-
-
-        let total =
-          0;
-
-        customerOrders.forEach(order => {
-          total += Number(order.total || 0);
-        });
-
-
-        return `
-          <div class="customer-card">
-
-            <h3>
-              👤
-              ${escapeHtml(
-                customer?.full_name ||
-                "Retailer"
-              )}
-            </h3>
-
-            <p>
-              🏪 Shop:
-              ${escapeHtml(
-                customer?.shop_name ||
-                "Not available"
-              )}
-            </p>
-
-            <p>
-              📱 Mobile:
-              ${escapeHtml(
-                customer?.mobile ||
-                "Not available"
-              )}
-            </p>
-
-            <p>
-              📦 Orders:
-              ${customerOrders.length}
-            </p>
-
-            <p>
-              💰 Total:
-              ₹${total.toFixed(2)}
-            </p>
-
-          </div>
-        `;
-
-      }).join("");
-
+      `<div class="message">
+        ❌ ${escapeHtml(error.message)}
+      </div>`;
+    return;
   }
 
+  if (!orders || orders.length === 0) {
+    box.innerHTML =
+      '<div class="message">अभी कोई customer order नहीं है।</div>';
+    return;
+  }
+
+  const ids = [
+    ...new Set(
+      orders.map(order => order.retailer_id)
+    )
+  ];
+
+  const {
+    data: profiles,
+    error: profileError
+  } = await supabaseClient
+    .from("profiles")
+    .select(`
+      id,
+      full_name,
+      shop_name,
+      mobile
+    `)
+    .in("id", ids);
+
+  if (profileError) {
+    box.innerHTML =
+      `<div class="message">
+        ❌ ${escapeHtml(profileError.message)}
+      </div>`;
+    return;
+  }
+
+  const map = {};
+
+  (profiles || []).forEach(profile => {
+    map[profile.id] = profile;
+  });
+
+  box.innerHTML = ids.map(id => {
+
+    const customer = map[id];
+
+    const customerOrders =
+      orders.filter(
+        order => order.retailer_id === id
+      );
+
+    let total = 0;
+
+    customerOrders.forEach(order => {
+      total += Number(order.total || 0);
+    });
+
+    const mobile = customer?.mobile || "";
+
+    return `
+      <div class="customer-card">
+
+        <h3>
+          👤 ${escapeHtml(
+            customer?.full_name || "Retailer"
+          )}
+        </h3>
+
+        <p>
+          🏪 Shop:
+          ${escapeHtml(
+            customer?.shop_name || "Not available"
+          )}
+        </p>
+
+        <p>
+          📱 Mobile:
+          ${escapeHtml(
+            customer?.mobile || "Not available"
+          )}
+        </p>
+
+        <p>
+          📦 Orders:
+          ${customerOrders.length}
+        </p>
+
+        <p>
+          💰 Total:
+          ₹${total.toFixed(2)}
+        </p>
+
+        ${
+          mobile
+            ? `
+              <a
+                href="tel:${escapeHtml(mobile)}"
+                style="
+                  display:inline-block;
+                  background:#16a34a;
+                  color:white;
+                  padding:9px 14px;
+                  border-radius:8px;
+                  text-decoration:none;
+                  font-weight:bold;
+                  margin-top:5px;
+                "
+              >
+                📞 Call Customer
+              </a>
+            `
+            : ""
+        }
+
+        <button
+          class="edit"
+          style="margin-top:8px;"
+          onclick="viewCustomerOrders('${id}')"
+        >
+          🧾 View Orders
+        </button>
+
+        <div
+          id="customerOrders-${id}"
+          style="display:none;margin-top:12px;"
+        ></div>
+
+      </div>
+    `;
+
+  }).join("");
+    async function viewCustomerOrders(retailerId) {
+
+  const box =
+    document.getElementById(
+      "customerOrders-" + retailerId
+    );
+
+  if (!box) return;
+
+  if (box.style.display === "block") {
+    box.style.display = "none";
+    return;
+  }
+
+  box.style.display = "block";
+
+  box.innerHTML =
+    '<div class="message">Orders load हो रहे हैं...</div>';
+
+  const {
+    data: orders,
+    error
+  } = await supabaseClient
+    .from("orders")
+    .select(`
+      id,
+      total,
+      status,
+      delivery_status,
+      payment_status,
+      created_at
+    `)
+    .eq("wholesaler_id", currentUser.id)
+    .eq("retailer_id", retailerId)
+    .order("created_at", {
+      ascending: false
+    });
+
+  if (error) {
+    box.innerHTML =
+      `<div class="message">
+        ❌ ${escapeHtml(error.message)}
+      </div>`;
+    return;
+  }
+
+  if (!orders || orders.length === 0) {
+    box.innerHTML =
+      '<div class="message">कोई order नहीं मिला।</div>';
+    return;
+  }
+
+  const orderIds =
+    orders.map(order => order.id);
+
+  const {
+    data: items
+  } = await supabaseClient
+    .from("order_items")
+    .select(`
+      order_id,
+      product_name,
+      image_url,
+      quantity,
+      price
+    `)
+    .in("order_id", orderIds);
+
+  const itemMap = {};
+
+  (items || []).forEach(item => {
+
+    if (!itemMap[item.order_id]) {
+      itemMap[item.order_id] = [];
+    }
+
+    itemMap[item.order_id].push(item);
+
+  });
+
+  box.innerHTML =
+    orders.map(order => {
+
+      const orderItems =
+        itemMap[order.id] || [];
+
+      const date =
+        new Date(order.created_at)
+          .toLocaleString("en-IN");
+
+      return `
+        <div
+          style="
+            border:1px solid #ddd;
+            padding:10px;
+            border-radius:10px;
+            margin-top:10px;
+          "
+        >
+
+          <strong>
+            🧾 Order #${escapeHtml(
+              order.id.substring(0, 8)
+            )}
+          </strong>
+
+          <p>📅 ${escapeHtml(date)}</p>
+
+          <p>
+            💰 Total:
+            ₹${Number(order.total || 0).toFixed(2)}
+          </p>
+
+          <p>
+            📌 Status:
+            ${escapeHtml(order.status || "pending")}
+          </p>
+
+          <p>
+            🚚 Delivery:
+            ${escapeHtml(
+              order.delivery_status || "pending"
+            )}
+          </p>
+
+          <p>
+            💳 Payment:
+            ${escapeHtml(
+              order.payment_status || "pending"
+            )}
+          </p>
+
+          ${
+            orderItems.length
+              ? orderItems.map(item => `
+                <div class="order-item">
+
+                  ${
+                    item.image_url
+                      ? `
+                        <img
+                          src="${escapeHtml(
+                            item.image_url
+                          )}"
+                          alt="Product"
+                        >
+                      `
+                      : `
+                        <div
+                          style="
+                            width:55px;
+                            height:55px;
+                            display:flex;
+                            align-items:center;
+                            justify-content:center;
+                            background:#ddd;
+                            border-radius:7px;
+                          "
+                        >
+                          📦
+                        </div>
+                      `
+                  }
+
+                  <div>
+                    <strong>
+                      ${escapeHtml(
+                        item.product_name
+                      )}
+                    </strong>
+
+                    <div>
+                      Qty:
+                      ${Number(item.quantity || 0)}
+                    </div>
+
+                    <div>
+                      ₹${Number(
+                        item.price || 0
+                      ).toFixed(2)}
+                    </div>
+                  </div>
+
+                </div>
+              `).join("")
+              : `
+                <div class="message">
+                  Products details नहीं मिलीं।
+                </div>
+              `
+          }
+
+        </div>
+      `;
+
+    }).join("");
+
+}
+
+}
 
   // =========================
   // ORDERS
