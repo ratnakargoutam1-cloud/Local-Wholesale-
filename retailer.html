@@ -234,18 +234,35 @@
       background: #eee;
     }
 
+    /* =========================
+       REWARD CARDS
+       ========================= */
+
     .reward-card {
       border: 1px solid #ddd;
       border-radius: 12px;
       padding: 14px;
       margin-bottom: 14px;
       background: #fff;
+      overflow: hidden;
     }
 
     .reward-title {
       font-size: 18px;
       font-weight: bold;
       margin-bottom: 7px;
+    }
+
+    .reward-image {
+      width: 100%;
+      max-width: 300px;
+      height: 190px;
+      object-fit: contain;
+      display: block;
+      margin: 10px auto;
+      border-radius: 10px;
+      background: #f5f5f5;
+      border: 1px solid #eee;
     }
 
     .reward-gift {
@@ -307,6 +324,7 @@
     }
 
     @media (max-width: 600px) {
+
       .products-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 9px;
@@ -326,6 +344,11 @@
 
       .price {
         font-size: 16px;
+      }
+
+      .reward-image {
+        max-width: 100%;
+        height: 170px;
       }
     }
   </style>
@@ -371,20 +394,33 @@
   </div>
 
   <!-- PRODUCTS -->
+
   <div id="productsSection" class="section">
+
     <h2>🛍️ Products</h2>
+
     <div id="productsGrid" class="products-grid">
       Loading products...
     </div>
+
   </div>
+
 
   <!-- ORDERS -->
+
   <div id="ordersSection" class="section hidden">
+
     <h2>📦 My Orders</h2>
-    <div id="ordersList">Loading orders...</div>
+
+    <div id="ordersList">
+      Loading orders...
+    </div>
+
   </div>
 
+
   <!-- REWARDS -->
+
   <div id="rewardSection" class="section hidden">
 
     <h2>🎁 Target & Gifts</h2>
@@ -417,7 +453,9 @@
       🚀 Start Target
     </button>
 
-    <h3 style="margin-top:25px;">📊 My Targets</h3>
+    <h3 style="margin-top:25px;">
+      📊 My Targets
+    </h3>
 
     <div id="myRewardsList">
       Abhi koi target start nahi kiya hai.
@@ -427,8 +465,11 @@
 
 </div>
 
+
 <!-- CART BAR -->
+
 <div class="cart-bar">
+
   <div>
     🛒 Cart:
     <strong id="cartCount">0</strong> items
@@ -437,7 +478,9 @@
   <button class="cart-btn" onclick="openCart()">
     View Cart
   </button>
+
 </div>
+
 
 <script>
 
@@ -448,12 +491,17 @@ const SUPABASE_KEY =
   "sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI";
 
 const supabaseClient =
-  supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
 
 let currentUser = null;
 let currentProfile = null;
 
 let allProducts = [];
+
 let currentCategory = "all";
 let currentSearch = "";
 
@@ -469,12 +517,17 @@ async function init() {
     error
   } = await supabaseClient.auth.getUser();
 
+
   if (error || !user) {
+
     window.location.href = "index.html";
+
     return;
   }
 
+
   currentUser = user;
+
 
   const { data: profile } =
     await supabaseClient
@@ -483,20 +536,31 @@ async function init() {
       .eq("id", user.id)
       .single();
 
+
   if (!profile || profile.role !== "retailer") {
+
     alert("Retailer account required.");
+
     await supabaseClient.auth.signOut();
+
     window.location.href = "index.html";
+
     return;
   }
 
+
   currentProfile = profile;
 
+
   document.getElementById("welcomeText").textContent =
-    "Welcome, " + (profile.full_name || "Retailer");
+    "Welcome, " +
+    (profile.full_name || "Retailer");
+
 
   updateCartCount();
+
   loadProducts();
+
 }
 
 
@@ -506,14 +570,18 @@ async function init() {
 
 function hideSections() {
 
-  document.getElementById("productsSection")
+  document
+    .getElementById("productsSection")
     .classList.add("hidden");
 
-  document.getElementById("ordersSection")
+  document
+    .getElementById("ordersSection")
     .classList.add("hidden");
 
-  document.getElementById("rewardSection")
+  document
+    .getElementById("rewardSection")
     .classList.add("hidden");
+
 }
 
 
@@ -521,10 +589,12 @@ function showProducts() {
 
   hideSections();
 
-  document.getElementById("productsSection")
+  document
+    .getElementById("productsSection")
     .classList.remove("hidden");
 
   loadProducts();
+
 }
 
 
@@ -532,46 +602,67 @@ async function showMyOrders() {
 
   hideSections();
 
-  document.getElementById("ordersSection")
+  document
+    .getElementById("ordersSection")
     .classList.remove("hidden");
+
 
   const list =
     document.getElementById("ordersList");
 
-  list.innerHTML = "Loading orders...";
+  list.innerHTML =
+    "Loading orders...";
+
 
   if (!currentUser) return;
 
-  const { data: orders, error } =
-    await supabaseClient
-      .from("orders")
-      .select("*")
-      .eq("retailer_id", currentUser.id)
-      .order("created_at", { ascending: false });
+
+  const {
+    data: orders,
+    error
+  } = await supabaseClient
+    .from("orders")
+    .select("*")
+    .eq("retailer_id", currentUser.id)
+    .order("created_at", {
+      ascending: false
+    });
+
 
   if (error) {
+
     list.innerHTML =
       "<p>Orders load nahi ho pa rahe.</p>";
+
     console.error(error);
+
     return;
   }
 
+
   if (!orders || orders.length === 0) {
+
     list.innerHTML =
       "<p>Abhi koi order nahi hai.</p>";
+
     return;
   }
+
 
   const orderIds =
     orders.map(o => o.id);
 
-  const { data: items } =
-    await supabaseClient
-      .from("order_items")
-      .select("*")
-      .in("order_id", orderIds);
+
+  const {
+    data: items
+  } = await supabaseClient
+    .from("order_items")
+    .select("*")
+    .in("order_id", orderIds);
+
 
   list.innerHTML = "";
+
 
   orders.forEach(order => {
 
@@ -580,12 +671,16 @@ async function showMyOrders() {
         item => item.order_id === order.id
       );
 
+
     const card =
       document.createElement("div");
 
-    card.className = "order-card";
+    card.className =
+      "order-card";
+
 
     let itemsHtml = "";
+
 
     orderItems.forEach(item => {
 
@@ -593,42 +688,69 @@ async function showMyOrders() {
         item.image_url ||
         "https://via.placeholder.com/100?text=Product";
 
+
       itemsHtml += `
+
         <div class="order-item">
+
           <img
             src="${escapeHtml(image)}"
             alt="Product"
           >
 
           <div>
+
             <strong>
-              ${escapeHtml(item.product_name || "")}
+              ${escapeHtml(
+                item.product_name || ""
+              )}
             </strong>
 
             <div>
-              Qty: ${Number(item.quantity || 0)}
+              Qty:
+              ${Number(item.quantity || 0)}
             </div>
 
             <div>
-              Price: ₹${Number(item.price || 0).toFixed(2)}
+              Price:
+              ₹${Number(
+                item.price || 0
+              ).toFixed(2)}
             </div>
+
           </div>
+
         </div>
+
       `;
+
     });
 
+
     card.innerHTML = `
+
       <div class="order-header">
+
         <div>
-          <strong>Order #${order.id.slice(0,8)}</strong>
+
+          <strong>
+            Order #${order.id.slice(0,8)}
+          </strong>
+
           <div>
-            ${new Date(order.created_at).toLocaleString()}
+            ${new Date(
+              order.created_at
+            ).toLocaleString()}
           </div>
+
         </div>
 
         <div class="status">
-          ${escapeHtml(order.status || "pending")}
+          ${escapeHtml(
+            order.status || "pending"
+          )}
         </div>
+
       </div>
 
       <hr>
@@ -639,26 +761,38 @@ async function showMyOrders() {
 
       <div>
         <strong>Total:</strong>
-        ₹${Number(order.total || 0).toFixed(2)}
+        ₹${Number(
+          order.total || 0
+        ).toFixed(2)}
       </div>
 
       <div>
         Delivery:
         <strong>
-          ${escapeHtml(order.delivery_status || "pending")}
+          ${escapeHtml(
+            order.delivery_status ||
+            "pending"
+          )}
         </strong>
       </div>
 
       <div>
         Payment:
         <strong>
-          ${escapeHtml(order.payment_status || "pending")}
+          ${escapeHtml(
+            order.payment_status ||
+            "pending"
+          )}
         </strong>
       </div>
+
     `;
 
+
     list.appendChild(card);
+
   });
+
 }
 
 
@@ -669,16 +803,26 @@ async function showMyOrders() {
 async function loadProducts() {
 
   const grid =
-    document.getElementById("productsGrid");
+    document.getElementById(
+      "productsGrid"
+    );
 
-  grid.innerHTML = "Loading products...";
 
-  const { data: products, error } =
-    await supabaseClient
-      .from("products")
-      .select("*")
-      .eq("is_active", true)
-      .order("created_at", { ascending: false });
+  grid.innerHTML =
+    "Loading products...";
+
+
+  const {
+    data: products,
+    error
+  } = await supabaseClient
+    .from("products")
+    .select("*")
+    .eq("is_active", true)
+    .order("created_at", {
+      ascending: false
+    });
+
 
   if (error) {
 
@@ -690,62 +834,95 @@ async function loadProducts() {
     return;
   }
 
-  allProducts = products || [];
+
+  allProducts =
+    products || [];
+
 
   const wholesalerIds =
     [...new Set(
-      allProducts.map(p => p.wholesaler_id)
+      allProducts.map(
+        p => p.wholesaler_id
+      )
     )];
 
+
   let wholesalers = [];
+
 
   if (wholesalerIds.length > 0) {
 
     const { data } =
       await supabaseClient
         .from("profiles")
-        .select("id,full_name,shop_name,mobile")
-        .in("id", wholesalerIds);
+        .select(
+          "id,full_name,shop_name,mobile"
+        )
+        .in(
+          "id",
+          wholesalerIds
+        );
 
-    wholesalers = data || [];
+
+    wholesalers =
+      data || [];
+
   }
+
 
   allProducts =
     allProducts.map(product => {
 
       const shop =
         wholesalers.find(
-          w => w.id === product.wholesaler_id
+          w =>
+            w.id ===
+            product.wholesaler_id
         );
 
+
       return {
+
         ...product,
-        wholesaler: shop || {}
+
+        wholesaler:
+          shop || {}
+
       };
+
     });
 
+
   renderProducts();
+
 }
 
 
 function renderProducts() {
 
   const grid =
-    document.getElementById("productsGrid");
+    document.getElementById(
+      "productsGrid"
+    );
+
 
   let products =
     allProducts.filter(product => {
 
       const categoryMatch =
         currentCategory === "all" ||
-        (product.category || "").toLowerCase() ===
+        (product.category || "")
+          .toLowerCase() ===
         currentCategory.toLowerCase();
+
 
       const searchText =
         currentSearch.toLowerCase();
 
+
       const searchMatch =
         !searchText ||
+
         (product.product_name || "")
           .toLowerCase()
           .includes(searchText) ||
@@ -754,8 +931,14 @@ function renderProducts() {
           .toLowerCase()
           .includes(searchText);
 
-      return categoryMatch && searchMatch;
+
+      return (
+        categoryMatch &&
+        searchMatch
+      );
+
     });
+
 
   if (products.length === 0) {
 
@@ -765,20 +948,27 @@ function renderProducts() {
     return;
   }
 
+
   grid.innerHTML = "";
+
 
   products.forEach(product => {
 
     const card =
       document.createElement("div");
 
-    card.className = "product-card";
+
+    card.className =
+      "product-card";
+
 
     const image =
       product.image_url ||
       "https://via.placeholder.com/300?text=Product";
 
+
     card.innerHTML = `
+
       <img
         src="${escapeHtml(image)}"
         alt="Product"
@@ -787,35 +977,61 @@ function renderProducts() {
       <div class="product-info">
 
         <div class="product-name">
-          ${escapeHtml(product.product_name || "")}
+          ${escapeHtml(
+            product.product_name || ""
+          )}
         </div>
 
         <div class="shop-name">
+
           🏪
+
           ${escapeHtml(
             product.wholesaler?.shop_name ||
             product.wholesaler?.full_name ||
             "Wholesaler"
           )}
+
         </div>
 
         <div class="price">
-          ₹${Number(product.price || 0).toFixed(2)}
-          / ${escapeHtml(product.unit || "piece")}
+
+          ₹${Number(
+            product.price || 0
+          ).toFixed(2)}
+
+          /
+
+          ${escapeHtml(
+            product.unit || "piece"
+          )}
+
         </div>
 
         ${
           Number(product.mrp || 0) > 0
           ? `
             <div class="mrp">
-              MRP: ₹${Number(product.mrp).toFixed(2)}
+              MRP:
+              ₹${Number(
+                product.mrp
+              ).toFixed(2)}
             </div>
           `
           : ""
         }
 
-        <div style="font-size:13px;color:#666;margin-top:5px;">
-          Stock: ${Number(product.stock || 0)}
+        <div style="
+          font-size:13px;
+          color:#666;
+          margin-top:5px;
+        ">
+
+          Stock:
+          ${Number(
+            product.stock || 0
+          )}
+
         </div>
 
         <button
@@ -826,16 +1042,25 @@ function renderProducts() {
         </button>
 
       </div>
+
     `;
 
+
     grid.appendChild(card);
+
   });
+
 }
 
 
-function changeCategory(category, button) {
+function changeCategory(
+  category,
+  button
+) {
 
-  currentCategory = category;
+  currentCategory =
+    category;
+
 
   document
     .querySelectorAll(".category-btn")
@@ -843,20 +1068,28 @@ function changeCategory(category, button) {
       btn.classList.remove("active")
     );
 
+
   button.classList.add("active");
 
+
   renderProducts();
+
 }
 
 
 document
   .getElementById("searchInput")
-  .addEventListener("input", function() {
+  .addEventListener(
+    "input",
+    function() {
 
-    currentSearch = this.value.trim();
+      currentSearch =
+        this.value.trim();
 
-    renderProducts();
-  });
+      renderProducts();
+
+    }
+  );
 
 
 // ===============================
@@ -868,13 +1101,17 @@ function getCart() {
   try {
 
     return JSON.parse(
-      localStorage.getItem("localWholesaleCart") || "[]"
+      localStorage.getItem(
+        "localWholesaleCart"
+      ) || "[]"
     );
 
   } catch (e) {
 
     return [];
+
   }
+
 }
 
 
@@ -884,6 +1121,7 @@ function saveCart(cart) {
     "localWholesaleCart",
     JSON.stringify(cart)
   );
+
 }
 
 
@@ -891,66 +1129,110 @@ function addToCart(productId) {
 
   const product =
     allProducts.find(
-      p => p.id === productId
+      p =>
+        p.id === productId
     );
 
+
   if (!product) {
+
     alert("Product nahi mila.");
+
     return;
   }
 
-  let cart = getCart();
+
+  let cart =
+    getCart();
+
 
   const existing =
     cart.find(
-      item => item.id === productId
+      item =>
+        item.id === productId
     );
+
 
   if (existing) {
 
     existing.qty =
-      Number(existing.qty || 0) + 1;
+      Number(existing.qty || 0) +
+      1;
 
   } else {
 
     cart.push({
-      id: product.id,
-      product_name: product.product_name,
-      price: Number(product.price || 0),
-      image_url: product.image_url || null,
-      wholesaler_id: product.wholesaler_id,
-      unit: product.unit || "piece",
-      qty: 1
+
+      id:
+        product.id,
+
+      product_name:
+        product.product_name,
+
+      price:
+        Number(product.price || 0),
+
+      image_url:
+        product.image_url || null,
+
+      wholesaler_id:
+        product.wholesaler_id,
+
+      unit:
+        product.unit || "piece",
+
+      qty:
+        1
+
     });
+
   }
+
 
   saveCart(cart);
 
   updateCartCount();
 
-  alert("Product cart me add ho gaya.");
+
+  alert(
+    "Product cart me add ho gaya."
+  );
+
 }
 
 
 function updateCartCount() {
 
-  const cart = getCart();
+  const cart =
+    getCart();
+
 
   const count =
     cart.reduce(
       (total, item) =>
-        total + Number(item.qty || 0),
+        total +
+        Number(
+          item.qty || 0
+        ),
       0
     );
 
-  document.getElementById("cartCount")
-    .textContent = count;
+
+  document
+    .getElementById(
+      "cartCount"
+    )
+    .textContent =
+    count;
+
 }
 
 
 function openCart() {
 
-  window.location.href = "cart.html";
+  window.location.href =
+    "cart.html";
+
 }
 
 
@@ -962,44 +1244,68 @@ async function showRewards() {
 
   hideSections();
 
+
   document
-    .getElementById("rewardSection")
+    .getElementById(
+      "rewardSection"
+    )
     .classList.remove("hidden");
 
+
   await loadRewards();
+
 }
 
 
 async function loadRewards() {
 
   const offersList =
-    document.getElementById("rewardOffersList");
+    document.getElementById(
+      "rewardOffersList"
+    );
+
 
   const offerSelect =
-    document.getElementById("rewardOfferSelect");
+    document.getElementById(
+      "rewardOfferSelect"
+    );
+
 
   const wholesalerSelect =
-    document.getElementById("rewardWholesalerSelect");
+    document.getElementById(
+      "rewardWholesalerSelect"
+    );
+
 
   const myRewardsList =
-    document.getElementById("myRewardsList");
+    document.getElementById(
+      "myRewardsList"
+    );
+
 
   offersList.innerHTML =
     "Loading targets...";
 
+
   offerSelect.innerHTML =
-    `<option value="">Target select karein</option>`;
+    `<option value="">
+      Target select karein
+    </option>`;
+
 
   wholesalerSelect.innerHTML =
-    `<option value="">Wholesaler select karein</option>`;
+    `<option value="">
+      Wholesaler select karein
+    </option>`;
+
 
   myRewardsList.innerHTML =
     "Loading...";
 
 
-  // -------------------------------
+  // ============================
   // ACTIVE OFFERS
-  // -------------------------------
+  // ============================
 
   const {
     data: offers,
@@ -1020,14 +1326,20 @@ async function loadRewards() {
       is_active
     `)
     .eq("is_active", true)
-    .order("target_amount", {
-      ascending: true
-    });
+    .order(
+      "target_amount",
+      {
+        ascending: true
+      }
+    );
 
 
   if (offersError) {
 
-    console.error(offersError);
+    console.error(
+      offersError
+    );
+
 
     offersList.innerHTML =
       "<p>Targets load nahi ho pa rahe.</p>";
@@ -1036,147 +1348,265 @@ async function loadRewards() {
   }
 
 
-  const now = new Date();
+  const now =
+    new Date();
+
 
   const validOffers =
-    (offers || []).filter(offer => {
+    (offers || [])
+      .filter(offer => {
 
-      if (
-        offer.start_date &&
-        now < new Date(offer.start_date)
-      ) {
-        return false;
-      }
+        if (
+          offer.start_date &&
+          now <
+          new Date(
+            offer.start_date
+          )
+        ) {
 
-      if (
-        offer.end_date &&
-        now > new Date(offer.end_date)
-      ) {
-        return false;
-      }
+          return false;
 
-      return true;
-    });
+        }
 
 
-  if (validOffers.length === 0) {
+        if (
+          offer.end_date &&
+          now >
+          new Date(
+            offer.end_date
+          )
+        ) {
+
+          return false;
+
+        }
+
+
+        return true;
+
+      });
+
+
+  if (
+    validOffers.length === 0
+  ) {
 
     offersList.innerHTML =
       "<p>Abhi koi active target available nahi hai.</p>";
 
   } else {
 
-    offersList.innerHTML = "";
+    offersList.innerHTML =
+      "";
 
-    validOffers.forEach(offer => {
 
-      const card =
-        document.createElement("div");
+    validOffers.forEach(
+      offer => {
 
-      card.className = "reward-card";
+        const card =
+          document.createElement(
+            "div"
+          );
 
-      card.innerHTML = `
 
-        <div class="reward-title">
-          🎯 ${escapeHtml(offer.title)}
-        </div>
+        card.className =
+          "reward-card";
 
-        <div>
-          Target:
-          <strong>
-            ₹${Number(offer.target_amount).toFixed(2)}
-          </strong>
-        </div>
 
-        <div>
-          ⏳ Time:
-          <strong>
-            ${Number(offer.duration_days)} days
-          </strong>
-        </div>
+        /*
+         * GIFT IMAGE
+         */
 
-        <div class="reward-gift">
-          🎁 Gift:
-          <strong>
-            ${escapeHtml(offer.gift_name)}
-          </strong>
-
-          ${
-            offer.gift_description
+        const giftImage =
+          offer.gift_image_url
             ? `
-              <div style="font-size:13px;margin-top:4px;">
-                ${escapeHtml(offer.gift_description)}
-              </div>
+              <img
+                class="reward-image"
+                src="${escapeHtml(
+                  offer.gift_image_url
+                )}"
+                alt="${escapeHtml(
+                  offer.gift_name
+                )}"
+                loading="lazy"
+              >
             `
-            : ""
-          }
-        </div>
-
-      `;
-
-      offersList.appendChild(card);
+            : "";
 
 
-      const option =
-        document.createElement("option");
+        card.innerHTML = `
 
-      option.value = offer.id;
+          <div class="reward-title">
 
-      option.textContent =
-        `${offer.title} → ₹${Number(
-          offer.target_amount
-        ).toFixed(0)} → ${offer.gift_name}`;
+            🎯
+            ${escapeHtml(
+              offer.title
+            )}
 
-      offerSelect.appendChild(option);
-    });
+          </div>
+
+          ${giftImage}
+
+          <div>
+
+            Target:
+
+            <strong>
+              ₹${Number(
+                offer.target_amount
+              ).toFixed(2)}
+            </strong>
+
+          </div>
+
+          <div>
+
+            ⏳ Time:
+
+            <strong>
+              ${Number(
+                offer.duration_days
+              )} days
+            </strong>
+
+          </div>
+
+          <div class="reward-gift">
+
+            🎁 Gift:
+
+            <strong>
+              ${escapeHtml(
+                offer.gift_name
+              )}
+            </strong>
+
+            ${
+              offer.gift_description
+              ? `
+                <div style="
+                  font-size:13px;
+                  margin-top:4px;
+                ">
+
+                  ${escapeHtml(
+                    offer.gift_description
+                  )}
+
+                </div>
+              `
+              : ""
+            }
+
+          </div>
+
+        `;
+
+
+        offersList.appendChild(
+          card
+        );
+
+
+        const option =
+          document.createElement(
+            "option"
+          );
+
+
+        option.value =
+          offer.id;
+
+
+        option.textContent =
+          `${offer.title} → ₹${
+            Number(
+              offer.target_amount
+            ).toFixed(0)
+          } → ${
+            offer.gift_name
+          }`;
+
+
+        offerSelect.appendChild(
+          option
+        );
+
+      }
+    );
+
   }
 
 
-  // -------------------------------
+  // ============================
   // WHOLESALERS
-  // -------------------------------
+  // ============================
 
   const {
     data: wholesalers,
     error: wholesalerError
   } = await supabaseClient
     .from("profiles")
-    .select("id,full_name,shop_name,mobile")
-    .eq("role", "wholesaler")
-    .order("shop_name", {
-      ascending: true
-    });
+    .select(
+      "id,full_name,shop_name,mobile"
+    )
+    .eq(
+      "role",
+      "wholesaler"
+    )
+    .order(
+      "shop_name",
+      {
+        ascending: true
+      }
+    );
 
 
   if (wholesalerError) {
 
-    console.error(wholesalerError);
+    console.error(
+      wholesalerError
+    );
+
 
     wholesalerSelect.innerHTML =
-      `<option value="">Wholesaler load nahi hua</option>`;
+      `<option value="">
+        Wholesaler load nahi hua
+      </option>`;
 
   } else {
 
-    (wholesalers || []).forEach(shop => {
+    (wholesalers || [])
+      .forEach(shop => {
 
-      const option =
-        document.createElement("option");
+        const option =
+          document.createElement(
+            "option"
+          );
 
-      option.value = shop.id;
 
-      option.textContent =
-        shop.shop_name ||
-        shop.full_name ||
-        "Wholesaler";
+        option.value =
+          shop.id;
 
-      wholesalerSelect.appendChild(option);
-    });
+
+        option.textContent =
+          shop.shop_name ||
+          shop.full_name ||
+          "Wholesaler";
+
+
+        wholesalerSelect.appendChild(
+          option
+        );
+
+      });
+
   }
 
 
-  // -------------------------------
+  // ============================
   // MY REWARDS
-  // -------------------------------
+  // ============================
 
   const {
     data: rewards,
@@ -1196,15 +1626,24 @@ async function loadRewards() {
       completed_at,
       gift_claimed_at
     `)
-    .eq("retailer_id", currentUser.id)
-    .order("created_at", {
-      ascending: false
-    });
+    .eq(
+      "retailer_id",
+      currentUser.id
+    )
+    .order(
+      "created_at",
+      {
+        ascending: false
+      }
+    );
 
 
   if (rewardsError) {
 
-    console.error(rewardsError);
+    console.error(
+      rewardsError
+    );
+
 
     myRewardsList.innerHTML =
       "<p>My Targets load nahi ho pa rahe.</p>";
@@ -1213,7 +1652,10 @@ async function loadRewards() {
   }
 
 
-  if (!rewards || rewards.length === 0) {
+  if (
+    !rewards ||
+    rewards.length === 0
+  ) {
 
     myRewardsList.innerHTML =
       "<p>Abhi koi target start nahi kiya hai.</p>";
@@ -1224,12 +1666,19 @@ async function loadRewards() {
 
   const offerIds =
     [...new Set(
-      rewards.map(r => r.reward_offer_id)
+      rewards.map(
+        r =>
+          r.reward_offer_id
+      )
     )];
+
 
   const wholesalerIds =
     [...new Set(
-      rewards.map(r => r.wholesaler_id)
+      rewards.map(
+        r =>
+          r.wholesaler_id
+      )
     )];
 
 
@@ -1238,209 +1687,358 @@ async function loadRewards() {
   let rewardWholesalers = [];
 
 
-  if (offerIds.length > 0) {
+  if (
+    offerIds.length > 0
+  ) {
 
     const { data } =
       await supabaseClient
         .from("reward_offers")
         .select("*")
-        .in("id", offerIds);
+        .in(
+          "id",
+          offerIds
+        );
 
-    rewardOffers = data || [];
+
+    rewardOffers =
+      data || [];
+
   }
 
 
-  if (wholesalerIds.length > 0) {
+  if (
+    wholesalerIds.length > 0
+  ) {
 
     const { data } =
       await supabaseClient
         .from("profiles")
-        .select("id,full_name,shop_name")
-        .in("id", wholesalerIds);
+        .select(
+          "id,full_name,shop_name"
+        )
+        .in(
+          "id",
+          wholesalerIds
+        );
 
-    rewardWholesalers = data || [];
+
+    rewardWholesalers =
+      data || [];
+
   }
 
 
-  myRewardsList.innerHTML = "";
+  myRewardsList.innerHTML =
+    "";
 
 
-  rewards.forEach(reward => {
+  rewards.forEach(
+    reward => {
 
-    const offer =
-      rewardOffers.find(
-        o => o.id === reward.reward_offer_id
-      );
-
-    const wholesaler =
-      rewardWholesalers.find(
-        w => w.id === reward.wholesaler_id
-      );
-
-
-    let achieved =
-      Number(reward.achieved_amount || 0);
-
-    let target =
-      Number(
-        reward.target_amount ||
-        offer?.target_amount ||
-        0
-      );
-
-
-    let progress =
-      target > 0
-      ? Math.min(
-          100,
-          (achieved / target) * 100
-        )
-      : 0;
-
-
-    if (
-      reward.progress_percent !== null &&
-      reward.progress_percent !== undefined
-    ) {
-      progress =
-        Math.min(
-          100,
-          Number(reward.progress_percent)
+      const offer =
+        rewardOffers.find(
+          o =>
+            o.id ===
+            reward.reward_offer_id
         );
-    }
 
 
-    let statusText = "🎯 Active";
-
-    let statusClass = "";
-
-    let daysText = "";
-
-
-    if (reward.status === "completed") {
-
-      statusText =
-        "🎉 Target Complete - Gift Eligible";
-
-      statusClass =
-        "complete";
-
-    } else if (reward.status === "gift_claimed") {
-
-      statusText =
-        "🎁 Gift Claimed";
-
-      statusClass =
-        "complete";
-
-    } else {
-
-      const deadline =
-        reward.deadline_at
-        ? new Date(reward.deadline_at)
-        : null;
+      const wholesaler =
+        rewardWholesalers.find(
+          w =>
+            w.id ===
+            reward.wholesaler_id
+        );
 
 
-      if (deadline) {
+      let achieved =
+        Number(
+          reward.achieved_amount ||
+          0
+        );
 
-        const difference =
-          deadline.getTime() - Date.now();
 
-        if (difference <= 0) {
+      let target =
+        Number(
+          reward.target_amount ||
+          offer?.target_amount ||
+          0
+        );
 
-          statusText =
-            "⏰ Time Expired";
 
-          statusClass =
-            "expired";
+      let progress =
+        target > 0
+        ? Math.min(
+            100,
+            (achieved /
+              target) *
+              100
+          )
+        : 0;
 
-          daysText =
-            "समय समाप्त";
 
-        } else {
+      if (
+        reward.progress_percent !==
+        null &&
+        reward.progress_percent !==
+        undefined
+      ) {
 
-          const days =
-            Math.ceil(
-              difference /
-              (1000 * 60 * 60 * 24)
-            );
+        progress =
+          Math.min(
+            100,
+            Number(
+              reward.progress_percent
+            )
+          );
 
-          daysText =
-            `${days} दिन बाकी`;
-        }
       }
+
+
+      let statusText =
+        "🎯 Active";
+
+
+      let statusClass =
+        "";
+
+
+      let daysText =
+        "";
+
+
+      if (
+        reward.status ===
+        "completed"
+      ) {
+
+        statusText =
+          "🎉 Target Complete - Gift Eligible";
+
+        statusClass =
+          "complete";
+
+      } else if (
+        reward.status ===
+        "gift_claimed"
+      ) {
+
+        statusText =
+          "🎁 Gift Claimed";
+
+        statusClass =
+          "complete";
+
+      } else {
+
+        const deadline =
+          reward.deadline_at
+          ? new Date(
+              reward.deadline_at
+            )
+          : null;
+
+
+        if (deadline) {
+
+          const difference =
+            deadline.getTime() -
+            Date.now();
+
+
+          if (
+            difference <= 0
+          ) {
+
+            statusText =
+              "⏰ Time Expired";
+
+            statusClass =
+              "expired";
+
+            daysText =
+              "समय समाप्त";
+
+          } else {
+
+            const days =
+              Math.ceil(
+                difference /
+                (
+                  1000 *
+                  60 *
+                  60 *
+                  24
+                )
+              );
+
+
+            daysText =
+              `${days} दिन बाकी`;
+
+          }
+
+        }
+
+      }
+
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+
+      card.className =
+        "reward-card";
+
+
+      /*
+       * MY TARGET GIFT IMAGE
+       */
+
+      const myGiftImage =
+        offer?.gift_image_url
+          ? `
+            <img
+              class="reward-image"
+              src="${escapeHtml(
+                offer.gift_image_url
+              )}"
+              alt="${escapeHtml(
+                offer.gift_name ||
+                "Gift"
+              )}"
+              loading="lazy"
+            >
+          `
+          : "";
+
+
+      card.innerHTML = `
+
+        <div class="reward-title">
+
+          🎯
+          ${escapeHtml(
+            offer?.title ||
+            "Target"
+          )}
+
+        </div>
+
+        ${myGiftImage}
+
+        <div>
+
+          🏪 Wholesaler:
+
+          <strong>
+
+            ${escapeHtml(
+              wholesaler?.shop_name ||
+              wholesaler?.full_name ||
+              "Wholesaler"
+            )}
+
+          </strong>
+
+        </div>
+
+        <div style="
+          margin-top:8px;
+        ">
+
+          💰 Shopping:
+
+          <strong>
+            ₹${achieved.toFixed(2)}
+          </strong>
+
+          /
+
+          ₹${target.toFixed(2)}
+
+        </div>
+
+        <div class="progress-bg">
+
+          <div
+            class="progress-fill"
+            style="
+              width:${progress}%;
+            "
+          ></div>
+
+        </div>
+
+        <div class="progress-text">
+
+          ${progress.toFixed(1)}%
+          Complete
+
+        </div>
+
+        <div style="
+          margin-top:8px;
+        ">
+
+          ⏳
+          ${escapeHtml(
+            daysText
+          )}
+
+        </div>
+
+        <div class="reward-gift">
+
+          🎁 Gift:
+
+          <strong>
+
+            ${escapeHtml(
+              offer?.gift_name ||
+              "Gift"
+            )}
+
+          </strong>
+
+          ${
+            offer?.gift_description
+            ? `
+              <div style="
+                font-size:13px;
+                margin-top:4px;
+              ">
+
+                ${escapeHtml(
+                  offer.gift_description
+                )}
+
+              </div>
+            `
+            : ""
+          }
+
+        </div>
+
+        <div class="${statusClass}">
+
+          ${statusText}
+
+        </div>
+
+      `;
+
+
+      myRewardsList.appendChild(
+        card
+      );
+
     }
+  );
 
-
-    const card =
-      document.createElement("div");
-
-    card.className =
-      "reward-card";
-
-
-    card.innerHTML = `
-
-      <div class="reward-title">
-        🎯 ${escapeHtml(
-          offer?.title ||
-          "Target"
-        )}
-      </div>
-
-      <div>
-        🏪 Wholesaler:
-        <strong>
-          ${escapeHtml(
-            wholesaler?.shop_name ||
-            wholesaler?.full_name ||
-            "Wholesaler"
-          )}
-        </strong>
-      </div>
-
-      <div style="margin-top:8px;">
-        💰 Shopping:
-        <strong>
-          ₹${achieved.toFixed(2)}
-        </strong>
-        /
-        ₹${target.toFixed(2)}
-      </div>
-
-      <div class="progress-bg">
-        <div
-          class="progress-fill"
-          style="width:${progress}%"
-        ></div>
-      </div>
-
-      <div class="progress-text">
-        ${progress.toFixed(1)}% Complete
-      </div>
-
-      <div style="margin-top:8px;">
-        ⏳ ${escapeHtml(daysText)}
-      </div>
-
-      <div class="reward-gift">
-        🎁 Gift:
-        <strong>
-          ${escapeHtml(
-            offer?.gift_name ||
-            "Gift"
-          )}
-        </strong>
-      </div>
-
-      <div class="${statusClass}">
-        ${statusText}
-      </div>
-
-    `;
-
-    myRewardsList.appendChild(card);
-  });
 }
 
 
@@ -1455,6 +2053,7 @@ async function startReward() {
       "rewardOfferSelect"
     ).value;
 
+
   const wholesalerId =
     document.getElementById(
       "rewardWholesalerSelect"
@@ -1463,7 +2062,9 @@ async function startReward() {
 
   if (!offerId) {
 
-    alert("Pehle target select karein.");
+    alert(
+      "Pehle target select karein."
+    );
 
     return;
   }
@@ -1471,13 +2072,13 @@ async function startReward() {
 
   if (!wholesalerId) {
 
-    alert("Pehle wholesaler select karein.");
+    alert(
+      "Pehle wholesaler select karein."
+    );
 
     return;
   }
 
-
-  // Get offer
 
   const {
     data: offer,
@@ -1485,38 +2086,62 @@ async function startReward() {
   } = await supabaseClient
     .from("reward_offers")
     .select("*")
-    .eq("id", offerId)
+    .eq(
+      "id",
+      offerId
+    )
     .single();
 
 
-  if (offerError || !offer) {
+  if (
+    offerError ||
+    !offer
+  ) {
 
-    alert("Target details nahi mili.");
+    alert(
+      "Target details nahi mili."
+    );
 
     return;
   }
 
-
-  // Check existing active target
 
   const {
     data: existing,
     error: existingError
   } = await supabaseClient
     .from("retailer_rewards")
-    .select("id,status")
-    .eq("retailer_id", currentUser.id)
-    .eq("wholesaler_id", wholesalerId)
-    .eq("reward_offer_id", offerId)
-    .eq("status", "active")
+    .select(
+      "id,status"
+    )
+    .eq(
+      "retailer_id",
+      currentUser.id
+    )
+    .eq(
+      "wholesaler_id",
+      wholesalerId
+    )
+    .eq(
+      "reward_offer_id",
+      offerId
+    )
+    .eq(
+      "status",
+      "active"
+    )
     .maybeSingle();
 
 
   if (existingError) {
 
-    console.error(existingError);
+    console.error(
+      existingError
+    );
 
-    alert("Target check nahi ho paya.");
+    alert(
+      "Target check nahi ho paya."
+    );
 
     return;
   }
@@ -1539,7 +2164,9 @@ async function startReward() {
   const deadlineAt =
     new Date(
       startedAt.getTime() +
-      Number(offer.duration_days) *
+      Number(
+        offer.duration_days
+      ) *
       24 *
       60 *
       60 *
@@ -1553,11 +2180,14 @@ async function startReward() {
     .from("retailer_rewards")
     .insert({
 
-      retailer_id: currentUser.id,
+      retailer_id:
+        currentUser.id,
 
-      wholesaler_id: wholesalerId,
+      wholesaler_id:
+        wholesalerId,
 
-      reward_offer_id: offer.id,
+      reward_offer_id:
+        offer.id,
 
       started_at:
         startedAt.toISOString(),
@@ -1566,19 +2196,28 @@ async function startReward() {
         deadlineAt.toISOString(),
 
       target_amount:
-        Number(offer.target_amount),
+        Number(
+          offer.target_amount
+        ),
 
-      achieved_amount: 0,
+      achieved_amount:
+        0,
 
-      progress_percent: 0,
+      progress_percent:
+        0,
 
-      status: "active"
+      status:
+        "active"
+
     });
 
 
   if (insertError) {
 
-    console.error(insertError);
+    console.error(
+      insertError
+    );
+
 
     alert(
       "Target start nahi ho paya: " +
@@ -1590,16 +2229,26 @@ async function startReward() {
 
 
   alert(
+
     `🎉 Target start ho gaya!\n\n` +
+
     `Target: ₹${Number(
       offer.target_amount
     ).toFixed(0)}\n` +
-    `Time: ${offer.duration_days} days\n` +
-    `Gift: ${offer.gift_name}`
+
+    `Time: ${
+      offer.duration_days
+    } days\n` +
+
+    `Gift: ${
+      offer.gift_name
+    }`
+
   );
 
 
   await loadRewards();
+
 }
 
 
@@ -1609,12 +2258,35 @@ async function startReward() {
 
 function escapeHtml(value) {
 
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+  return String(
+    value ?? ""
+  )
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
 }
 
 
@@ -1624,14 +2296,19 @@ function escapeHtml(value) {
 
 async function logout() {
 
-  await supabaseClient.auth.signOut();
+  await supabaseClient
+    .auth
+    .signOut();
+
 
   localStorage.removeItem(
     "localWholesaleCart"
   );
 
+
   window.location.href =
     "index.html";
+
 }
 
 
