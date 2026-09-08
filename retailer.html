@@ -1,30 +1,56 @@
 <!DOCTYPE html>
-<html lang="hi">
-
+<html lang="en">
 <head>
-
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Local Wholesale - Retailer</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-
     * {
       box-sizing: border-box;
     }
 
     body {
       margin: 0;
-      background: #f5f7fb;
       font-family: Arial, sans-serif;
+      background: #f5f7fb;
       color: #222;
+    }
+
+    header {
+      background: #0d6efd;
+      color: white;
+      padding: 15px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo {
+      font-size: 21px;
+      font-weight: bold;
+    }
+
+    button {
+      border: none;
+      border-radius: 8px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .logout-btn {
+      background: white;
+      color: #0d6efd;
     }
 
     .container {
@@ -33,45 +59,21 @@
       padding: 15px;
     }
 
-    .header {
-      background: white;
-      padding: 15px;
-      border-radius: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-      box-shadow: 0 2px 10px rgba(0,0,0,.06);
-    }
-
-    .logo {
-      font-size: 20px;
-      font-weight: bold;
-    }
-
     .welcome {
-      font-size: 13px;
-      color: #666;
-      margin-top: 4px;
+      background: white;
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
     }
 
-    .logout {
-      border: none;
-      background: #ef4444;
-      color: white;
-      padding: 9px 13px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    .search {
+    .search-box {
       width: 100%;
       padding: 13px;
       border: 1px solid #ddd;
-      border-radius: 12px;
-      font-size: 15px;
+      border-radius: 10px;
       margin-bottom: 12px;
-      outline: none;
+      font-size: 16px;
     }
 
     .categories {
@@ -81,1455 +83,1565 @@
       padding-bottom: 10px;
     }
 
-    .category {
-      white-space: nowrap;
-      border: none;
+    .category-btn {
       background: white;
-      padding: 9px 14px;
-      border-radius: 20px;
-      cursor: pointer;
-      box-shadow: 0 1px 5px rgba(0,0,0,.08);
+      border: 1px solid #ddd;
+      white-space: nowrap;
     }
 
-    .category.active {
-      background: #2563eb;
+    .category-btn.active {
+      background: #0d6efd;
       color: white;
     }
 
-    .products {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-top: 15px;
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 15px 0;
     }
 
-    .product {
+    .action-btn {
       background: white;
-      border-radius: 14px;
+      border: 1px solid #ddd;
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .section {
+      background: white;
+      padding: 15px;
+      border-radius: 12px;
+      margin-top: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 14px;
+    }
+
+    .product-card {
+      background: white;
+      border: 1px solid #eee;
+      border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,.07);
+      box-shadow: 0 2px 7px rgba(0,0,0,.05);
     }
 
-    .product-image,
-    .no-image {
+    .product-card img {
       width: 100%;
-      height: 140px;
-    }
-
-    .product-image {
+      height: 150px;
       object-fit: cover;
       background: #eee;
     }
 
-    .no-image {
-      background: #eee;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 45px;
-    }
-
     .product-info {
-      padding: 11px;
+      padding: 12px;
     }
 
     .product-name {
       font-weight: bold;
       font-size: 16px;
+      margin-bottom: 5px;
     }
 
     .shop-name {
       color: #666;
-      font-size: 12px;
-      margin-top: 5px;
-    }
-
-    .category-name {
-      display: inline-block;
-      background: #eef2ff;
-      color: #4338ca;
-      font-size: 11px;
-      padding: 4px 7px;
-      border-radius: 6px;
-      margin-top: 7px;
+      font-size: 13px;
+      margin-bottom: 8px;
     }
 
     .price {
-      font-size: 17px;
+      font-size: 18px;
       font-weight: bold;
-      margin-top: 8px;
+      color: #198754;
     }
 
-    .stock {
-      font-size: 12px;
-      color: #555;
-      margin-top: 4px;
+    .mrp {
+      font-size: 13px;
+      color: #777;
     }
 
-    .add-cart {
+    .add-btn {
       width: 100%;
-      margin-top: 9px;
-      border: none;
-      background: #16a34a;
+      margin-top: 10px;
+      background: #198754;
       color: white;
-      padding: 10px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    .add-cart:disabled {
-      background: #aaa;
-      cursor: not-allowed;
     }
 
     .cart-bar {
-      position: sticky;
-      bottom: 10px;
-      margin-top: 20px;
-      background: #111827;
+      position: fixed;
+      bottom: 15px;
+      left: 15px;
+      right: 15px;
+      max-width: 700px;
+      margin: auto;
+      background: #198754;
       color: white;
-      padding: 13px 16px;
+      padding: 13px;
       border-radius: 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      z-index: 20;
+      box-shadow: 0 4px 15px rgba(0,0,0,.2);
     }
 
-    .cart-button {
-      border: none;
-      background: #f59e0b;
-      color: white;
-      padding: 9px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    .orders-button {
-      width: 100%;
-      margin-top: 15px;
-      padding: 13px;
-      border: none;
-      border-radius: 10px;
-      background: #2563eb;
-      color: white;
-      cursor: pointer;
-      font-size: 15px;
+    .cart-btn {
+      background: white;
+      color: #198754;
       font-weight: bold;
     }
 
-    .orders-section {
-      display: none;
-      margin-top: 15px;
-    }
-
     .order-card {
-      background: white;
-      padding: 15px;
-      border-radius: 12px;
-      margin-bottom: 15px;
-      box-shadow: 0 2px 8px rgba(0,0,0,.07);
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 12px;
     }
 
-    .order-card h3 {
-      margin-top: 0;
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
-    .status-box {
-      margin-top: 10px;
-      padding: 10px;
-      background: #f5f7fb;
-      border-radius: 9px;
+    .status {
+      font-weight: bold;
+      color: #0d6efd;
     }
 
     .order-item {
       display: flex;
+      align-items: center;
       gap: 10px;
-      align-items: center;
-      margin-top: 10px;
-      padding: 10px;
-      background: #f7f7f7;
-      border-radius: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
     }
 
-    .order-item img,
-    .order-placeholder {
-      width: 65px;
-      height: 65px;
-      border-radius: 8px;
+    .order-item img {
+      width: 55px;
+      height: 55px;
       object-fit: cover;
-      flex-shrink: 0;
-    }
-
-    .order-placeholder {
+      border-radius: 8px;
       background: #eee;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 25px;
     }
 
-    .message {
-      text-align: center;
-      padding: 25px;
-      color: #666;
+    .reward-card {
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 14px;
+      background: #fff;
     }
 
-    @media (min-width: 700px) {
+    .reward-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
 
-      .products {
-        grid-template-columns: repeat(4, 1fr);
+    .reward-gift {
+      background: #fff3cd;
+      padding: 9px;
+      border-radius: 8px;
+      margin: 10px 0;
+    }
+
+    .reward-select {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-top: 8px;
+      margin-bottom: 10px;
+      background: white;
+    }
+
+    .start-btn {
+      background: #6f42c1;
+      color: white;
+      width: 100%;
+    }
+
+    .progress-bg {
+      height: 18px;
+      background: #e9ecef;
+      border-radius: 20px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: #198754;
+      width: 0%;
+      transition: width .3s;
+    }
+
+    .progress-text {
+      font-weight: bold;
+    }
+
+    .complete {
+      color: #198754;
+      font-weight: bold;
+    }
+
+    .expired {
+      color: #dc3545;
+      font-weight: bold;
+    }
+
+    .refresh-btn {
+      background: #6c757d;
+      color: white;
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 9px;
       }
 
+      .product-card img {
+        height: 120px;
+      }
+
+      .product-info {
+        padding: 9px;
+      }
+
+      .product-name {
+        font-size: 14px;
+      }
+
+      .price {
+        font-size: 16px;
+      }
     }
-
   </style>
-
 </head>
-
 
 <body>
 
+<header>
+  <div class="topbar">
+    <div class="logo">🛒 Local Wholesale</div>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+</header>
+
 <div class="container">
 
-
-  <!-- HEADER -->
-
-  <div class="header">
-
-    <div>
-
-      <div class="logo">
-        🛒 Local Wholesale
-      </div>
-
-      <div
-        class="welcome"
-        id="welcome"
-      >
-        Loading...
-      </div>
-
-    </div>
-
-    <button
-      class="logout"
-      onclick="logout()"
-    >
-      Logout
-    </button>
-
+  <div class="welcome">
+    <h3 id="welcomeText">Welcome</h3>
+    <div>Apne local wholesaler se direct order karein.</div>
   </div>
-
-
-  <!-- SEARCH -->
 
   <input
-    type="search"
-    id="search"
-    class="search"
-    placeholder="🔍 Product search karein..."
+    type="text"
+    id="searchInput"
+    class="search-box"
+    placeholder="🔍 Product ya wholesaler search karein..."
   >
-
-
-  <!-- CATEGORIES -->
 
   <div class="categories">
-
-    <button
-      class="category active"
-      onclick="changeCategory('all', this)"
-    >
-      All
-    </button>
-
-    <button
-      class="category"
-      onclick="changeCategory('Kirana/Grocery', this)"
-    >
-      Kirana
-    </button>
-
-    <button
-      class="category"
-      onclick="changeCategory('Cold Drinks/Beverages', this)"
-    >
-      Cold Drinks
-    </button>
-
-    <button
-      class="category"
-      onclick="changeCategory('Cosmetics', this)"
-    >
-      Cosmetics
-    </button>
-
-    <button
-      class="category"
-      onclick="changeCategory('Stationery', this)"
-    >
-      Stationery
-    </button>
-
-    <button
-      class="category"
-      onclick="changeCategory('Electrical', this)"
-    >
-      Electrical
-    </button>
-
+    <button class="category-btn active" onclick="changeCategory('all', this)">All</button>
+    <button class="category-btn" onclick="changeCategory('Kirana', this)">Kirana</button>
+    <button class="category-btn" onclick="changeCategory('Cold Drinks', this)">Cold Drinks</button>
+    <button class="category-btn" onclick="changeCategory('Cosmetics', this)">Cosmetics</button>
+    <button class="category-btn" onclick="changeCategory('Stationery', this)">Stationery</button>
+    <button class="category-btn" onclick="changeCategory('Electrical', this)">Electrical</button>
+    <button class="category-btn" onclick="changeCategory('Other', this)">Other</button>
   </div>
 
-
-  <!-- MESSAGE -->
-
-  <div id="message"></div>
-
+  <div class="actions">
+    <button class="action-btn" onclick="showProducts()">🛍️ Products</button>
+    <button class="action-btn" onclick="showMyOrders()">📦 My Orders</button>
+    <button class="action-btn" onclick="showRewards()">🎁 Target & Gifts</button>
+  </div>
 
   <!-- PRODUCTS -->
-
-  <div
-    id="products"
-    class="products"
-  ></div>
-
-
-  <!-- MY ORDERS BUTTON -->
-
-  <button
-    type="button"
-    class="orders-button"
-    onclick="showMyOrders()"
-  >
-    📦 My Orders
-  </button>
-
-
-  <!-- MY ORDERS -->
-
-  <section
-    id="myOrdersSection"
-    class="orders-section"
-  >
-
-    <h2>
-      📦 My Orders
-    </h2>
-
-    <div id="myOrdersList"></div>
-
-  </section>
-
-
-  <!-- CART -->
-
-  <div class="cart-bar">
-
-    <div>
-
-      🛒 Cart:
-      <strong id="cartCount">0</strong>
-      items
-
+  <div id="productsSection" class="section">
+    <h2>🛍️ Products</h2>
+    <div id="productsGrid" class="products-grid">
+      Loading products...
     </div>
-
-    <button
-      class="cart-button"
-      onclick="openCart()"
-    >
-      View Cart
-    </button>
-
   </div>
 
+  <!-- ORDERS -->
+  <div id="ordersSection" class="section hidden">
+    <h2>📦 My Orders</h2>
+    <div id="ordersList">Loading orders...</div>
+  </div>
+
+  <!-- REWARDS -->
+  <div id="rewardSection" class="section hidden">
+
+    <h2>🎁 Target & Gifts</h2>
+
+    <p>
+      Kisi ek wholesaler ko select karke target complete karein aur gift paayein.
+    </p>
+
+    <button class="refresh-btn" onclick="loadRewards()">
+      🔄 Refresh
+    </button>
+
+    <h3>🎯 Available Targets</h3>
+
+    <div id="rewardOffersList">
+      Loading targets...
+    </div>
+
+    <h3>▶️ Start Target</h3>
+
+    <select id="rewardOfferSelect" class="reward-select">
+      <option value="">Target select karein</option>
+    </select>
+
+    <select id="rewardWholesalerSelect" class="reward-select">
+      <option value="">Wholesaler select karein</option>
+    </select>
+
+    <button class="start-btn" onclick="startReward()">
+      🚀 Start Target
+    </button>
+
+    <h3 style="margin-top:25px;">📊 My Targets</h3>
+
+    <div id="myRewardsList">
+      Abhi koi target start nahi kiya hai.
+    </div>
+
+  </div>
 
 </div>
 
+<!-- CART BAR -->
+<div class="cart-bar">
+  <div>
+    🛒 Cart:
+    <strong id="cartCount">0</strong> items
+  </div>
+
+  <button class="cart-btn" onclick="openCart()">
+    View Cart
+  </button>
+</div>
 
 <script>
 
+const SUPABASE_URL =
+  "https://izxvsvyvvtbaxtxgcfav.supabase.co";
 
-  /* =========================
-     SUPABASE
-  ========================= */
+const SUPABASE_KEY =
+  "sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI";
 
-  const SUPABASE_URL =
-    "https://izxvsvyvvtbaxtxgcfav.supabase.co";
+const supabaseClient =
+  supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  const SUPABASE_KEY =
-    "sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI";
+let currentUser = null;
+let currentProfile = null;
 
-  const supabaseClient =
-    window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
-    );
-
-
-  /* =========================
-     VARIABLES
-  ========================= */
-
-  let products = [];
-
-  let selectedCategory = "all";
+let allProducts = [];
+let currentCategory = "all";
+let currentSearch = "";
 
 
-  /* =========================
-     INIT
-  ========================= */
+// ===============================
+// INIT
+// ===============================
 
-  async function init() {
+async function init() {
 
-    const {
-      data: {
-        user
-      },
-      error
-    } =
-      await supabaseClient.auth.getUser();
+  const {
+    data: { user },
+    error
+  } = await supabaseClient.auth.getUser();
 
-
-    if (error || !user) {
-
-      window.location.href =
-        "index.html";
-
-      return;
-
-    }
-
-
-    const {
-      data: profile,
-      error: profileError
-    } =
-      await supabaseClient
-        .from("profiles")
-        .select(
-          "full_name, shop_name, role"
-        )
-        .eq(
-          "id",
-          user.id
-        )
-        .single();
-
-
-    if (
-      profileError ||
-      !profile
-    ) {
-
-      document.getElementById(
-        "message"
-      ).innerHTML =
-        "⚠️ Profile नहीं मिला।";
-
-      return;
-
-    }
-
-
-    if (
-      profile.role !== "retailer"
-    ) {
-
-      document.getElementById(
-        "message"
-      ).innerHTML =
-        "⚠️ यह dashboard केवल Retailer के लिए है।";
-
-      return;
-
-    }
-
-
-    document.getElementById(
-      "welcome"
-    ).innerText =
-      "Namaste " +
-      (
-        profile.full_name ||
-        "Retailer"
-      );
-
-
-    updateCartCount();
-
-    await loadProducts();
-
+  if (error || !user) {
+    window.location.href = "index.html";
+    return;
   }
 
+  currentUser = user;
 
-  /* =========================
-     LOAD PRODUCTS
-  ========================= */
+  const { data: profile } =
+    await supabaseClient
+      .from("profiles")
+      .select("*")
+      .eq("id", user.id)
+      .single();
 
-  async function loadProducts() {
-
-    const box =
-      document.getElementById(
-        "products"
-      );
-
-
-    box.innerHTML =
-      '<div class="message">📦 Products load हो रहे हैं...</div>';
-
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("products")
-        .select(`
-          id,
-          wholesaler_id,
-          category,
-          product_name,
-          description,
-          price,
-          unit,
-          stock,
-          image_url,
-          is_active
-        `)
-        .eq(
-          "is_active",
-          true
-        )
-        .order(
-          "created_at",
-          {
-            ascending: false
-          }
-        );
-
-
-    if (error) {
-
-      console.error(error);
-
-      box.innerHTML =
-        `<div class="message">
-          ❌ Products load नहीं हो पाए।<br>
-          ${escapeHtml(error.message)}
-        </div>`;
-
-      return;
-
-    }
-
-
-    products = data || [];
-
-
-    const wholesalerIds =
-      [
-        ...new Set(
-          products
-            .map(
-              p =>
-                p.wholesaler_id
-            )
-            .filter(Boolean)
-        )
-      ];
-
-
-    if (
-      wholesalerIds.length > 0
-    ) {
-
-      const {
-        data: profiles
-      } =
-        await supabaseClient
-          .from("profiles")
-          .select(
-            "id,full_name,shop_name"
-          )
-          .in(
-            "id",
-            wholesalerIds
-          );
-
-
-      const profileMap = {};
-
-
-      (
-        profiles || []
-      ).forEach(
-        profile => {
-
-          profileMap[
-            profile.id
-          ] = profile;
-
-        }
-      );
-
-
-      products =
-        products.map(
-          product => ({
-
-            ...product,
-
-            wholesaler:
-              profileMap[
-                product.wholesaler_id
-              ] || null
-
-          })
-        );
-
-    }
-
-
-    renderProducts();
-
+  if (!profile || profile.role !== "retailer") {
+    alert("Retailer account required.");
+    await supabaseClient.auth.signOut();
+    window.location.href = "index.html";
+    return;
   }
 
+  currentProfile = profile;
 
-  /* =========================
-     CATEGORY
-  ========================= */
+  document.getElementById("welcomeText").textContent =
+    "Welcome, " + (profile.full_name || "Retailer");
 
-  function changeCategory(
-    category,
-    button
-  ) {
-
-    selectedCategory =
-      category;
+  updateCartCount();
+  loadProducts();
+}
 
 
-    document
-      .querySelectorAll(
-        ".category"
-      )
-      .forEach(
-        btn => {
+// ===============================
+// SHOW SECTIONS
+// ===============================
 
-          btn.classList.remove(
-            "active"
-          );
+function hideSections() {
 
-        }
-      );
+  document.getElementById("productsSection")
+    .classList.add("hidden");
 
+  document.getElementById("ordersSection")
+    .classList.add("hidden");
 
-    button.classList.add(
-      "active"
-    );
+  document.getElementById("rewardSection")
+    .classList.add("hidden");
+}
 
 
-    renderProducts();
+function showProducts() {
 
+  hideSections();
+
+  document.getElementById("productsSection")
+    .classList.remove("hidden");
+
+  loadProducts();
+}
+
+
+async function showMyOrders() {
+
+  hideSections();
+
+  document.getElementById("ordersSection")
+    .classList.remove("hidden");
+
+  const list =
+    document.getElementById("ordersList");
+
+  list.innerHTML = "Loading orders...";
+
+  if (!currentUser) return;
+
+  const { data: orders, error } =
+    await supabaseClient
+      .from("orders")
+      .select("*")
+      .eq("retailer_id", currentUser.id)
+      .order("created_at", { ascending: false });
+
+  if (error) {
+    list.innerHTML =
+      "<p>Orders load nahi ho pa rahe.</p>";
+    console.error(error);
+    return;
   }
 
+  if (!orders || orders.length === 0) {
+    list.innerHTML =
+      "<p>Abhi koi order nahi hai.</p>";
+    return;
+  }
 
-  /* =========================
-     RENDER PRODUCTS
-  ========================= */
+  const orderIds =
+    orders.map(o => o.id);
 
-  function renderProducts() {
+  const { data: items } =
+    await supabaseClient
+      .from("order_items")
+      .select("*")
+      .in("order_id", orderIds);
 
-    const box =
-      document.getElementById(
-        "products"
+  list.innerHTML = "";
+
+  orders.forEach(order => {
+
+    const orderItems =
+      (items || []).filter(
+        item => item.order_id === order.id
       );
 
+    const card =
+      document.createElement("div");
 
-    const search =
-      document.getElementById(
-        "search"
-      )
-      .value
-      .trim()
-      .toLowerCase();
+    card.className = "order-card";
 
+    let itemsHtml = "";
 
-    const list =
-      products.filter(
-        product => {
+    orderItems.forEach(item => {
 
-          if (
-            selectedCategory !==
-              "all" &&
-            product.category !==
-              selectedCategory
-          ) {
+      const image =
+        item.image_url ||
+        "https://via.placeholder.com/100?text=Product";
 
-            return false;
+      itemsHtml += `
+        <div class="order-item">
+          <img
+            src="${escapeHtml(image)}"
+            alt="Product"
+          >
 
-          }
+          <div>
+            <strong>
+              ${escapeHtml(item.product_name || "")}
+            </strong>
 
-
-          if (!search) {
-
-            return true;
-
-          }
-
-
-          const name =
-            (
-              product.product_name ||
-              ""
-            ).toLowerCase();
-
-
-          const category =
-            (
-              product.category ||
-              ""
-            ).toLowerCase();
-
-
-          const shop =
-            (
-              product.wholesaler
-                ?.shop_name ||
-              ""
-            ).toLowerCase();
-
-
-          return (
-            name.includes(search) ||
-            category.includes(search) ||
-            shop.includes(search)
-          );
-
-        }
-      );
-
-
-    if (
-      list.length === 0
-    ) {
-
-      box.innerHTML =
-        '<div class="message">📦 कोई product नहीं मिला।</div>';
-
-      return;
-
-    }
-
-
-    box.innerHTML =
-      list.map(
-        product => {
-
-          const stock =
-            Number(
-              product.stock || 0
-            );
-
-
-          const image =
-            product.image_url
-
-              ?
-
-              `
-              <img
-                class="product-image"
-                src="${escapeHtml(
-                  product.image_url
-                )}"
-                alt="${escapeHtml(
-                  product.product_name
-                )}"
-              >
-              `
-
-              :
-
-              `
-              <div class="no-image">
-                📦
-              </div>
-              `;
-
-
-          const shop =
-            product.wholesaler
-              ?.shop_name ||
-            product.wholesaler
-              ?.full_name ||
-            "Local Wholesaler";
-
-
-          return `
-
-            <div class="product">
-
-              ${image}
-
-              <div class="product-info">
-
-                <div class="product-name">
-                  ${escapeHtml(
-                    product.product_name
-                  )}
-                </div>
-
-                <div class="shop-name">
-                  🏪
-                  ${escapeHtml(shop)}
-                </div>
-
-                <div class="category-name">
-                  ${escapeHtml(
-                    product.category
-                  )}
-                </div>
-
-                <div class="price">
-                  ₹${Number(
-                    product.price || 0
-                  ).toFixed(2)}
-                  /
-                  ${escapeHtml(
-                    product.unit ||
-                    "piece"
-                  )}
-                </div>
-
-                <div class="stock">
-
-                  ${
-                    stock > 0
-                      ? "Stock: " +
-                        stock
-                      : "❌ Out of stock"
-                  }
-
-                </div>
-
-
-                <button
-                  class="add-cart"
-                  ${
-                    stock <= 0
-                      ? "disabled"
-                      : ""
-                  }
-                  onclick="addToCart('${product.id}')"
-                >
-
-                  ${
-                    stock > 0
-                      ? "🛒 Add to Cart"
-                      : "Out of Stock"
-                  }
-
-                </button>
-
-              </div>
-
+            <div>
+              Qty: ${Number(item.quantity || 0)}
             </div>
 
-          `;
+            <div>
+              Price: ₹${Number(item.price || 0).toFixed(2)}
+            </div>
+          </div>
+        </div>
+      `;
+    });
 
+    card.innerHTML = `
+      <div class="order-header">
+        <div>
+          <strong>Order #${order.id.slice(0,8)}</strong>
+          <div>
+            ${new Date(order.created_at).toLocaleString()}
+          </div>
+        </div>
+
+        <div class="status">
+          ${escapeHtml(order.status || "pending")}
+        </div>
+      </div>
+
+      <hr>
+
+      ${itemsHtml}
+
+      <hr>
+
+      <div>
+        <strong>Total:</strong>
+        ₹${Number(order.total || 0).toFixed(2)}
+      </div>
+
+      <div>
+        Delivery:
+        <strong>
+          ${escapeHtml(order.delivery_status || "pending")}
+        </strong>
+      </div>
+
+      <div>
+        Payment:
+        <strong>
+          ${escapeHtml(order.payment_status || "pending")}
+        </strong>
+      </div>
+    `;
+
+    list.appendChild(card);
+  });
+}
+
+
+// ===============================
+// PRODUCTS
+// ===============================
+
+async function loadProducts() {
+
+  const grid =
+    document.getElementById("productsGrid");
+
+  grid.innerHTML = "Loading products...";
+
+  const { data: products, error } =
+    await supabaseClient
+      .from("products")
+      .select("*")
+      .eq("is_active", true)
+      .order("created_at", { ascending: false });
+
+  if (error) {
+
+    console.error(error);
+
+    grid.innerHTML =
+      "<p>Products load nahi ho pa rahe.</p>";
+
+    return;
+  }
+
+  allProducts = products || [];
+
+  const wholesalerIds =
+    [...new Set(
+      allProducts.map(p => p.wholesaler_id)
+    )];
+
+  let wholesalers = [];
+
+  if (wholesalerIds.length > 0) {
+
+    const { data } =
+      await supabaseClient
+        .from("profiles")
+        .select("id,full_name,shop_name,mobile")
+        .in("id", wholesalerIds);
+
+    wholesalers = data || [];
+  }
+
+  allProducts =
+    allProducts.map(product => {
+
+      const shop =
+        wholesalers.find(
+          w => w.id === product.wholesaler_id
+        );
+
+      return {
+        ...product,
+        wholesaler: shop || {}
+      };
+    });
+
+  renderProducts();
+}
+
+
+function renderProducts() {
+
+  const grid =
+    document.getElementById("productsGrid");
+
+  let products =
+    allProducts.filter(product => {
+
+      const categoryMatch =
+        currentCategory === "all" ||
+        (product.category || "").toLowerCase() ===
+        currentCategory.toLowerCase();
+
+      const searchText =
+        currentSearch.toLowerCase();
+
+      const searchMatch =
+        !searchText ||
+        (product.product_name || "")
+          .toLowerCase()
+          .includes(searchText) ||
+
+        (product.wholesaler?.shop_name || "")
+          .toLowerCase()
+          .includes(searchText);
+
+      return categoryMatch && searchMatch;
+    });
+
+  if (products.length === 0) {
+
+    grid.innerHTML =
+      "<p>No products found.</p>";
+
+    return;
+  }
+
+  grid.innerHTML = "";
+
+  products.forEach(product => {
+
+    const card =
+      document.createElement("div");
+
+    card.className = "product-card";
+
+    const image =
+      product.image_url ||
+      "https://via.placeholder.com/300?text=Product";
+
+    card.innerHTML = `
+      <img
+        src="${escapeHtml(image)}"
+        alt="Product"
+      >
+
+      <div class="product-info">
+
+        <div class="product-name">
+          ${escapeHtml(product.product_name || "")}
+        </div>
+
+        <div class="shop-name">
+          🏪
+          ${escapeHtml(
+            product.wholesaler?.shop_name ||
+            product.wholesaler?.full_name ||
+            "Wholesaler"
+          )}
+        </div>
+
+        <div class="price">
+          ₹${Number(product.price || 0).toFixed(2)}
+          / ${escapeHtml(product.unit || "piece")}
+        </div>
+
+        ${
+          Number(product.mrp || 0) > 0
+          ? `
+            <div class="mrp">
+              MRP: ₹${Number(product.mrp).toFixed(2)}
+            </div>
+          `
+          : ""
         }
-      ).join("");
 
+        <div style="font-size:13px;color:#666;margin-top:5px;">
+          Stock: ${Number(product.stock || 0)}
+        </div>
+
+        <button
+          class="add-btn"
+          onclick="addToCart('${product.id}')"
+        >
+          🛒 Add to Cart
+        </button>
+
+      </div>
+    `;
+
+    grid.appendChild(card);
+  });
+}
+
+
+function changeCategory(category, button) {
+
+  currentCategory = category;
+
+  document
+    .querySelectorAll(".category-btn")
+    .forEach(btn =>
+      btn.classList.remove("active")
+    );
+
+  button.classList.add("active");
+
+  renderProducts();
+}
+
+
+document
+  .getElementById("searchInput")
+  .addEventListener("input", function() {
+
+    currentSearch = this.value.trim();
+
+    renderProducts();
+  });
+
+
+// ===============================
+// CART
+// ===============================
+
+function getCart() {
+
+  try {
+
+    return JSON.parse(
+      localStorage.getItem("localWholesaleCart") || "[]"
+    );
+
+  } catch (e) {
+
+    return [];
+  }
+}
+
+
+function saveCart(cart) {
+
+  localStorage.setItem(
+    "localWholesaleCart",
+    JSON.stringify(cart)
+  );
+}
+
+
+function addToCart(productId) {
+
+  const product =
+    allProducts.find(
+      p => p.id === productId
+    );
+
+  if (!product) {
+    alert("Product nahi mila.");
+    return;
+  }
+
+  let cart = getCart();
+
+  const existing =
+    cart.find(
+      item => item.id === productId
+    );
+
+  if (existing) {
+
+    existing.qty =
+      Number(existing.qty || 0) + 1;
+
+  } else {
+
+    cart.push({
+      id: product.id,
+      product_name: product.product_name,
+      price: Number(product.price || 0),
+      image_url: product.image_url || null,
+      wholesaler_id: product.wholesaler_id,
+      unit: product.unit || "piece",
+      qty: 1
+    });
+  }
+
+  saveCart(cart);
+
+  updateCartCount();
+
+  alert("Product cart me add ho gaya.");
+}
+
+
+function updateCartCount() {
+
+  const cart = getCart();
+
+  const count =
+    cart.reduce(
+      (total, item) =>
+        total + Number(item.qty || 0),
+      0
+    );
+
+  document.getElementById("cartCount")
+    .textContent = count;
+}
+
+
+function openCart() {
+
+  window.location.href = "cart.html";
+}
+
+
+// ===============================
+// TARGET & GIFTS
+// ===============================
+
+async function showRewards() {
+
+  hideSections();
+
+  document
+    .getElementById("rewardSection")
+    .classList.remove("hidden");
+
+  await loadRewards();
+}
+
+
+async function loadRewards() {
+
+  const offersList =
+    document.getElementById("rewardOffersList");
+
+  const offerSelect =
+    document.getElementById("rewardOfferSelect");
+
+  const wholesalerSelect =
+    document.getElementById("rewardWholesalerSelect");
+
+  const myRewardsList =
+    document.getElementById("myRewardsList");
+
+  offersList.innerHTML =
+    "Loading targets...";
+
+  offerSelect.innerHTML =
+    `<option value="">Target select karein</option>`;
+
+  wholesalerSelect.innerHTML =
+    `<option value="">Wholesaler select karein</option>`;
+
+  myRewardsList.innerHTML =
+    "Loading...";
+
+
+  // -------------------------------
+  // ACTIVE OFFERS
+  // -------------------------------
+
+  const {
+    data: offers,
+    error: offersError
+  } = await supabaseClient
+    .from("reward_offers")
+    .select(`
+      id,
+      title,
+      target_amount,
+      duration_days,
+      gift_name,
+      gift_description,
+      gift_image_url,
+      start_date,
+      end_date,
+      gift_quantity,
+      is_active
+    `)
+    .eq("is_active", true)
+    .order("target_amount", {
+      ascending: true
+    });
+
+
+  if (offersError) {
+
+    console.error(offersError);
+
+    offersList.innerHTML =
+      "<p>Targets load nahi ho pa rahe.</p>";
+
+    return;
   }
 
 
-  /* =========================
-     ADD TO CART
-  ========================= */
+  const now = new Date();
 
-  function addToCart(
-    productId
-  ) {
+  const validOffers =
+    (offers || []).filter(offer => {
 
-    const product =
-      products.find(
-        p =>
-          p.id === productId
-      );
+      if (
+        offer.start_date &&
+        now < new Date(offer.start_date)
+      ) {
+        return false;
+      }
 
+      if (
+        offer.end_date &&
+        now > new Date(offer.end_date)
+      ) {
+        return false;
+      }
 
-    if (!product) {
-
-      return;
-
-    }
-
-
-    let cart =
-      JSON.parse(
-        localStorage.getItem(
-          "localWholesaleCart"
-        ) || "[]"
-      );
+      return true;
+    });
 
 
-    const existing =
-      cart.find(
-        item =>
-          item.id === productId
-      );
+  if (validOffers.length === 0) {
+
+    offersList.innerHTML =
+      "<p>Abhi koi active target available nahi hai.</p>";
+
+  } else {
+
+    offersList.innerHTML = "";
+
+    validOffers.forEach(offer => {
+
+      const card =
+        document.createElement("div");
+
+      card.className = "reward-card";
+
+      card.innerHTML = `
+
+        <div class="reward-title">
+          🎯 ${escapeHtml(offer.title)}
+        </div>
+
+        <div>
+          Target:
+          <strong>
+            ₹${Number(offer.target_amount).toFixed(2)}
+          </strong>
+        </div>
+
+        <div>
+          ⏳ Time:
+          <strong>
+            ${Number(offer.duration_days)} days
+          </strong>
+        </div>
+
+        <div class="reward-gift">
+          🎁 Gift:
+          <strong>
+            ${escapeHtml(offer.gift_name)}
+          </strong>
+
+          ${
+            offer.gift_description
+            ? `
+              <div style="font-size:13px;margin-top:4px;">
+                ${escapeHtml(offer.gift_description)}
+              </div>
+            `
+            : ""
+          }
+        </div>
+
+      `;
+
+      offersList.appendChild(card);
 
 
-    if (existing) {
+      const option =
+        document.createElement("option");
 
-      existing.qty =
-        Number(
-          existing.qty || 0
-        ) + 1;
+      option.value = offer.id;
 
-    }
+      option.textContent =
+        `${offer.title} → ₹${Number(
+          offer.target_amount
+        ).toFixed(0)} → ${offer.gift_name}`;
 
-    else {
-
-      cart.push({
-
-        id:
-          product.id,
-
-        product_name:
-          product.product_name,
-
-        price:
-          Number(
-            product.price || 0
-          ),
-
-        unit:
-          product.unit,
-
-        image_url:
-          product.image_url ||
-          null,
-
-        wholesaler_id:
-          product.wholesaler_id,
-
-        qty: 1
-
-      });
-
-    }
-
-
-    localStorage.setItem(
-      "localWholesaleCart",
-      JSON.stringify(cart)
-    );
-
-
-    updateCartCount();
-
-
-    alert(
-      "✅ Product Cart में add हो गया!"
-    );
-
+      offerSelect.appendChild(option);
+    });
   }
 
 
-  /* =========================
-     CART COUNT
-  ========================= */
+  // -------------------------------
+  // WHOLESALERS
+  // -------------------------------
 
-  function updateCartCount() {
+  const {
+    data: wholesalers,
+    error: wholesalerError
+  } = await supabaseClient
+    .from("profiles")
+    .select("id,full_name,shop_name,mobile")
+    .eq("role", "wholesaler")
+    .order("shop_name", {
+      ascending: true
+    });
 
-    const cart =
-      JSON.parse(
-        localStorage.getItem(
-          "localWholesaleCart"
-        ) || "[]"
+
+  if (wholesalerError) {
+
+    console.error(wholesalerError);
+
+    wholesalerSelect.innerHTML =
+      `<option value="">Wholesaler load nahi hua</option>`;
+
+  } else {
+
+    (wholesalers || []).forEach(shop => {
+
+      const option =
+        document.createElement("option");
+
+      option.value = shop.id;
+
+      option.textContent =
+        shop.shop_name ||
+        shop.full_name ||
+        "Wholesaler";
+
+      wholesalerSelect.appendChild(option);
+    });
+  }
+
+
+  // -------------------------------
+  // MY REWARDS
+  // -------------------------------
+
+  const {
+    data: rewards,
+    error: rewardsError
+  } = await supabaseClient
+    .from("retailer_rewards")
+    .select(`
+      id,
+      wholesaler_id,
+      reward_offer_id,
+      started_at,
+      deadline_at,
+      target_amount,
+      achieved_amount,
+      progress_percent,
+      status,
+      completed_at,
+      gift_claimed_at
+    `)
+    .eq("retailer_id", currentUser.id)
+    .order("created_at", {
+      ascending: false
+    });
+
+
+  if (rewardsError) {
+
+    console.error(rewardsError);
+
+    myRewardsList.innerHTML =
+      "<p>My Targets load nahi ho pa rahe.</p>";
+
+    return;
+  }
+
+
+  if (!rewards || rewards.length === 0) {
+
+    myRewardsList.innerHTML =
+      "<p>Abhi koi target start nahi kiya hai.</p>";
+
+    return;
+  }
+
+
+  const offerIds =
+    [...new Set(
+      rewards.map(r => r.reward_offer_id)
+    )];
+
+  const wholesalerIds =
+    [...new Set(
+      rewards.map(r => r.wholesaler_id)
+    )];
+
+
+  let rewardOffers = [];
+
+  let rewardWholesalers = [];
+
+
+  if (offerIds.length > 0) {
+
+    const { data } =
+      await supabaseClient
+        .from("reward_offers")
+        .select("*")
+        .in("id", offerIds);
+
+    rewardOffers = data || [];
+  }
+
+
+  if (wholesalerIds.length > 0) {
+
+    const { data } =
+      await supabaseClient
+        .from("profiles")
+        .select("id,full_name,shop_name")
+        .in("id", wholesalerIds);
+
+    rewardWholesalers = data || [];
+  }
+
+
+  myRewardsList.innerHTML = "";
+
+
+  rewards.forEach(reward => {
+
+    const offer =
+      rewardOffers.find(
+        o => o.id === reward.reward_offer_id
+      );
+
+    const wholesaler =
+      rewardWholesalers.find(
+        w => w.id === reward.wholesaler_id
       );
 
 
-    const count =
-      cart.reduce(
-        (
-          total,
-          item
-        ) =>
-          total +
-          Number(
-            item.qty || 0
-          ),
+    let achieved =
+      Number(reward.achieved_amount || 0);
+
+    let target =
+      Number(
+        reward.target_amount ||
+        offer?.target_amount ||
         0
       );
 
 
+    let progress =
+      target > 0
+      ? Math.min(
+          100,
+          (achieved / target) * 100
+        )
+      : 0;
+
+
+    if (
+      reward.progress_percent !== null &&
+      reward.progress_percent !== undefined
+    ) {
+      progress =
+        Math.min(
+          100,
+          Number(reward.progress_percent)
+        );
+    }
+
+
+    let statusText = "🎯 Active";
+
+    let statusClass = "";
+
+    let daysText = "";
+
+
+    if (reward.status === "completed") {
+
+      statusText =
+        "🎉 Target Complete - Gift Eligible";
+
+      statusClass =
+        "complete";
+
+    } else if (reward.status === "gift_claimed") {
+
+      statusText =
+        "🎁 Gift Claimed";
+
+      statusClass =
+        "complete";
+
+    } else {
+
+      const deadline =
+        reward.deadline_at
+        ? new Date(reward.deadline_at)
+        : null;
+
+
+      if (deadline) {
+
+        const difference =
+          deadline.getTime() - Date.now();
+
+        if (difference <= 0) {
+
+          statusText =
+            "⏰ Time Expired";
+
+          statusClass =
+            "expired";
+
+          daysText =
+            "समय समाप्त";
+
+        } else {
+
+          const days =
+            Math.ceil(
+              difference /
+              (1000 * 60 * 60 * 24)
+            );
+
+          daysText =
+            `${days} दिन बाकी`;
+        }
+      }
+    }
+
+
+    const card =
+      document.createElement("div");
+
+    card.className =
+      "reward-card";
+
+
+    card.innerHTML = `
+
+      <div class="reward-title">
+        🎯 ${escapeHtml(
+          offer?.title ||
+          "Target"
+        )}
+      </div>
+
+      <div>
+        🏪 Wholesaler:
+        <strong>
+          ${escapeHtml(
+            wholesaler?.shop_name ||
+            wholesaler?.full_name ||
+            "Wholesaler"
+          )}
+        </strong>
+      </div>
+
+      <div style="margin-top:8px;">
+        💰 Shopping:
+        <strong>
+          ₹${achieved.toFixed(2)}
+        </strong>
+        /
+        ₹${target.toFixed(2)}
+      </div>
+
+      <div class="progress-bg">
+        <div
+          class="progress-fill"
+          style="width:${progress}%"
+        ></div>
+      </div>
+
+      <div class="progress-text">
+        ${progress.toFixed(1)}% Complete
+      </div>
+
+      <div style="margin-top:8px;">
+        ⏳ ${escapeHtml(daysText)}
+      </div>
+
+      <div class="reward-gift">
+        🎁 Gift:
+        <strong>
+          ${escapeHtml(
+            offer?.gift_name ||
+            "Gift"
+          )}
+        </strong>
+      </div>
+
+      <div class="${statusClass}">
+        ${statusText}
+      </div>
+
+    `;
+
+    myRewardsList.appendChild(card);
+  });
+}
+
+
+// ===============================
+// START REWARD
+// ===============================
+
+async function startReward() {
+
+  const offerId =
     document.getElementById(
-      "cartCount"
-    ).innerText =
-      count;
+      "rewardOfferSelect"
+    ).value;
 
+  const wholesalerId =
+    document.getElementById(
+      "rewardWholesalerSelect"
+    ).value;
+
+
+  if (!offerId) {
+
+    alert("Pehle target select karein.");
+
+    return;
   }
 
 
-  /* =========================
-     OPEN CART
-  ========================= */
+  if (!wholesalerId) {
 
-  function openCart() {
+    alert("Pehle wholesaler select karein.");
 
-    window.location.href =
-      "cart.html";
-
+    return;
   }
 
 
-  /* =========================
-     SEARCH
-  ========================= */
+  // Get offer
 
-  document
-    .getElementById(
-      "search"
-    )
-    .addEventListener(
-      "input",
-      renderProducts
+  const {
+    data: offer,
+    error: offerError
+  } = await supabaseClient
+    .from("reward_offers")
+    .select("*")
+    .eq("id", offerId)
+    .single();
+
+
+  if (offerError || !offer) {
+
+    alert("Target details nahi mili.");
+
+    return;
+  }
+
+
+  // Check existing active target
+
+  const {
+    data: existing,
+    error: existingError
+  } = await supabaseClient
+    .from("retailer_rewards")
+    .select("id,status")
+    .eq("retailer_id", currentUser.id)
+    .eq("wholesaler_id", wholesalerId)
+    .eq("reward_offer_id", offerId)
+    .eq("status", "active")
+    .maybeSingle();
+
+
+  if (existingError) {
+
+    console.error(existingError);
+
+    alert("Target check nahi ho paya.");
+
+    return;
+  }
+
+
+  if (existing) {
+
+    alert(
+      "Is wholesaler ke liye ye target already active hai."
+    );
+
+    return;
+  }
+
+
+  const startedAt =
+    new Date();
+
+
+  const deadlineAt =
+    new Date(
+      startedAt.getTime() +
+      Number(offer.duration_days) *
+      24 *
+      60 *
+      60 *
+      1000
     );
 
 
-  /* =========================
-     MY ORDERS
-  ========================= */
+  const {
+    error: insertError
+  } = await supabaseClient
+    .from("retailer_rewards")
+    .insert({
 
-  async function showMyOrders() {
+      retailer_id: currentUser.id,
 
-    const section =
-      document.getElementById(
-        "myOrdersSection"
-      );
+      wholesaler_id: wholesalerId,
 
+      reward_offer_id: offer.id,
 
-    const list =
-      document.getElementById(
-        "myOrdersList"
-      );
+      started_at:
+        startedAt.toISOString(),
 
+      deadline_at:
+        deadlineAt.toISOString(),
 
-    section.style.display =
-      "block";
+      target_amount:
+        Number(offer.target_amount),
 
+      achieved_amount: 0,
 
-    section.scrollIntoView({
-      behavior: "smooth"
+      progress_percent: 0,
+
+      status: "active"
     });
 
 
-    list.innerHTML =
-      '<div class="message">📦 Orders load हो रहे हैं...</div>';
+  if (insertError) {
 
+    console.error(insertError);
 
-    const {
-      data: {
-        user
-      },
-      error: userError
-    } =
-      await supabaseClient.auth.getUser();
-
-
-    if (
-      userError ||
-      !user
-    ) {
-
-      list.innerHTML =
-        '<div class="message">❌ Login required.</div>';
-
-      return;
-
-    }
-
-
-    const {
-      data: orders,
-      error
-    } =
-      await supabaseClient
-        .from("orders")
-        .select(`
-          id,
-          total,
-          status,
-          delivery_status,
-          payment_status,
-          created_at
-        `)
-        .eq(
-          "retailer_id",
-          user.id
-        )
-        .order(
-          "created_at",
-          {
-            ascending: false
-          }
-        );
-
-
-    if (error) {
-
-      console.error(error);
-
-
-      list.innerHTML =
-        `<div class="message">
-          ❌ Orders load नहीं हो पाए।<br>
-          ${escapeHtml(
-            error.message
-          )}
-        </div>`;
-
-      return;
-
-    }
-
-
-    if (
-      !orders ||
-      orders.length === 0
-    ) {
-
-      list.innerHTML =
-        '<div class="message">📦 अभी कोई order नहीं है।</div>';
-
-      return;
-
-    }
-
-
-    const orderIds =
-      orders.map(
-        order =>
-          order.id
-      );
-
-
-    const {
-      data: items,
-      error: itemsError
-    } =
-      await supabaseClient
-        .from("order_items")
-        .select(`
-          order_id,
-          product_name,
-          image_url,
-          quantity,
-          price
-        `)
-        .in(
-          "order_id",
-          orderIds
-        );
-
-
-    if (itemsError) {
-
-      console.error(
-        itemsError
-      );
-
-
-      list.innerHTML =
-        `<div class="message">
-          ❌ Product details load नहीं हो पाए।<br>
-          ${escapeHtml(
-            itemsError.message
-          )}
-        </div>`;
-
-      return;
-
-    }
-
-
-    const itemsByOrder = {};
-
-
-    (
-      items || []
-    ).forEach(
-      item => {
-
-        if (
-          !itemsByOrder[
-            item.order_id
-          ]
-        ) {
-
-          itemsByOrder[
-            item.order_id
-          ] = [];
-
-        }
-
-
-        itemsByOrder[
-          item.order_id
-        ].push(item);
-
-      }
+    alert(
+      "Target start nahi ho paya: " +
+      insertError.message
     );
 
-
-    list.innerHTML =
-      orders.map(
-        order => {
-
-          const orderItems =
-            itemsByOrder[
-              order.id
-            ] || [];
-
-
-          const date =
-            new Date(
-              order.created_at
-            ).toLocaleString(
-              "en-IN"
-            );
-
-
-          const productsHtml =
-            orderItems.map(
-              item => {
-
-                const image =
-                  item.image_url
-
-                    ?
-
-                    `
-                    <img
-                      src="${escapeHtml(
-                        item.image_url
-                      )}"
-                      alt="Product"
-                    >
-                    `
-
-                    :
-
-                    `
-                    <div class="order-placeholder">
-                      📦
-                    </div>
-                    `;
-
-
-                return `
-
-                  <div class="order-item">
-
-                    ${image}
-
-                    <div>
-
-                      <strong>
-                        ${escapeHtml(
-                          item.product_name
-                        )}
-                      </strong>
-
-                      <div>
-                        Qty:
-                        ${Number(
-                          item.quantity ||
-                          0
-                        )}
-                      </div>
-
-                      <div>
-                        ₹${Number(
-                          item.price ||
-                          0
-                        ).toFixed(2)}
-                      </div>
-
-                    </div>
-
-                  </div>
-
-                `;
-
-              }
-            ).join("");
-
-
-          return `
-
-            <div class="order-card">
-
-              <h3>
-                📦 Order #
-                ${escapeHtml(
-                  order.id.substring(
-                    0,
-                    8
-                  )
-                )}
-              </h3>
-
-
-              <div
-                style="
-                  font-size:12px;
-                  color:#666;
-                "
-              >
-                ${escapeHtml(
-                  date
-                )}
-              </div>
-
-
-              <div
-                style="
-                  margin-top:10px;
-                  font-size:18px;
-                  font-weight:bold;
-                "
-              >
-                Total:
-                ₹${Number(
-                  order.total ||
-                  0
-                ).toFixed(2)}
-              </div>
-
-
-              <div class="status-box">
-
-                📋 Order Status:
-                <strong>
-                  ${escapeHtml(
-                    order.status ||
-                    "pending"
-                  )}
-                </strong>
-
-              </div>
-
-
-              <div class="status-box">
-
-                🚚 Delivery Status:
-                <strong>
-                  ${escapeHtml(
-                    order.delivery_status ||
-                    "pending"
-                  )}
-                </strong>
-
-              </div>
-
-
-              <div class="status-box">
-
-                💳 Payment Status:
-                <strong>
-                  ${escapeHtml(
-                    order.payment_status ||
-                    "pending"
-                  )}
-                </strong>
-
-              </div>
-
-
-              <h3>
-                🛍️ Products
-              </h3>
-
-
-              ${
-                productsHtml ||
-                "<p>No product details.</p>"
-              }
-
-            </div>
-
-          `;
-
-        }
-      ).join("");
-
+    return;
   }
 
 
-  /* =========================
-     LOGOUT
-  ========================= */
-
-  async function logout() {
-
-    await supabaseClient.auth.signOut();
-
-    window.location.href =
-      "index.html";
-
-  }
+  alert(
+    `🎉 Target start ho gaya!\n\n` +
+    `Target: ₹${Number(
+      offer.target_amount
+    ).toFixed(0)}\n` +
+    `Time: ${offer.duration_days} days\n` +
+    `Gift: ${offer.gift_name}`
+  );
 
 
-  /* =========================
-     ESCAPE HTML
-  ========================= */
-
-  function escapeHtml(
-    value
-  ) {
-
-    return String(
-      value ?? ""
-    )
-      .replace(
-        /[&<>"']/g,
-        function(char) {
-
-          return {
-
-            "&":
-              "&amp;",
-
-            "<":
-              "&lt;",
-
-            ">":
-              "&gt;",
-
-            '"':
-              "&quot;",
-
-            "'":
-              "&#039;"
-
-          }[char];
-
-        }
-      );
-
-  }
+  await loadRewards();
+}
 
 
-  /* =========================
-     START
-  ========================= */
+// ===============================
+// ESCAPE HTML
+// ===============================
 
-  init();
+function escapeHtml(value) {
+
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+
+// ===============================
+// LOGOUT
+// ===============================
+
+async function logout() {
+
+  await supabaseClient.auth.signOut();
+
+  localStorage.removeItem(
+    "localWholesaleCart"
+  );
+
+  window.location.href =
+    "index.html";
+}
+
+
+// ===============================
+// START
+// ===============================
+
+init();
 
 </script>
 
 </body>
-
 </html>
