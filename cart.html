@@ -1,307 +1,501 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta charset="UTF-8">
+<title>Local Wholesale - Cart</title>
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
-  <title>Local Wholesale - Cart</title>
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f5f7fb;
+  color:#172033;
+  padding-bottom:30px;
+}
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+button{
+  cursor:pointer;
+  font:inherit;
+}
 
-  <style>
+.header{
+  background:#111827;
+  color:white;
+  padding:15px;
+  position:sticky;
+  top:0;
+  z-index:100;
+  box-shadow:0 2px 12px rgba(0,0,0,.15);
+}
 
-    * {
-      box-sizing: border-box;
-    }
+.header-inner{
+  max-width:1100px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
 
-    body {
-      margin: 0;
-      background: #f5f7fb;
-      font-family: Arial, sans-serif;
-    }
+.logo{
+  font-size:21px;
+  font-weight:800;
+}
 
-    .container {
-      max-width: 800px;
-      margin: auto;
-      padding: 15px;
-    }
+.logo span{
+  color:#38bdf8;
+}
 
-    .header {
-      background: white;
-      padding: 15px;
-      border-radius: 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-      box-shadow: 0 2px 8px rgba(0,0,0,.06);
-    }
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:18px;
+}
 
-    .back {
-      border: none;
-      background: #2563eb;
-      color: white;
-      padding: 9px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
+.top-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:15px;
+}
 
-    .cart-item {
-      background: white;
-      padding: 12px;
-      border-radius: 14px;
-      margin-bottom: 12px;
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
+.btn{
+  border:0;
+  border-radius:10px;
+  padding:11px 15px;
+  background:#2563eb;
+  color:white;
+  font-weight:700;
+}
 
-    .cart-img {
-      width: 75px;
-      height: 75px;
-      object-fit: contain;
-      border-radius: 10px;
-      background: #eee;
-      padding: 3px;
-    }
+.btn.secondary{
+  background:#e5e7eb;
+  color:#111827;
+}
 
-    .details {
-      flex: 1;
-    }
+.btn.success{
+  background:#16a34a;
+}
 
-    .name {
-      font-weight: bold;
-    }
+.btn.danger{
+  background:#dc2626;
+}
 
-    .shop {
-      font-size: 12px;
-      color: #666;
-      margin-top: 4px;
-    }
+.btn:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+}
 
-    .price {
-      font-weight: bold;
-      margin-top: 5px;
-    }
+.notice{
+  background:#eff6ff;
+  border:1px solid #bfdbfe;
+  padding:14px;
+  border-radius:12px;
+  margin-bottom:15px;
+  line-height:1.6;
+}
 
-    .quantity {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 8px;
-    }
+.wholesaler-card{
+  background:white;
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:18px;
+  box-shadow:0 2px 10px rgba(0,0,0,.07);
+  border:1px solid #edf0f5;
+}
 
-    .quantity button {
-      width: 30px;
-      height: 30px;
-      border: none;
-      border-radius: 7px;
-      background: #e5e7eb;
-      font-size: 18px;
-      cursor: pointer;
-    }
+.wholesaler-head{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+  margin-bottom:13px;
+}
 
-    .remove {
-      border: none;
-      background: #fee2e2;
-      color: #dc2626;
-      padding: 6px 8px;
-      border-radius: 7px;
-      cursor: pointer;
-      margin-top: 6px;
-    }
+.wholesaler-name{
+  font-size:18px;
+  font-weight:800;
+}
 
-    .summary {
-      background: white;
-      padding: 16px;
-      border-radius: 14px;
-      margin-top: 15px;
-    }
+.limit{
+  font-size:12px;
+  color:#64748b;
+  margin-top:5px;
+}
 
-    .row {
-      display: flex;
-      justify-content: space-between;
-      margin: 9px 0;
-    }
+.progress-wrap{
+  height:9px;
+  background:#e5e7eb;
+  border-radius:20px;
+  overflow:hidden;
+  margin:10px 0;
+}
 
-    .total {
-      font-size: 20px;
-      font-weight: bold;
-      border-top: 1px solid #ddd;
-      padding-top: 12px;
-    }
+.progress{
+  height:100%;
+  background:#2563eb;
+  width:0%;
+}
 
-    .place-order {
-      width: 100%;
-      border: none;
-      background: #16a34a;
-      color: white;
-      padding: 13px;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 12px;
-    }
+.warning{
+  background:#fff7ed;
+  border:1px solid #fed7aa;
+  color:#9a3412;
+  padding:10px;
+  border-radius:10px;
+  margin-top:10px;
+  font-size:13px;
+}
 
-    .place-order:disabled {
-      background: #999;
-    }
+.error{
+  background:#fef2f2;
+  border:1px solid #fecaca;
+  color:#991b1b;
+  padding:10px;
+  border-radius:10px;
+  margin-top:10px;
+  font-size:13px;
+}
 
-    .empty {
-      background: white;
-      padding: 40px 20px;
-      text-align: center;
-      border-radius: 14px;
-    }
+.success-box{
+  background:#f0fdf4;
+  border:1px solid #bbf7d0;
+  color:#166534;
+  padding:10px;
+  border-radius:10px;
+  margin-top:10px;
+  font-size:13px;
+}
 
-    .message {
-      text-align: center;
-      padding: 15px;
-    }
+.cart-item{
+  display:flex;
+  gap:13px;
+  padding:13px 0;
+  border-top:1px solid #edf0f3;
+}
 
-    .limit-box {
-      margin-top: 12px;
-      padding: 12px;
-      border-radius: 9px;
-      background: #fff7ed;
-      color: #9a3412;
-      font-size: 14px;
-    }
+.cart-item:first-child{
+  border-top:0;
+}
 
-    @media (max-width: 600px) {
+.item-image{
+  width:80px;
+  height:80px;
+  border-radius:10px;
+  background:#f8fafc;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  overflow:hidden;
+}
 
-      .cart-item {
-        align-items: flex-start;
-      }
+.item-image img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
 
-      .cart-img {
-        width: 65px;
-        height: 65px;
-      }
+.no-image{
+  color:#94a3b8;
+  font-size:11px;
+}
 
-      .header {
-        gap: 10px;
-      }
+.item-info{
+  flex:1;
+  min-width:0;
+}
 
-    }
+.item-name{
+  font-size:16px;
+  font-weight:750;
+  margin-bottom:5px;
+}
 
-  </style>
+.item-unit{
+  display:inline-block;
+  background:#eff6ff;
+  color:#1d4ed8;
+  padding:4px 8px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:700;
+}
 
+.item-price{
+  margin-top:7px;
+  font-size:13px;
+  color:#475569;
+}
+
+.item-total{
+  margin-top:5px;
+  font-weight:800;
+}
+
+.item-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:10px;
+  flex-wrap:wrap;
+}
+
+.qty{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.qty button{
+  width:32px;
+  height:32px;
+  border:0;
+  border-radius:8px;
+  background:#e5e7eb;
+  font-size:18px;
+}
+
+.qty-number{
+  min-width:25px;
+  text-align:center;
+  font-weight:800;
+}
+
+.summary{
+  background:#111827;
+  color:white;
+  border-radius:16px;
+  padding:18px;
+  margin-top:20px;
+}
+
+.summary-row{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin:9px 0;
+}
+
+.summary-total{
+  border-top:1px solid rgba(255,255,255,.2);
+  margin-top:12px;
+  padding-top:13px;
+  font-size:20px;
+  font-weight:800;
+}
+
+.place-btn{
+  width:100%;
+  margin-top:15px;
+  padding:14px;
+  border:0;
+  border-radius:12px;
+  background:#16a34a;
+  color:white;
+  font-weight:800;
+  font-size:16px;
+}
+
+.empty{
+  background:white;
+  border-radius:16px;
+  padding:50px 15px;
+  text-align:center;
+  color:#64748b;
+  box-shadow:0 2px 10px rgba(0,0,0,.05);
+}
+
+.loading{
+  text-align:center;
+  padding:30px;
+  color:#64748b;
+}
+
+.order-success{
+  display:none;
+  background:#f0fdf4;
+  border:1px solid #86efac;
+  color:#166534;
+  border-radius:16px;
+  padding:20px;
+  margin-bottom:18px;
+}
+
+.order-success.show{
+  display:block;
+}
+
+.order-success h2{
+  margin-bottom:8px;
+}
+
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:25px;
+  transform:translateX(-50%);
+  background:#111827;
+  color:white;
+  padding:12px 18px;
+  border-radius:10px;
+  display:none;
+  z-index:1000;
+  max-width:90%;
+  text-align:center;
+}
+
+.toast.show{
+  display:block;
+}
+
+@media(max-width:600px){
+
+  .container{
+    padding:12px;
+  }
+
+  .cart-item{
+    align-items:flex-start;
+  }
+
+  .item-image{
+    width:65px;
+    height:65px;
+  }
+
+  .item-name{
+    font-size:14px;
+  }
+
+  .wholesaler-name{
+    font-size:16px;
+  }
+
+  .btn{
+    font-size:13px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-<div class="container">
+<header class="header">
+  <div class="header-inner">
 
-  <div class="header">
-
-    <strong>
-      🛒 My Cart
-    </strong>
+    <div class="logo">
+      Local <span>Wholesale</span>
+    </div>
 
     <button
-      class="back"
-      onclick="location.href='retailer.html'"
+      class="btn secondary"
+      onclick="goBack()"
     >
       ← Products
     </button>
 
   </div>
+</header>
 
 
-  <div id="cart"></div>
+<main class="container">
 
-
-  <div
-    id="summary"
-    style="display:none;"
-    class="summary"
-  >
-
-    <div class="row">
-      <span>Items</span>
-
-      <strong id="itemsCount">
-        0
-      </strong>
-    </div>
-
-
-    <div class="row">
-
-      <span>
-        Subtotal
-      </span>
-
-      <strong id="subtotal">
-        ₹0.00
-      </strong>
-
-    </div>
-
-
-    <div class="row total">
-
-      <span>
-        Total
-      </span>
-
-      <strong id="total">
-        ₹0.00
-      </strong>
-
-    </div>
-
-
-    <div class="limit-box">
-
-      ℹ️ हर wholesaler के लिए minimum order
-      <strong>₹1,000</strong>
-      और maximum order
-      <strong>₹10,000</strong>
-      है।
-
-      <br><br>
-
-      अगर cart में अलग-अलग wholesalers के products हैं,
-      तो प्रत्येक wholesaler का order अलग बनेगा।
-
-    </div>
-
+  <div class="top-actions">
 
     <button
-      id="placeOrderBtn"
-      class="place-order"
-      onclick="placeOrder()"
+      class="btn secondary"
+      onclick="goBack()"
     >
-      ✅ Place Order
+      🛍️ Continue Shopping
+    </button>
+
+    <button
+      class="btn danger"
+      onclick="clearCart()"
+    >
+      🗑️ Clear Cart
     </button>
 
   </div>
 
-</div>
 
+  <div class="notice">
+
+    <b>Order Rules</b><br>
+
+    Har wholesaler ke liye:
+    <b>Minimum ₹1,000</b> —
+    <b>Maximum ₹10,000</b>.
+
+    <br>
+
+    Retailer commission:
+    <b>₹0</b>
+
+    <br>
+
+    Agar cart mein multiple wholesalers ke products hain,
+    to har wholesaler ka order alag banega.
+
+  </div>
+
+
+  <div id="successBox" class="order-success">
+
+    <h2>✅ Order Successfully Placed</h2>
+
+    <p id="successText"></p>
+
+    <button
+      class="btn success"
+      style="margin-top:12px;"
+      onclick="goOrders()"
+    >
+      📦 My Orders
+    </button>
+
+  </div>
+
+
+  <div id="cartContainer">
+
+    <div class="loading">
+      Cart loading...
+    </div>
+
+  </div>
+
+
+  <div id="summary"></div>
+
+</main>
+
+
+<div id="toast" class="toast"></div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
-
-/* =========================
+/* =====================================================
    SUPABASE
-========================= */
+===================================================== */
 
 const SUPABASE_URL =
   "https://izxvsvyvvtbaxtxgcfav.supabase.co";
 
-
 const SUPABASE_KEY =
   "sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI";
-
 
 const supabaseClient =
   window.supabase.createClient(
@@ -310,212 +504,1403 @@ const supabaseClient =
   );
 
 
-let cart = [];
+/* =====================================================
+   CONSTANTS
+===================================================== */
+
+const CART_KEY =
+  "localWholesaleCart";
+
+const MIN_ORDER =
+  1000;
+
+const MAX_ORDER =
+  10000;
 
 
-/* =========================
+/* =====================================================
+   GLOBAL
+===================================================== */
+
+let currentUser =
+  null;
+
+let cart =
+  [];
+
+
+/* =====================================================
    START
-========================= */
+===================================================== */
 
-async function init() {
+document.addEventListener(
+  "DOMContentLoaded",
+  init
+);
+
+
+async function init(){
+
+  loadCart();
 
   const {
     data: {
-      user
+      session
     }
   } =
-    await supabaseClient.auth.getUser();
+    await supabaseClient.auth.getSession();
 
+  if(!session){
 
-  if (!user) {
-
-    location.href =
+    window.location.href =
       "index.html";
 
     return;
   }
 
+  currentUser =
+    session.user;
 
-  const {
-    data: profile
-  } =
-    await supabaseClient
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .single();
-
-
-  if (
-    !profile ||
-    profile.role !== "retailer"
-  ) {
-
-    document.getElementById("cart")
-      .innerHTML =
-      '<div class="empty">⚠️ यह page केवल Retailer के लिए है।</div>';
-
-    return;
-  }
-
-
-  loadCart();
-
-}
-
-
-/* =========================
-   LOAD CART
-========================= */
-
-function loadCart() {
-
-  try {
-
-    cart =
-      JSON.parse(
-        localStorage.getItem(
-          "localWholesaleCart"
-        ) || "[]"
-      );
-
-  } catch (error) {
-
-    cart = [];
-
-  }
-
-
-  cart =
-    cart.map(item => ({
-
-      ...item,
-
-      qty:
-        Math.max(
-          1,
-          Number(item.qty || 1)
-        ),
-
-      price:
-        Number(item.price || 0),
-
-      unit:
-        item.unit ||
-        item.selected_unit ||
-        "piece"
-
-    }));
-
+  await enrichCart();
 
   renderCart();
 
 }
 
 
-/* =========================
-   RENDER CART
-========================= */
+/* =====================================================
+   LOAD CART
+===================================================== */
 
-function renderCart() {
+function loadCart(){
 
-  const box =
-    document.getElementById("cart");
+  try{
 
+    const saved =
+      localStorage.getItem(CART_KEY);
 
-  const summary =
-    document.getElementById("summary");
+    cart =
+      saved
+        ? JSON.parse(saved)
+        : [];
 
+    if(!Array.isArray(cart)){
+      cart = [];
+    }
 
-  if (cart.length === 0) {
+  }catch(error){
 
-    box.innerHTML = `
+    console.error(error);
 
-      <div class="empty">
+    cart = [];
 
-        <div
-          style="font-size:45px;"
-        >
-          🛒
-        </div>
+  }
 
-        <h3>
-          Cart खाली है
-        </h3>
-
-        <p>
-          पहले कोई product Cart में add करें।
-        </p>
-
-        <button
-          class="back"
-          onclick="location.href='retailer.html'"
-        >
-          Products देखें
-        </button>
-
-      </div>
-
-    `;
+}
 
 
-    summary.style.display =
-      "none";
+/* =====================================================
+   SAVE CART
+===================================================== */
 
+function saveCart(){
+
+  localStorage.setItem(
+    CART_KEY,
+    JSON.stringify(cart)
+  );
+
+}
+
+
+/* =====================================================
+   ENRICH CART
+===================================================== */
+
+async function enrichCart(){
+
+  if(!cart.length){
+    return;
+  }
+
+  const productIds =
+    [
+      ...new Set(
+        cart
+          .map(item =>
+            item.product_id ||
+            item.id
+          )
+          .filter(Boolean)
+      )
+    ];
+
+  if(!productIds.length){
+    return;
+  }
+
+  const {
+    data: products,
+    error
+  } =
+    await supabaseClient
+      .from("products")
+      .select(`
+        id,
+        product_name,
+        image_url,
+        price,
+        unit,
+        box_quantity,
+        stock,
+        wholesaler_id,
+        is_active
+      `)
+      .in("id", productIds);
+
+  if(error){
+
+    console.error(
+      "Product refresh error:",
+      error
+    );
 
     return;
   }
 
+  const productMap = {};
 
-  summary.style.display =
-    "block";
+  (products || []).forEach(
+    product => {
 
+      productMap[product.id] =
+        product;
 
-  box.innerHTML =
-    cart.map(
-      (item, index) => {
-
-        const image =
-          item.image_url
-
-          ?
-
-          `
-          <img
-            class="cart-img"
-            src="${escapeHtml(
-              item.image_url
-            )}"
-            alt="Product"
-          >
-          `
-
-          :
-
-          `
-          <div
-            class="cart-img"
-            style="
-              display:flex;
-              align-items:center;
-              justify-content:center;
-              font-size:30px;
-            "
-          >
-            📦
-          </div>
-          `;
+    }
+  );
 
 
-        const unit =
-          item.unit ||
+  const wholesalerIds =
+    [
+      ...new Set(
+        (products || [])
+          .map(p =>
+            p.wholesaler_id
+          )
+          .filter(Boolean)
+      )
+    ];
+
+  let wholesalerMap = {};
+
+
+  if(wholesalerIds.length){
+
+    const {
+      data: profiles
+    } =
+      await supabaseClient
+        .from("profiles")
+        .select(
+          "id,full_name,shop_name,mobile"
+        )
+        .in(
+          "id",
+          wholesalerIds
+        );
+
+    (profiles || []).forEach(
+      profile => {
+
+        wholesalerMap[
+          profile.id
+        ] =
+          profile;
+
+      }
+    );
+
+  }
+
+
+  cart =
+    cart
+      .filter(item => {
+
+        const id =
+          item.product_id ||
+          item.id;
+
+        return !!productMap[id];
+
+      })
+      .map(item => {
+
+        const id =
+          item.product_id ||
+          item.id;
+
+        const product =
+          productMap[id];
+
+        const profile =
+          wholesalerMap[
+            product.wholesaler_id
+          ] || {};
+
+
+        /*
+          Keep selected unit and price
+          from retailer's choice.
+
+          If old cart has no selected unit,
+          fallback to product unit.
+        */
+
+        const selectedUnit =
           item.selected_unit ||
+          item.unit ||
+          product.unit ||
           "piece";
 
 
-        const price =
+        let selectedPrice =
           Number(
-            item.price || 0
+            item.selected_price ??
+            item.price ??
+            0
+          );
+
+
+        /*
+          If old cart item does not have
+          selected price, calculate it.
+        */
+
+        if(
+          !item.selected_price &&
+          Number(product.box_quantity || 1) > 1
+        ){
+
+          selectedPrice =
+            getUnitPrice(
+              product,
+              selectedUnit
+            );
+
+        }
+
+
+        return {
+
+          ...item,
+
+          id:product.id,
+
+          product_id:
+            product.id,
+
+          product_name:
+            product.product_name,
+
+          image_url:
+            product.image_url ||
+            item.image_url ||
+            null,
+
+          wholesaler_id:
+            product.wholesaler_id,
+
+          selected_unit:
+            selectedUnit,
+
+          unit:
+            selectedUnit,
+
+          selected_price:
+            selectedPrice,
+
+          price:
+            selectedPrice,
+
+          box_quantity:
+            Number(
+              product.box_quantity || 1
+            ),
+
+          stock:
+            Number(
+              product.stock || 0
+            ),
+
+          is_active:
+            product.is_active !== false,
+
+          wholesaler_name:
+            profile.shop_name ||
+            profile.full_name ||
+            item.wholesaler_name ||
+            "Local Wholesaler"
+
+        };
+
+      });
+
+
+  saveCart();
+
+}
+
+
+/* =====================================================
+   UNIT PRICE
+===================================================== */
+
+function getUnitPrice(
+  product,
+  selectedUnit
+){
+
+  const basePrice =
+    Number(
+      product.price || 0
+    );
+
+  const boxQty =
+    Number(
+      product.box_quantity || 1
+    );
+
+  const storedUnit =
+    String(
+      product.unit || "piece"
+    )
+      .trim()
+      .toLowerCase();
+
+
+  if(boxQty <= 1){
+
+    return basePrice;
+
+  }
+
+
+  /*
+    Stored as BOX:
+    price = box price
+
+    Packet = box price / box quantity
+  */
+
+  if(storedUnit === "box"){
+
+    if(
+      String(selectedUnit)
+        .toLowerCase()
+        === "packet"
+    ){
+
+      return basePrice / boxQty;
+
+    }
+
+    return basePrice;
+
+  }
+
+
+  /*
+    Stored as PACKET:
+    price = packet price
+
+    Box = packet price × box quantity
+  */
+
+  if(storedUnit === "packet"){
+
+    if(
+      String(selectedUnit)
+        .toLowerCase()
+        === "box"
+    ){
+
+      return basePrice * boxQty;
+
+    }
+
+    return basePrice;
+
+  }
+
+
+  return basePrice;
+
+}
+
+
+/* =====================================================
+   GROUP BY WHOLESALER
+===================================================== */
+
+function groupCart(){
+
+  const groups = {};
+
+  cart.forEach(item => {
+
+    const wholesalerId =
+      item.wholesaler_id ||
+      "unknown";
+
+    if(!groups[wholesalerId]){
+
+      groups[wholesalerId] = [];
+
+    }
+
+    groups[wholesalerId]
+      .push(item);
+
+  });
+
+  return groups;
+
+}
+
+
+/* =====================================================
+   WHOLESALER TOTAL
+===================================================== */
+
+function getItemTotal(item){
+
+  const price =
+    Number(
+      item.selected_price ??
+      item.price ??
+      0
+    );
+
+  const qty =
+    Number(
+      item.qty || 0
+    );
+
+  return price * qty;
+
+}
+
+
+function getGroupTotal(items){
+
+  return items.reduce(
+    (sum,item) =>
+      sum + getItemTotal(item),
+    0
+  );
+
+}
+
+
+/* =====================================================
+   RENDER CART
+===================================================== */
+
+function renderCart(){
+
+  const container =
+    document.getElementById(
+      "cartContainer"
+    );
+
+  const summary =
+    document.getElementById(
+      "summary"
+    );
+
+
+  if(!cart.length){
+
+    container.innerHTML = `
+      <div class="empty">
+
+        <div style="font-size:45px;">
+          🛒
+        </div>
+
+        <h2 style="margin:10px 0;">
+          Your cart is empty
+        </h2>
+
+        <p>
+          Products add karke yahan dekhein.
+        </p>
+
+        <button
+          class="btn"
+          style="margin-top:15px;"
+          onclick="goBack()"
+        >
+          Browse Products
+        </button>
+
+      </div>
+    `;
+
+    summary.innerHTML =
+      "";
+
+    return;
+
+  }
+
+
+  const groups =
+    groupCart();
+
+  let html = "";
+
+  let grandTotal =
+    0;
+
+
+  Object.keys(groups)
+    .forEach(wholesalerId => {
+
+      const items =
+        groups[wholesalerId];
+
+      const total =
+        getGroupTotal(items);
+
+      grandTotal += total;
+
+
+      const first =
+        items[0] || {};
+
+      const wholesalerName =
+        first.wholesaler_name ||
+        "Local Wholesaler";
+
+
+      const percent =
+        Math.min(
+          100,
+          (total / MIN_ORDER) * 100
+        );
+
+
+      let statusHtml = "";
+
+
+      if(total < MIN_ORDER){
+
+        statusHtml = `
+          <div class="warning">
+
+            ⚠️ Minimum order
+            ₹${MIN_ORDER.toFixed(2)}.
+
+            Abhi:
+            ₹${total.toFixed(2)}
+
+            <br>
+
+            Aur ₹${(
+              MIN_ORDER - total
+            ).toFixed(2)}
+            ka order add karein.
+
+          </div>
+        `;
+
+      }
+      else if(total > MAX_ORDER){
+
+        statusHtml = `
+          <div class="error">
+
+            ❌ Maximum order
+            ₹${MAX_ORDER.toFixed(2)}
+            se zyada nahi ho sakta.
+
+            <br>
+
+            ₹${(
+              total - MAX_ORDER
+            ).toFixed(2)}
+            kam karna hoga.
+
+          </div>
+        `;
+
+      }
+      else{
+
+        statusHtml = `
+          <div class="success-box">
+
+            ✅ Order amount valid:
+            ₹${total.toFixed(2)}
+
+          </div>
+        `;
+
+      }
+
+
+      html += `
+
+        <div class="wholesaler-card">
+
+          <div class="wholesaler-head">
+
+            <div>
+
+              <div class="wholesaler-name">
+                🏪
+                ${escapeHtml(
+                  wholesalerName
+                )}
+              </div>
+
+              <div class="limit">
+                Minimum ₹${MIN_ORDER}
+                · Maximum ₹${MAX_ORDER}
+              </div>
+
+            </div>
+
+            <button
+              class="btn danger"
+              onclick="removeWholesaler('${escapeAttribute(wholesalerId)}')"
+            >
+              Remove Wholesaler
+            </button>
+
+          </div>
+
+
+          <div class="progress-wrap">
+
+            <div
+              class="progress"
+              style="width:${percent}%"
+            ></div>
+
+          </div>
+
+
+          ${statusHtml}
+
+
+          <div style="margin-top:10px;">
+
+            ${
+              items
+                .map(
+                  item =>
+                    renderItem(item)
+                )
+                .join("")
+            }
+
+          </div>
+
+
+          <div
+            style="
+              text-align:right;
+              border-top:1px solid #eee;
+              padding-top:12px;
+              margin-top:10px;
+              font-weight:800;
+            "
+          >
+
+            Wholesaler Total:
+            ₹${total.toFixed(2)}
+
+          </div>
+
+        </div>
+
+      `;
+
+    });
+
+
+  container.innerHTML =
+    html;
+
+
+  renderSummary(
+    grandTotal,
+    groups
+  );
+
+}
+
+
+/* =====================================================
+   RENDER ITEM
+===================================================== */
+
+function renderItem(item){
+
+  const price =
+    Number(
+      item.selected_price ??
+      item.price ??
+      0
+    );
+
+  const qty =
+    Number(
+      item.qty || 0
+    );
+
+  const total =
+    price * qty;
+
+  const unit =
+    item.selected_unit ||
+    item.unit ||
+    "piece";
+
+
+  const image =
+    item.image_url
+      ?
+      `
+        <img
+          src="${escapeAttribute(item.image_url)}"
+          alt="${escapeAttribute(item.product_name)}"
+          onerror="this.style.display='none';"
+        >
+      `
+      :
+      `<div class="no-image">
+        No Image
+      </div>`;
+
+
+  const stock =
+    Number(
+      item.stock ?? 0
+    );
+
+
+  return `
+
+    <div class="cart-item">
+
+      <div class="item-image">
+        ${image}
+      </div>
+
+
+      <div class="item-info">
+
+        <div class="item-name">
+          ${escapeHtml(
+            item.product_name
+          )}
+        </div>
+
+
+        <span class="item-unit">
+          ${escapeHtml(unit)}
+        </span>
+
+
+        <div class="item-price">
+
+          ₹${price.toFixed(2)}
+          /
+          ${escapeHtml(unit)}
+
+        </div>
+
+
+        <div class="item-total">
+
+          Product Total:
+          ₹${total.toFixed(2)}
+
+        </div>
+
+
+        <div class="item-actions">
+
+          <div class="qty">
+
+            <button
+              onclick="changeQty('${escapeAttribute(item.cartKey || makeCartKey(item))}',-1)"
+            >
+              −
+            </button>
+
+            <div class="qty-number">
+              ${qty}
+            </div>
+
+            <button
+              onclick="changeQty('${escapeAttribute(item.cartKey || makeCartKey(item))}',1)"
+            >
+              +
+            </button>
+
+          </div>
+
+
+          <button
+            class="btn danger"
+            onclick="removeItem('${escapeAttribute(item.cartKey || makeCartKey(item))}')"
+          >
+            Remove
+          </button>
+
+        </div>
+
+
+        ${
+          stock > 0
+          ?
+          `<div class="limit">
+            Available stock:
+            ${stock}
+          </div>`
+          :
+          `<div class="error">
+            Product stock unavailable.
+          </div>`
+        }
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =====================================================
+   CART KEY
+===================================================== */
+
+function makeCartKey(item){
+
+  return (
+    item.cartKey ||
+    (
+      (item.product_id || item.id) +
+      "_" +
+      (item.selected_unit || item.unit || "piece")
+    )
+  );
+
+}
+
+
+/* =====================================================
+   CHANGE QUANTITY
+===================================================== */
+
+function changeQty(
+  cartKey,
+  change
+){
+
+  const item =
+    cart.find(
+      x =>
+        makeCartKey(x)
+        === cartKey
+    );
+
+  if(!item){
+    return;
+  }
+
+
+  let newQty =
+    Number(item.qty || 0)
+    + change;
+
+
+  if(newQty < 1){
+
+    removeItem(
+      cartKey
+    );
+
+    return;
+
+  }
+
+
+  const stock =
+    Number(
+      item.stock ?? 0
+    );
+
+
+  /*
+    Stock check.
+    If stock is zero, don't allow.
+    If stock is available, quantity
+    cannot exceed stock.
+  */
+
+  if(
+    stock > 0 &&
+    newQty > stock
+  ){
+
+    showToast(
+      `Maximum available stock ${stock} hai.`
+    );
+
+    return;
+
+  }
+
+
+  item.qty =
+    newQty;
+
+
+  item.cartKey =
+    makeCartKey(item);
+
+
+  saveCart();
+
+  renderCart();
+
+}
+
+
+/* =====================================================
+   REMOVE ITEM
+===================================================== */
+
+function removeItem(cartKey){
+
+  cart =
+    cart.filter(
+      item =>
+        makeCartKey(item)
+        !== cartKey
+    );
+
+  saveCart();
+
+  renderCart();
+
+}
+
+
+/* =====================================================
+   REMOVE WHOLESALER
+===================================================== */
+
+function removeWholesaler(
+  wholesalerId
+){
+
+  cart =
+    cart.filter(
+      item =>
+        String(
+          item.wholesaler_id
+        )
+        !== String(
+          wholesalerId
+        )
+    );
+
+  saveCart();
+
+  renderCart();
+
+}
+
+
+/* =====================================================
+   CLEAR CART
+===================================================== */
+
+function clearCart(){
+
+  if(!cart.length){
+    return;
+  }
+
+
+  const ok =
+    confirm(
+      "Kya aap pura cart clear karna chahte hain?"
+    );
+
+
+  if(!ok){
+    return;
+  }
+
+
+  cart = [];
+
+  saveCart();
+
+  renderCart();
+
+}
+
+
+/* =====================================================
+   SUMMARY
+===================================================== */
+
+function renderSummary(
+  grandTotal,
+  groups
+){
+
+  const summary =
+    document.getElementById(
+      "summary"
+    );
+
+
+  const wholesalerCount =
+    Object.keys(groups).length;
+
+
+  const invalidGroups =
+    Object.values(groups)
+      .filter(items => {
+
+        const total =
+          getGroupTotal(items);
+
+        return (
+          total < MIN_ORDER ||
+          total > MAX_ORDER
+        );
+
+      });
+
+
+  const allValid =
+    invalidGroups.length === 0;
+
+
+  summary.innerHTML = `
+
+    <div class="summary">
+
+      <h2>
+        Order Summary
+      </h2>
+
+
+      <div class="summary-row">
+
+        <span>
+          Wholesalers
+        </span>
+
+        <b>
+          ${wholesalerCount}
+        </b>
+
+      </div>
+
+
+      <div class="summary-row">
+
+        <span>
+          Total Items
+        </span>
+
+        <b>
+          ${cart.reduce(
+            (sum,item) =>
+              sum +
+              Number(item.qty || 0),
+            0
+          )}
+        </b>
+
+      </div>
+
+
+      <div class="summary-row">
+
+        <span>
+          Retailer Commission
+        </span>
+
+        <b>
+          ₹0
+        </b>
+
+      </div>
+
+
+      <div class="summary-row summary-total">
+
+        <span>
+          Grand Total
+        </span>
+
+        <span>
+          ₹${grandTotal.toFixed(2)}
+        </span>
+
+      </div>
+
+
+      ${
+        !allValid
+        ?
+        `
+          <div class="warning">
+
+            ⚠️ Pehle sabhi wholesaler
+            orders ko ₹${MIN_ORDER}
+            se ₹${MAX_ORDER}
+            ke beech mein karein.
+
+          </div>
+        `
+        :
+        `
+          <div class="success-box">
+
+            ✅ Sabhi wholesaler orders
+            valid hain.
+
+          </div>
+        `
+      }
+
+
+      <button
+        id="placeOrderButton"
+        class="place-btn"
+        onclick="placeOrders()"
+        ${!allValid ? "disabled" : ""}
+      >
+
+        ${
+          allValid
+          ? "✅ Place Order"
+          : "⚠️ Order Amount Fix Karein"
+        }
+
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =====================================================
+   PLACE ORDERS
+===================================================== */
+
+async function placeOrders(){
+
+  if(!currentUser){
+
+    showToast(
+      "Login required."
+    );
+
+    return;
+
+  }
+
+
+  if(!cart.length){
+
+    showToast(
+      "Cart empty hai."
+    );
+
+    return;
+
+  }
+
+
+  /*
+    IMPORTANT:
+    First validate ALL wholesalers.
+    No order is inserted until every
+    wholesaler passes validation.
+  */
+
+  const groups =
+    groupCart();
+
+
+  const validation =
+    validateAllGroups(
+      groups
+    );
+
+
+  if(!validation.valid){
+
+    showToast(
+      validation.message
+    );
+
+    renderCart();
+
+    return;
+
+  }
+
+
+  const button =
+    document.getElementById(
+      "placeOrderButton"
+    );
+
+
+  if(button){
+
+    button.disabled = true;
+
+    button.textContent =
+      "Order placing...";
+
+  }
+
+
+  try{
+
+    /*
+      First prepare all order data.
+      Nothing inserted yet.
+    */
+
+    const preparedOrders =
+      Object.entries(groups)
+        .map(
+          ([wholesalerId,items]) => {
+
+            const total =
+              getGroupTotal(items);
+
+            return {
+
+              wholesalerId,
+
+              total,
+
+              items
+
+            };
+
+          }
+        );
+
+
+    /*
+      Create orders one by one.
+
+      NOTE:
+      This frontend flow cannot provide a true
+      database transaction across multiple orders.
+      Server-side RPC would be the production-safe
+      approach. For current version we prevent
+      validation failures before insertion.
+    */
+
+    const createdOrders = [];
+
+
+    for(
+      const orderData
+      of preparedOrders
+    ){
+
+      const {
+        wholesalerId,
+        total,
+        items
+      } =
+        orderData;
+
+
+      /*
+        Stock validation again before
+        inserting order.
+      */
+
+      for(
+        const item
+        of items
+      ){
+
+        const {
+          data: product,
+          error: productError
+        } =
+          await supabaseClient
+            .from("products")
+            .select(
+              "id,stock,is_active,product_name"
+            )
+            .eq(
+              "id",
+              item.product_id ||
+              item.id
+            )
+            .maybeSingle();
+
+
+        if(productError){
+
+          throw new Error(
+            "Product verify error: " +
+            productError.message
+          );
+
+        }
+
+
+        if(!product){
+
+          throw new Error(
+            `Product "${item.product_name}" available nahi hai.`
+          );
+
+        }
+
+
+        if(product.is_active === false){
+
+          throw new Error(
+            `"${item.product_name}" abhi available nahi hai.`
+          );
+
+        }
+
+
+        const stock =
+          Number(
+            product.stock || 0
           );
 
 
@@ -525,398 +1910,23 @@ function renderCart() {
           );
 
 
-        const lineTotal =
-          price * qty;
-
-
-        return `
-
-          <div class="cart-item">
-
-            ${image}
-
-
-            <div class="details">
-
-              <div class="name">
-
-                ${escapeHtml(
-                  item.product_name
-                )}
-
-              </div>
-
-
-              <div class="price">
-
-                ₹${price.toFixed(2)}
-                /
-                ${escapeHtml(unit)}
-
-              </div>
-
-
-              <div
-                style="
-                  margin-top:4px;
-                  font-size:14px;
-                "
-              >
-
-                Product Total:
-                <strong>
-                  ₹${lineTotal.toFixed(2)}
-                </strong>
-
-              </div>
-
-
-              <div class="quantity">
-
-                <button
-                  onclick="changeQty(${index}, -1)"
-                >
-                  −
-                </button>
-
-
-                <strong>
-                  ${qty}
-                </strong>
-
-
-                <button
-                  onclick="changeQty(${index}, 1)"
-                >
-                  +
-                </button>
-
-              </div>
-
-
-              <button
-                class="remove"
-                onclick="removeItem(${index})"
-              >
-                🗑 Remove
-              </button>
-
-            </div>
-
-          </div>
-
-        `;
-
-      }
-    ).join("");
-
-
-  updateSummary();
-
-}
-
-
-/* =========================
-   QUANTITY
-========================= */
-
-function changeQty(
-  index,
-  amount
-) {
-
-  if (!cart[index]) {
-    return;
-  }
-
-
-  cart[index].qty =
-    Number(
-      cart[index].qty || 0
-    ) + amount;
-
-
-  if (
-    cart[index].qty <= 0
-  ) {
-
-    cart.splice(
-      index,
-      1
-    );
-
-  }
-
-
-  saveCart();
-
-}
-
-
-/* =========================
-   REMOVE
-========================= */
-
-function removeItem(index) {
-
-  cart.splice(
-    index,
-    1
-  );
-
-
-  saveCart();
-
-}
-
-
-/* =========================
-   SAVE CART
-========================= */
-
-function saveCart() {
-
-  localStorage.setItem(
-    "localWholesaleCart",
-    JSON.stringify(cart)
-  );
-
-
-  renderCart();
-
-}
-
-
-/* =========================
-   SUMMARY
-========================= */
-
-function updateSummary() {
-
-  let count = 0;
-
-  let total = 0;
-
-
-  cart.forEach(item => {
-
-    const qty =
-      Number(
-        item.qty || 0
-      );
-
-    const price =
-      Number(
-        item.price || 0
-      );
-
-
-    count += qty;
-
-    total +=
-      price * qty;
-
-  });
-
-
-  document.getElementById(
-    "itemsCount"
-  ).innerText =
-    count;
-
-
-  document.getElementById(
-    "subtotal"
-  ).innerText =
-    "₹" +
-    total.toFixed(2);
-
-
-  document.getElementById(
-    "total"
-  ).innerText =
-    "₹" +
-    total.toFixed(2);
-
-}
-
-
-/* =========================
-   PLACE ORDER
-========================= */
-
-async function placeOrder() {
-
-  if (
-    cart.length === 0
-  ) {
-
-    alert(
-      "Cart खाली है।"
-    );
-
-    return;
-  }
-
-
-  const btn =
-    document.getElementById(
-      "placeOrderBtn"
-    );
-
-
-  btn.disabled =
-    true;
-
-
-  btn.innerText =
-    "Order place हो रहा है...";
-
-
-  try {
-
-    /* =====================
-       USER
-    ===================== */
-
-    const {
-      data: {
-        user
-      }
-    } =
-      await supabaseClient.auth.getUser();
-
-
-    if (!user) {
-
-      location.href =
-        "index.html";
-
-      return;
-    }
-
-
-    /* =====================
-       GROUP BY WHOLESALER
-    ===================== */
-
-    const groups = {};
-
-
-    cart.forEach(item => {
-
-      if (
-        !item.wholesaler_id
-      ) {
-        return;
-      }
-
-
-      if (
-        !groups[
-          item.wholesaler_id
-        ]
-      ) {
-
-        groups[
-          item.wholesaler_id
-        ] = [];
-
-      }
-
-
-      groups[
-        item.wholesaler_id
-      ].push(item);
-
-    });
-
-
-    const wholesalerIds =
-      Object.keys(groups);
-
-
-    if (
-      wholesalerIds.length === 0
-    ) {
-
-      throw new Error(
-        "Cart में wholesaler information नहीं मिली।"
-      );
-
-    }
-
-
-    /* =====================
-       CREATE EACH ORDER
-    ===================== */
-
-    for (
-      const wholesalerId
-      of wholesalerIds
-    ) {
-
-      const items =
-        groups[
-          wholesalerId
-        ];
-
-
-      let total = 0;
-
-
-      items.forEach(item => {
-
-        total +=
-          Number(
-            item.price || 0
-          ) *
-          Number(
-            item.qty || 0
+        if(
+          stock <= 0 ||
+          qty > stock
+        ){
+
+          throw new Error(
+            `"${item.product_name}" ka stock kam hai. Available: ${stock}`
           );
 
-      });
-
-
-      total =
-        Number(
-          total.toFixed(2)
-        );
-
-
-      /* =====================
-         MINIMUM
-      ===================== */
-
-      if (
-        total < 1000
-      ) {
-
-        throw new Error(
-          `Minimum order ₹1,000 है। इस wholesaler का order अभी ₹${total.toFixed(2)} है।`
-        );
+        }
 
       }
 
 
-      /* =====================
-         MAXIMUM
-      ===================== */
-
-      if (
-        total > 10000
-      ) {
-
-        throw new Error(
-          `Maximum order ₹10,000 है। इस wholesaler का order ₹${total.toFixed(2)} है।`
-        );
-
-      }
-
-
-      /* =====================
-         CREATE ORDER
-      ===================== */
+      /*
+        Create order
+      */
 
       const {
         data: order,
@@ -927,13 +1937,15 @@ async function placeOrder() {
           .insert({
 
             retailer_id:
-              user.id,
+              currentUser.id,
 
             wholesaler_id:
               wholesalerId,
 
             total:
-              total,
+              Number(
+                total.toFixed(2)
+              ),
 
             status:
               "pending",
@@ -949,24 +1961,35 @@ async function placeOrder() {
           .single();
 
 
-      if (orderError) {
+      if(orderError){
 
-        throw orderError;
+        throw new Error(
+          "Order create error: " +
+          orderError.message
+        );
 
       }
 
 
-      /* =====================
-         ORDER ITEMS
-      ===================== */
+      /*
+        Prepare order_items
+      */
 
       const orderItems =
         items.map(item => {
 
-          const unit =
-            item.unit ||
+          const selectedUnit =
             item.selected_unit ||
+            item.unit ||
             "piece";
+
+
+          const selectedPrice =
+            Number(
+              item.selected_price ??
+              item.price ??
+              0
+            );
 
 
           return {
@@ -975,14 +1998,11 @@ async function placeOrder() {
               order.id,
 
             product_id:
+              item.product_id ||
               item.id,
 
             product_name:
               item.product_name,
-
-            image_url:
-              item.image_url ||
-              null,
 
             quantity:
               Number(
@@ -990,20 +2010,26 @@ async function placeOrder() {
               ),
 
             price:
-              Number(
-                item.price || 0
-              ),
+              selectedPrice,
+
+            image_url:
+              item.image_url ||
+              null,
 
             unit:
-              unit
+              selectedUnit
 
           };
 
         });
 
 
+      /*
+        Insert order items
+      */
+
       const {
-        error: itemError
+        error: itemsError
       } =
         await supabaseClient
           .from("order_items")
@@ -1012,106 +2038,291 @@ async function placeOrder() {
           );
 
 
-      if (itemError) {
+      if(itemsError){
 
-        throw itemError;
+        /*
+          Try to delete the order if
+          items insertion failed.
+        */
+
+        await supabaseClient
+          .from("orders")
+          .delete()
+          .eq(
+            "id",
+            order.id
+          );
+
+
+        throw new Error(
+          "Order items save error: " +
+          itemsError.message
+        );
 
       }
+
+
+      createdOrders.push(
+        order
+      );
 
     }
 
 
-    /* =====================
-       CLEAR CART
-    ===================== */
-
-    localStorage.removeItem(
-      "localWholesaleCart"
-    );
-
+    /*
+      SUCCESS
+    */
 
     cart = [];
 
+    saveCart();
 
-    alert(
-      "🎉 Order successfully place हो गया!"
+    const orderIds =
+      createdOrders
+        .map(order => order.id);
+
+
+    document.getElementById(
+      "successText"
+    ).innerHTML = `
+      ${createdOrders.length}
+      wholesaler order(s) successfully
+      place ho gaye.<br><br>
+
+      Order ID:<br>
+      ${orderIds
+        .map(id =>
+          `<b>${escapeHtml(id)}</b>`
+        )
+        .join("<br>")}
+    `;
+
+
+    document.getElementById(
+      "successBox"
+    )
+      .classList
+      .add("show");
+
+
+    document.getElementById(
+      "cartContainer"
+    ).innerHTML =
+      "";
+
+
+    document.getElementById(
+      "summary"
+    ).innerHTML =
+      "";
+
+
+    window.scrollTo({
+      top:0,
+      behavior:"smooth"
+    });
+
+
+  }catch(error){
+
+    console.error(error);
+
+    showToast(
+      error.message ||
+      "Order place nahi hua."
     );
 
 
-    location.href =
-      "retailer.html";
+    /*
+      Refresh product stock before
+      showing cart again.
+    */
 
-  }
+    await enrichCart();
 
-
-  catch (error) {
-
-    console.error(
-      error
-    );
-
-
-    alert(
-      "❌ Order place नहीं हुआ:\n" +
-      error.message
-    );
-
-
-    btn.disabled =
-      false;
-
-
-    btn.innerText =
-      "✅ Place Order";
+    renderCart();
 
   }
 
 }
 
 
-/* =========================
-   ESCAPE
-========================= */
+/* =====================================================
+   VALIDATE ALL GROUPS
+===================================================== */
 
-function escapeHtml(value) {
+function validateAllGroups(
+  groups
+){
+
+  const entries =
+    Object.entries(groups);
+
+
+  if(!entries.length){
+
+    return {
+      valid:false,
+      message:"Cart empty hai."
+    };
+
+  }
+
+
+  for(
+    const [
+      wholesalerId,
+      items
+    ]
+    of entries
+  ){
+
+    const total =
+      getGroupTotal(items);
+
+
+    if(total < MIN_ORDER){
+
+      const name =
+        items[0]?.wholesaler_name ||
+        "Wholesaler";
+
+      return {
+
+        valid:false,
+
+        message:
+          `${name} ke liye minimum order ₹${MIN_ORDER} hai. Abhi ₹${total.toFixed(2)} hai.`
+
+      };
+
+    }
+
+
+    if(total > MAX_ORDER){
+
+      const name =
+        items[0]?.wholesaler_name ||
+        "Wholesaler";
+
+      return {
+
+        valid:false,
+
+        message:
+          `${name} ke liye maximum order ₹${MAX_ORDER} hai. Abhi ₹${total.toFixed(2)} hai.`
+
+      };
+
+    }
+
+  }
+
+
+  return {
+    valid:true,
+    message:"All orders valid."
+  };
+
+}
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+function goBack(){
+
+  window.location.href =
+    "retailer.html";
+
+}
+
+
+function goOrders(){
+
+  window.location.href =
+    "retailer.html#orders";
+
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+function showToast(
+  message
+){
+
+  const toast =
+    document.getElementById(
+      "toast"
+    );
+
+  toast.textContent =
+    message;
+
+  toast.classList.add(
+    "show"
+  );
+
+
+  setTimeout(() => {
+
+    toast.classList.remove(
+      "show"
+    );
+
+  },3500);
+
+}
+
+
+/* =====================================================
+   ESCAPE
+===================================================== */
+
+function escapeHtml(
+  value
+){
 
   return String(
     value ?? ""
   )
-    .replace(
-      /[&<>"']/g,
-      function(char) {
-
-        return {
-
-          "&":
-            "&amp;",
-
-          "<":
-            "&lt;",
-
-          ">":
-            "&gt;",
-
-          '"':
-            "&quot;",
-
-          "'":
-            "&#039;"
-
-        }[char];
-
-      }
-    );
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+  .replace(
+    /</g,
+    "&lt;"
+  )
+  .replace(
+    />/g,
+    "&gt;"
+  )
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+  .replace(
+    /'/g,
+    "&#039;"
+  );
 
 }
 
 
-/* =========================
-   START
-========================= */
+function escapeAttribute(
+  value
+){
 
-init();
+  return escapeHtml(
+    value
+  );
+
+}
 
 </script>
 
