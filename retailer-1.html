@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Local Wholesale - Retailer</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f7fb;color:#1f2937}
+header{background:#fff;border-bottom:1px solid #ddd;padding:12px 16px;position:sticky;top:0;z-index:20}
+.top{display:flex;align-items:center;gap:10px;justify-content:space-between}.logo{font-size:20px;font-weight:800}
+button{border:0;border-radius:10px;padding:10px 14px;background:#166534;color:#fff;font-weight:700;cursor:pointer}
+button.secondary{background:#e5e7eb;color:#111827}.danger{background:#b91c1c}
+main{max-width:1100px;margin:auto;padding:16px}.search{width:100%;padding:13px;border:1px solid #d1d5db;border-radius:12px;margin:10px 0}
+.nav{display:flex;gap:8px;overflow:auto;padding-bottom:8px}.nav button{white-space:nowrap;background:#fff;color:#111;border:1px solid #ddd}
+.nav button.active{background:#166534;color:#fff}
+.categories{display:flex;gap:8px;overflow:auto;margin:10px 0}.cat{background:#fff;color:#111;border:1px solid #ddd;white-space:nowrap}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.card{background:#fff;border-radius:14px;padding:12px;box-shadow:0 2px 10px #0000000d}.product-img{width:100%;height:150px;object-fit:contain;background:#f3f4f6;border-radius:10px}
+.price{font-size:19px;font-weight:800;margin:5px 0}.muted{color:#6b7280;font-size:13px}.row{display:flex;gap:8px;align-items:center;justify-content:space-between}
+.badge{display:inline-block;padding:4px 8px;border-radius:999px;background:#ecfdf5;color:#166534;font-size:12px;font-weight:700}
+section{display:none}section.active{display:block}.order-card{margin-bottom:12px}.item{display:flex;gap:10px;padding:8px 0;border-top:1px solid #eee}.item img{width:55px;height:55px;object-fit:contain;border-radius:8px;background:#f3f4f6}
+.message{background:#fff7ed;border:1px solid #fed7aa;padding:10px;border-radius:10px;margin-top:8px}
+.modal{display:none;position:fixed;inset:0;background:#0008;z-index:50;align-items:center;justify-content:center;padding:15px}.modal.show{display:flex}.modalbox{background:#fff;border-radius:16px;padding:18px;width:min(420px,100%)}input,select,textarea{width:100%;padding:11px;border:1px solid #d1d5db;border-radius:10px;margin:6px 0 12px}
+.small{font-size:12px}.empty{text-align:center;padding:35px;color:#6b7280}
+@media(max-width:600px){main{padding:10px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.product-img{height:120px}.top .logo{font-size:17px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="top">
+  <div class="logo">🛒 Local Wholesale</div>
+  <button class="secondary" onclick="logout()">Logout</button>
+ </div>
+ <input id="search" class="search" placeholder="Product ya wholesaler search karein..." oninput="renderProducts()">
+ <div class="nav">
+  <button class="active" onclick="showSection('products',this)">Products</button>
+  <button onclick="showSection('orders',this)">My Orders</button>
+  <button onclick="showSection('profile',this)">Profile</button>
+  <button onclick="showSection('location',this)">Location</button>
+  <button onclick="showSection('help',this)">AI Help</button>
+  <button onclick="showSection('policy',this)">Policy</button>
+  <button onclick="showSection('support',this)">Support</button>
+ </div>
+</header>
+
+<main>
+<section id="products" class="active">
+ <h2>Nearby Wholesale Products</h2>
+ <div class="categories">
+  <button class="cat" onclick="setCategory('All')">All</button>
+  <button class="cat" onclick="setCategory('Kirana/Grocery')">Kirana/Grocery</button>
+  <button class="cat" onclick="setCategory('Cold Drinks/Beverages')">Cold Drinks</button>
+  <button class="cat" onclick="setCategory('Cosmetics')">Cosmetics</button>
+  <button class="cat" onclick="setCategory('Stationery')">Stationery</button>
+  <button class="cat" onclick="setCategory('Electrical')">Electrical</button>
+  <button class="cat" onclick="setCategory('Other')">Other</button>
+ </div>
+ <div id="subcats" style="display:none;margin-bottom:10px"></div>
+ <div id="productGrid" class="grid"></div>
+</section>
+
+<section id="orders">
+ <h2>My Orders</h2>
+ <div id="ordersList"></div>
+</section>
+
+<section id="profile">
+ <h2>My Profile</h2>
+ <div class="card">
+  <label>Name</label><input id="pName">
+  <label>Shop Name</label><input id="pShop">
+  <label>Mobile</label><input id="pMobile" readonly>
+  <label>Address</label><textarea id="pAddress" rows="3"></textarea>
+  <button onclick="saveProfile()">Save Profile</button>
+ </div>
+</section>
+
+<section id="location">
+ <h2>Delivery Location</h2>
+ <div class="card">
+  <p class="muted">Apna current location save karein, taaki wholesaler ko delivery address mil sake.</p>
+  <textarea id="locAddress" rows="3" placeholder="House no., street, area, city..."></textarea>
+  <button onclick="getGPS()">📍 Use Current GPS Location</button>
+  <button class="secondary" onclick="saveLocation()">Save Address</button>
+  <p id="gpsStatus" class="small"></p>
+ </div>
+</section>
+
+<section id="help"><div class="card"><h2>🤖 AI Help</h2><p>Product, order, wholesale price ya delivery ke baare mein sawal ho to yahan help milegi.</p></div></section>
+<section id="policy"><div class="card"><h2>📜 Retailer Policy</h2><p>Retailer commission ₹0 hai. Order minimum ₹1,000 aur maximum ₹10,000 per wholesaler hai. Product acceptance wholesaler ke stock aur approval par depend karega.</p></div></section>
+<section id="support"><div class="card"><h2>☎️ Customer Support</h2><p>Order ID ke saath support team se contact karein.</p></div></section>
+</main>
+
+<div id="unitModal" class="modal">
+ <div class="modalbox">
+  <h3 id="unitTitle">Select Unit</h3>
+  <div id="unitOptions"></div>
+  <button class="secondary" onclick="closeUnit()">Cancel</button>
+ </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL="https://izxvsvyvvtbaxtxgcfav.supabase.co";
+const SUPABASE_KEY="sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI";
+const supabaseClient=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+let currentUser=null, profile=null, products=[], category="All", pendingProduct=null;
+
+function esc(v){
+ return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+}
+function money(v){return "₹"+Number(v||0).toFixed(2)}
+function cart(){try{return JSON.parse(localStorage.getItem("localWholesaleCart")||"[]")}catch(e){return[]}}
+function saveCart(c){localStorage.setItem("localWholesaleCart",JSON.stringify(c))}
+function showSection(id,btn){
+ document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+ if(btn)btn.classList.add("active");
+ if(id==="orders")loadOrders();
+ if(id==="profile"||id==="location")loadProfile();
+}
+function setCategory(c){
+ category=c;
+ const sub=document.getElementById("subcats");
+ if(c==="Kirana/Grocery"){
+  sub.style.display="flex";sub.style.gap="6px";sub.innerHTML=["All","Biscuit","Snacks","Namkeen","Chips","Other"].map(x=>`<button class="cat" onclick="filterGrocery('${x}')">${x}</button>`).join("");
+ }else{sub.style.display="none";sub.innerHTML=""}
+ renderProducts();
+}
+let grocerySub="All";
+function filterGrocery(x){grocerySub=x;renderProducts()}
+
+async function init(){
+ const {data}=await supabaseClient.auth.getSession();
+ currentUser=data.session?.user;
+ if(!currentUser){location.href="index.html";return}
+ const {data:p,error}=await supabaseClient.from("profiles").select("*").eq("id",currentUser.id).single();
+ if(error||!p||p.role!=="retailer"){alert("Retailer profile nahi mila.");return}
+ profile=p;loadProfile();loadProducts();
+}
+async function loadProducts(){
+ const {data,error}=await supabaseClient.from("products").select("*").eq("is_active",true).order("created_at",{ascending:false});
+ if(error){document.getElementById("productGrid").innerHTML='<div class="empty">Products load nahi ho pa rahe.</div>';return}
+ products=data||[];renderProducts();
+}
+function renderProducts(){
+ const q=(document.getElementById("search").value||"").toLowerCase().trim();
+ let list=products.filter(p=>{
+  const text=(p.product_name+" "+(p.description||"")+" "+(p.category||"")).toLowerCase();
+  let ok=!q||text.includes(q);
+  if(category!=="All")ok=ok&&p.category===category;
+  if(category==="Kirana/Grocery"&&grocerySub!=="All"){
+   ok=ok&&((p.description||"").toLowerCase().includes(grocerySub.toLowerCase())||(p.product_name||"").toLowerCase().includes(grocerySub.toLowerCase()));
+  }
+  return ok;
+ });
+ const grid=document.getElementById("productGrid");
+ if(!list.length){grid.innerHTML='<div class="empty">Koi product nahi mila.</div>';return}
+ grid.innerHTML=list.map(p=>{
+  const image=p.image_url?`<img class="product-img" src="${esc(p.image_url)}" onerror="this.style.display='none'">`:`<div class="product-img"></div>`;
+  return `<div class="card product-card">
+   ${image}<h3>${esc(p.product_name)}</h3>
+   <div class="muted">${esc(p.category)} • ${esc(p.unit||"piece")}</div>
+   <div class="price">${money(p.price)}</div>
+   <div class="muted">Stock: ${Number(p.stock||0)}</div>
+   <div class="row" style="margin-top:8px"><span class="badge">Wholesaler</span><button onclick="chooseUnit('${p.id}')">Add to Cart</button></div>
+  </div>`
+ }).join("");
+}
+function chooseUnit(id){
+ pendingProduct=products.find(p=>p.id===id);if(!pendingProduct)return;
+ const boxQty=Number(pendingProduct.box_quantity||1);
+ if(boxQty<=1){addToCart(pendingProduct,pendingProduct.unit||"piece",1);return}
+ document.getElementById("unitTitle").textContent=pendingProduct.product_name+" - Unit Select";
+ document.getElementById("unitOptions").innerHTML=`
+ <button style="width:100%;margin-bottom:8px" onclick="selectUnit('packet')">📦 Packet</button>
+ <button style="width:100%" onclick="selectUnit('box')">📦 Box (${boxQty} packets)</button>`;
+ document.getElementById("unitModal").classList.add("show");
+}
+function closeUnit(){document.getElementById("unitModal").classList.remove("show");pendingProduct=null}
+function selectUnit(unit){if(pendingProduct)addToCart(pendingProduct,unit,1);closeUnit()}
+function unitPrice(p,unit){
+ const q=Number(p.box_quantity||1), base=Number(p.price||0);
+ if(q<=1)return base;
+ if(p.unit==="box")return unit==="packet"?base/q:base;
+ return unit==="box"?base*q:base;
+}
+function addToCart(p,unit,qty){
+ const c=cart(), key=p.id+"_"+unit, price=unitPrice(p,unit);
+ const found=c.find(x=>x.key===key);
+ if(found)found.quantity+=qty;
+ else c.push({key,product_id:p.id,wholesaler_id:p.wholesaler_id,product_name:p.product_name,price,unit,quantity:qty,image_url:p.image_url||"",box_quantity:p.box_quantity||1});
+ saveCart(c);alert("Cart me add ho gaya. Quantity badhane ke liye cart page use karein.");
+}
+function logout(){supabaseClient.auth.signOut().then(()=>location.href="index.html")}
+
+async function loadProfile(){
+ if(!profile)return;
+ document.getElementById("pName").value=profile.full_name||"";
+ document.getElementById("pShop").value=profile.shop_name||"";
+ document.getElementById("pMobile").value=profile.mobile||"";
+ document.getElementById("pAddress").value=profile.address||"";
+ document.getElementById("locAddress").value=profile.address||"";
+}
+async function saveProfile(){
+ const address=document.getElementById("pAddress").value.trim();
+ const patch={full_name:document.getElementById("pName").value.trim(),shop_name:document.getElementById("pShop").value.trim(),address};
+ const {error}=await supabaseClient.from("profiles").update(patch).eq("id",currentUser.id);
+ if(error)alert(error.message);else{profile={...profile,...patch};alert("Profile saved.");}
+}
+async function saveLocation(){
+ const address=document.getElementById("locAddress").value.trim();
+ const {error}=await supabaseClient.from("profiles").update({address}).eq("id",currentUser.id);
+ if(error)alert(error.message);else{profile.address=address;document.getElementById("pAddress").value=address;alert("Location saved.");}
+}
+function getGPS(){
+ if(!navigator.geolocation){alert("GPS supported nahi hai.");return}
+ document.getElementById("gpsStatus").textContent="Location mil rahi hai...";
+ navigator.geolocation.getCurrentPosition(async pos=>{
+  const lat=pos.coords.latitude,lon=pos.coords.longitude;
+  const {error}=await supabaseClient.from("profiles").update({latitude:lat,longitude:lon}).eq("id",currentUser.id);
+  document.getElementById("gpsStatus").textContent=error?error.message:`GPS saved: ${lat.toFixed(5)}, ${lon.toFixed(5)}`;
+ },e=>document.getElementById("gpsStatus").textContent="GPS permission/location nahi mili.");
+}
+
+async function loadOrders(){
+ const el=document.getElementById("ordersList");el.innerHTML="Loading...";
+ const {data:orders,error}=await supabaseClient.from("orders").select("*").eq("retailer_id",currentUser.id).order("created_at",{ascending:false});
+ if(error){el.innerHTML='<div class="empty">'+esc(error.message)+'</div>';return}
+ if(!orders?.length){el.innerHTML='<div class="empty">Abhi koi order nahi hai.</div>';return}
+ const ids=orders.map(o=>o.id);
+ const {data:items}=await supabaseClient.from("order_items").select("*").in("order_id",ids);
+ el.innerHTML=orders.map(o=>renderOrder(o,(items||[]).filter(i=>i.order_id===o.id))).join("");
+}
+function renderOrder(o,items){
+ let acceptedTotal=0;
+ const rows=items.map(i=>{
+  const aq=Number(i.accepted_quantity||0), price=Number(i.price||0);
+  if(i.accepted)acceptedTotal+=price*aq;
+  let state=o.status==="pending"?"⏳ Wholesaler confirmation pending":(i.accepted?"✅ Accepted":"❌ Unavailable");
+  return `<div class="item">${i.image_url?`<img src="${esc(i.image_url)}">`:"<div class='item img'></div>"}
+   <div style="flex:1"><b>${esc(i.product_name)}</b><div class="muted">${esc(state)}</div>
+   <div class="small">Ordered: ${i.quantity} ${esc(i.unit||"")} ${o.status==="pending"?"":" • Accepted: "+aq}</div>
+   ${o.status!=="pending"&&i.accepted?`<div class="small">Accepted value: ${money(price*aq)}</div>`:""}
+   </div></div>`;
+ }).join("");
+ return `<div class="card order-card"><div class="row"><b>Order #${esc(o.id.slice(0,8))}</b><span class="badge">${esc(o.status)}</span></div>
+ <div class="muted">${new Date(o.created_at).toLocaleString()}</div>${rows||'<div class="muted">No items</div>'}
+ ${o.status!=="pending"?`<div class="message"><b>Accepted Total:</b> ${money(acceptedTotal||o.total)}</div>`:""}
+ ${o.wholesaler_message?`<div class="message"><b>Wholesaler Message:</b><br>${esc(o.wholesaler_message)}</div>`:""}
+ <div class="small" style="margin-top:8px">Delivery: ${esc(o.delivery_status)} • Payment: ${esc(o.payment_status)}</div></div>`;
+}
+
+init();
+</script>
+</body>
+</html>
