@@ -1,1 +1,2241 @@
-<!DOCTYPE html><html lang="hi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Local Wholesale - Retailer</title><link rel="stylesheet" href="style.css"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>.header{display:flex;justify-content:space-between;align-items:center}.logout{border:0;background:#fff1f1;color:#c62828;padding:9px 12px;border-radius:10px}</style></head><body><main class="container"><div class="header"><h2>🛍️ Local Wholesale</h2><button class="logout" onclick="logout()">Logout</button></div><section class="card"><h3>Retailer Dashboard</h3><p>Nearby wholesalers, products, cart aur orders yahan aayenge.</p><button class="primary" onclick="location.href='index.html'">Back to Login</button></section></main><script>const s=window.supabase.createClient('https://izxvsvyvvtbaxtxgcfav.supabase.co','sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI');async function logout(){await s.auth.signOut();location.href='index.html'}(async()=>{const{data:{user}}=await s.auth.getUser();if(!user)location.href='index.html'})()</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Local Wholesale - Retailer</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:Arial,sans-serif;
+  background:#f5f7fb;
+  color:#222;
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+
+header{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:#fff;
+  border-bottom:1px solid #ddd;
+  padding:12px 15px;
+}
+.header-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.logo{
+  font-size:20px;
+  font-weight:bold;
+  color:#1769aa;
+}
+.header-actions{
+  display:flex;
+  gap:7px;
+}
+.icon-btn{
+  border:0;
+  background:#eef5ff;
+  padding:9px 12px;
+  border-radius:10px;
+}
+.logout{
+  background:#ffecec;
+  color:#c62828;
+}
+
+.search-box{
+  margin-top:10px;
+  width:100%;
+  padding:12px 14px;
+  border:1px solid #ddd;
+  border-radius:12px;
+  outline:none;
+}
+
+main{
+  max-width:1100px;
+  margin:auto;
+  padding:15px;
+}
+
+.welcome{
+  background:linear-gradient(135deg,#1769aa,#42a5f5);
+  color:white;
+  border-radius:18px;
+  padding:20px;
+  margin-bottom:15px;
+}
+.welcome h2{margin-bottom:6px}
+
+.menu{
+  display:flex;
+  overflow-x:auto;
+  gap:8px;
+  margin-bottom:15px;
+  padding-bottom:3px;
+}
+.menu button{
+  white-space:nowrap;
+  border:1px solid #ddd;
+  background:white;
+  padding:10px 13px;
+  border-radius:20px;
+}
+.menu button.active{
+  background:#1769aa;
+  color:white;
+}
+
+.section{
+  display:none;
+}
+.section.active{
+  display:block;
+}
+
+.card{
+  background:white;
+  border-radius:16px;
+  padding:15px;
+  margin-bottom:12px;
+  box-shadow:0 2px 10px rgba(0,0,0,.05);
+}
+
+.category-row{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  margin-bottom:15px;
+}
+.category-row button{
+  white-space:nowrap;
+  border:1px solid #ddd;
+  background:white;
+  padding:9px 13px;
+  border-radius:18px;
+}
+.category-row button.active{
+  background:#222;
+  color:white;
+}
+
+.products-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+.product-card{
+  background:white;
+  border-radius:15px;
+  overflow:hidden;
+  box-shadow:0 2px 10px rgba(0,0,0,.06);
+}
+.product-img{
+  width:100%;
+  height:145px;
+  object-fit:cover;
+  background:#eee;
+}
+.product-info{
+  padding:12px;
+}
+.product-info h3{
+  font-size:16px;
+  margin-bottom:5px;
+}
+.price{
+  font-size:18px;
+  font-weight:bold;
+  margin:6px 0;
+}
+.small{
+  color:#666;
+  font-size:13px;
+}
+.btn{
+  border:0;
+  background:#1769aa;
+  color:white;
+  padding:10px 13px;
+  border-radius:10px;
+  width:100%;
+  margin-top:8px;
+}
+.btn.secondary{
+  background:#eef5ff;
+  color:#1769aa;
+}
+.btn.danger{
+  background:#ffebee;
+  color:#c62828;
+}
+
+.cart-item{
+  display:flex;
+  gap:10px;
+  padding:10px 0;
+  border-bottom:1px solid #eee;
+}
+.cart-img{
+  width:65px;
+  height:65px;
+  border-radius:10px;
+  object-fit:cover;
+  background:#eee;
+}
+.cart-info{
+  flex:1;
+}
+.qty-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:7px;
+}
+.qty-btn{
+  width:30px;
+  height:30px;
+  border:0;
+  border-radius:8px;
+  background:#eee;
+}
+
+.total-box{
+  background:#f0f7ff;
+  border-radius:12px;
+  padding:14px;
+  margin-top:12px;
+}
+.total-line{
+  display:flex;
+  justify-content:space-between;
+  margin:6px 0;
+}
+
+.order-card{
+  border-left:4px solid #1769aa;
+}
+.order-header{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+}
+.badge{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:20px;
+  font-size:12px;
+  background:#eee;
+}
+.badge.green{
+  background:#e7f7ed;
+  color:#18743a;
+}
+.badge.red{
+  background:#ffebee;
+  color:#c62828;
+}
+.badge.orange{
+  background:#fff3df;
+  color:#a35b00;
+}
+.badge.blue{
+  background:#e8f2ff;
+  color:#1769aa;
+}
+
+.order-item{
+  display:flex;
+  gap:10px;
+  padding:10px 0;
+  border-bottom:1px solid #eee;
+}
+.order-item-img{
+  width:58px;
+  height:58px;
+  border-radius:9px;
+  object-fit:cover;
+  background:#eee;
+}
+.order-item-info{
+  flex:1;
+}
+.accepted-box{
+  margin-top:10px;
+  padding:11px;
+  border-radius:10px;
+  background:#eaf8ef;
+  color:#176b36;
+}
+.message-box{
+  margin-top:10px;
+  padding:12px;
+  border-radius:10px;
+  background:#fff8df;
+  border:1px solid #f0d98a;
+}
+
+.form-group{
+  margin-bottom:12px;
+}
+.form-group label{
+  display:block;
+  font-size:13px;
+  margin-bottom:5px;
+  color:#555;
+}
+.form-group input,
+.form-group textarea,
+.form-group select{
+  width:100%;
+  padding:11px;
+  border:1px solid #ddd;
+  border-radius:10px;
+  outline:none;
+}
+
+.empty{
+  text-align:center;
+  padding:30px 15px;
+  color:#777;
+}
+
+.info-box{
+  background:white;
+  border-radius:15px;
+  padding:15px;
+  margin-bottom:12px;
+}
+
+.location-status{
+  padding:10px;
+  background:#f2f7ff;
+  border-radius:10px;
+  margin-top:8px;
+  font-size:13px;
+}
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  z-index:500;
+  align-items:flex-end;
+  justify-content:center;
+}
+.modal.show{
+  display:flex;
+}
+.modal-content{
+  background:white;
+  width:100%;
+  max-width:600px;
+  border-radius:20px 20px 0 0;
+  padding:20px;
+  max-height:85vh;
+  overflow:auto;
+}
+.modal-title{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:15px;
+}
+.close{
+  border:0;
+  background:#eee;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+}
+
+.option-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.option{
+  border:2px solid #ddd;
+  padding:14px;
+  border-radius:12px;
+  text-align:center;
+}
+.option.selected{
+  border-color:#1769aa;
+  background:#eef6ff;
+}
+
+@media(max-width:600px){
+  .products-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+  .product-img{
+    height:120px;
+  }
+}
+
+@media(min-width:800px){
+  .products-grid{
+    grid-template-columns:repeat(4,1fr);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-row">
+    <div class="logo">Local Wholesale</div>
+
+    <div class="header-actions">
+      <button class="icon-btn" onclick="openCart()">🛒 <span id="cartCount">0</span></button>
+      <button class="icon-btn logout" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <input
+    id="searchInput"
+    class="search-box"
+    placeholder="Product ya wholesaler search karein..."
+    oninput="renderProducts()"
+  >
+</header>
+
+<main>
+
+  <div class="welcome">
+    <h2>Retailer Dashboard</h2>
+    <p id="welcomeText">Nearby wholesalers se direct order karein.</p>
+  </div>
+
+  <div class="menu">
+    <button class="active" onclick="showSection('products',this)">🛍 Products</button>
+    <button onclick="showSection('orders',this)">📦 My Orders</button>
+    <button onclick="showSection('profile',this)">👤 Profile</button>
+    <button onclick="showSection('location',this)">📍 Location</button>
+    <button onclick="showSection('ai',this)">🤖 AI Help</button>
+    <button onclick="showSection('policy',this)">📜 Policy</button>
+    <button onclick="showSection('support',this)">☎ Support</button>
+    <button onclick="showSection('rewards',this)">🎁 Rewards</button>
+  </div>
+
+
+  <!-- PRODUCTS -->
+  <section id="products" class="section active">
+
+    <div class="category-row">
+      <button class="active" onclick="setCategory('All',this)">All</button>
+      <button onclick="setCategory('Kirana/Grocery',this)">Kirana</button>
+      <button onclick="setCategory('Cold Drinks/Beverages',this)">Drinks</button>
+      <button onclick="setCategory('Cosmetics',this)">Cosmetics</button>
+      <button onclick="setCategory('Stationery',this)">Stationery</button>
+      <button onclick="setCategory('Electrical',this)">Electrical</button>
+      <button onclick="setCategory('Other',this)">Other</button>
+    </div>
+
+    <div id="grocerySubcategories" class="category-row" style="display:none">
+      <button onclick="setSubcategory('All',this)">All Grocery</button>
+      <button onclick="setSubcategory('Biscuit',this)">Biscuit</button>
+      <button onclick="setSubcategory('Snacks',this)">Snacks</button>
+      <button onclick="setSubcategory('Namkeen',this)">Namkeen</button>
+      <button onclick="setSubcategory('Chips',this)">Chips</button>
+      <button onclick="setSubcategory('Other',this)">Other</button>
+    </div>
+
+    <div id="productsList" class="products-grid"></div>
+  </section>
+
+
+  <!-- ORDERS -->
+  <section id="orders" class="section">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h2>📦 My Orders</h2>
+        <button class="icon-btn" onclick="loadOrders()">🔄 Refresh</button>
+      </div>
+    </div>
+
+    <div id="ordersList"></div>
+  </section>
+
+
+  <!-- CART -->
+  <section id="cart" class="section">
+    <div class="card">
+      <h2>🛒 My Cart</h2>
+      <div id="cartList"></div>
+
+      <div id="cartTotalBox" class="total-box" style="display:none">
+        <div class="total-line">
+          <span>Total</span>
+          <strong id="cartTotal">₹0</strong>
+        </div>
+        <div class="small">Retailer commission: ₹0</div>
+        <button class="btn" onclick="placeOrders()">Place Order</button>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- PROFILE -->
+  <section id="profile" class="section">
+
+    <div class="card">
+      <h2>👤 My Profile</h2>
+
+      <div class="form-group">
+        <label>Full Name</label>
+        <input id="profileName">
+      </div>
+
+      <div class="form-group">
+        <label>Shop Name</label>
+        <input id="profileShop">
+      </div>
+
+      <div class="form-group">
+        <label>Mobile</label>
+        <input id="profileMobile" readonly>
+      </div>
+
+      <div class="form-group">
+        <label>Address</label>
+        <textarea id="profileAddress" rows="3"></textarea>
+      </div>
+
+      <button class="btn" onclick="saveProfile()">Save Profile</button>
+    </div>
+
+  </section>
+
+
+  <!-- LOCATION -->
+  <section id="location" class="section">
+
+    <div class="card">
+      <h2>📍 My Location</h2>
+
+      <p class="small" style="margin-top:8px">
+        Delivery ke liye apna address aur location update karein.
+      </p>
+
+      <div class="form-group" style="margin-top:15px">
+        <label>Delivery Address</label>
+        <textarea id="locationAddress" rows="4"></textarea>
+      </div>
+
+      <button class="btn" onclick="getGPS()">📍 Use Current Location</button>
+
+      <div id="locationStatus" class="location-status">
+        Location not selected.
+      </div>
+
+      <button class="btn secondary" onclick="saveLocation()">
+        Save Location
+      </button>
+    </div>
+
+  </section>
+
+
+  <!-- AI -->
+  <section id="ai" class="section">
+
+    <div class="info-box">
+      <h2>🤖 AI Help</h2>
+      <p style="margin-top:10px">
+        Main aapko Local Wholesale ke products, order, stock aur shopping
+        related help de sakta hoon.
+      </p>
+
+      <button class="btn" onclick="alert('AI Help system ko next phase mein connect kiya jayega.')">
+        Start AI Help
+      </button>
+    </div>
+
+  </section>
+
+
+  <!-- POLICY -->
+  <section id="policy" class="section">
+
+    <div class="info-box">
+      <h2>📜 Retailer Policy</h2>
+
+      <p style="margin-top:12px">
+        1. Retailer account banana free hai.
+      </p>
+      <p style="margin-top:8px">
+        2. Retailer se platform commission ₹0 hai.
+      </p>
+      <p style="margin-top:8px">
+        3. Product availability wholesaler confirm karega.
+      </p>
+      <p style="margin-top:8px">
+        4. Wholesaler kuch products unavailable kar sakta hai.
+      </p>
+      <p style="margin-top:8px">
+        5. Final accepted quantity aur amount wholesaler confirmation ke baad
+        show hoga.
+      </p>
+      <p style="margin-top:8px">
+        6. Delivery wholesaler ke responsibility mein hogi.
+      </p>
+    </div>
+
+  </section>
+
+
+  <!-- SUPPORT -->
+  <section id="support" class="section">
+
+    <div class="info-box">
+      <h2>☎ Customer Support</h2>
+      <p style="margin-top:10px">
+        Order ya account related problem ke liye support section use karein.
+      </p>
+
+      <button class="btn" onclick="alert('Customer Support system next phase mein connect kiya jayega.')">
+        Contact Support
+      </button>
+    </div>
+
+  </section>
+
+
+  <!-- REWARDS -->
+  <section id="rewards" class="section">
+
+    <div class="info-box">
+      <h2>🎁 Rewards & Offers</h2>
+      <p style="margin-top:10px">
+        Future mein retailer ke liye rewards, offers aur target system yahan
+        available hoga.
+      </p>
+
+      <div id="rewardInfo" style="margin-top:12px">
+        Loading...
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+
+<!-- PACKET / BOX MODAL -->
+<div id="unitModal" class="modal">
+
+  <div class="modal-content">
+
+    <div class="modal-title">
+      <h2>Select Unit</h2>
+      <button class="close" onclick="closeUnitModal()">×</button>
+    </div>
+
+    <div id="unitProductName" style="font-weight:bold;margin-bottom:15px"></div>
+
+    <div class="option-row">
+
+      <div id="packetOption" class="option" onclick="selectUnit('packet')">
+        📦 Packet
+        <div id="packetPrice" class="price">₹0</div>
+      </div>
+
+      <div id="boxOption" class="option" onclick="selectUnit('box')">
+        📦 Box
+        <div id="boxPrice" class="price">₹0</div>
+      </div>
+
+    </div>
+
+    <button class="btn" onclick="confirmUnit()">Add to Cart</button>
+
+  </div>
+</div>
+
+
+<script>
+
+const SUPABASE_URL =
+"https://izxvsvyvvtbaxtxgcfav.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_XZmYflVzFZOujSbJFXlEuw_ml-zIviI";
+
+const supabaseClient =
+supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+
+let currentUser = null;
+let profile = null;
+let products = [];
+
+let selectedCategory = "All";
+let selectedSubcategory = "All";
+
+let unitProduct = null;
+let selectedUnit = "packet";
+
+const CART_KEY = "localWholesaleCart";
+
+
+/* =========================
+   INIT
+========================= */
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+  const {data,error} =
+    await supabaseClient.auth.getSession();
+
+  if(error || !data.session){
+    window.location.href = "index.html";
+    return;
+  }
+
+  currentUser = data.session.user;
+
+  await loadProfile();
+  await loadProducts();
+  updateCartCount();
+
+});
+
+
+/* =========================
+   SECTION
+========================= */
+
+function showSection(id,btn){
+
+  document.querySelectorAll(".section")
+    .forEach(s => s.classList.remove("active"));
+
+  const section = document.getElementById(id);
+
+  if(section){
+    section.classList.add("active");
+  }
+
+  document.querySelectorAll(".menu button")
+    .forEach(b => b.classList.remove("active"));
+
+  if(btn){
+    btn.classList.add("active");
+  }
+
+  if(id === "orders"){
+    loadOrders();
+  }
+
+  if(id === "cart"){
+    renderCart();
+  }
+
+  if(id === "rewards"){
+    loadRewards();
+  }
+
+}
+
+
+/* =========================
+   PROFILE
+========================= */
+
+async function loadProfile(){
+
+  const {data,error} =
+    await supabaseClient
+      .from("profiles")
+      .select("id,full_name,shop_name,mobile,role,address,latitude,longitude")
+      .eq("id",currentUser.id)
+      .maybeSingle();
+
+  if(error){
+    console.error(error);
+    return;
+  }
+
+  profile = data;
+
+  if(profile){
+
+    document.getElementById("welcomeText").textContent =
+      "Welcome " +
+      (profile.shop_name || profile.full_name || "Retailer") +
+      " — apne local wholesaler se direct order karein.";
+
+    document.getElementById("profileName").value =
+      profile.full_name || "";
+
+    document.getElementById("profileShop").value =
+      profile.shop_name || "";
+
+    document.getElementById("profileMobile").value =
+      profile.mobile || "";
+
+    document.getElementById("profileAddress").value =
+      profile.address || "";
+
+    document.getElementById("locationAddress").value =
+      profile.address || "";
+
+    if(profile.latitude && profile.longitude){
+
+      document.getElementById("locationStatus").textContent =
+        "Saved location: " +
+        Number(profile.latitude).toFixed(5) +
+        ", " +
+        Number(profile.longitude).toFixed(5);
+
+    }
+
+  }
+
+}
+
+
+async function saveProfile(){
+
+  const full_name =
+    document.getElementById("profileName").value.trim();
+
+  const shop_name =
+    document.getElementById("profileShop").value.trim();
+
+  const address =
+    document.getElementById("profileAddress").value.trim();
+
+  const {error} =
+    await supabaseClient
+      .from("profiles")
+      .update({
+        full_name,
+        shop_name,
+        address
+      })
+      .eq("id",currentUser.id);
+
+  if(error){
+
+    alert("Profile save nahi hua: " + error.message);
+    return;
+
+  }
+
+  alert("Profile successfully saved ✅");
+
+  await loadProfile();
+
+}
+
+
+/* =========================
+   GPS
+========================= */
+
+function getGPS(){
+
+  if(!navigator.geolocation){
+
+    alert("Aapke browser mein location support nahi hai.");
+    return;
+
+  }
+
+  document.getElementById("locationStatus").textContent =
+    "Location detect ho rahi hai...";
+
+  navigator.geolocation.getCurrentPosition(
+
+    async position => {
+
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+
+      document.getElementById("locationStatus").textContent =
+        "Current location: " +
+        lat.toFixed(5) +
+        ", " +
+        lng.toFixed(5);
+
+      window.currentLat = lat;
+      window.currentLng = lng;
+
+    },
+
+    error => {
+
+      document.getElementById("locationStatus").textContent =
+        "Location nahi mil saki.";
+
+      alert(
+        "Location permission allow karein aur dobara try karein."
+      );
+
+    },
+
+    {
+      enableHighAccuracy:true,
+      timeout:10000
+    }
+
+  );
+
+}
+
+
+async function saveLocation(){
+
+  const address =
+    document.getElementById("locationAddress").value.trim();
+
+  const updateData = {
+    address
+  };
+
+  if(window.currentLat !== undefined){
+
+    updateData.latitude =
+      window.currentLat;
+
+    updateData.longitude =
+      window.currentLng;
+
+  }
+
+  const {error} =
+    await supabaseClient
+      .from("profiles")
+      .update(updateData)
+      .eq("id",currentUser.id);
+
+  if(error){
+
+    alert("Location save nahi hui: " + error.message);
+    return;
+
+  }
+
+  alert("Location saved ✅");
+
+  await loadProfile();
+
+}
+
+
+/* =========================
+   PRODUCTS
+========================= */
+
+async function loadProducts(){
+
+  const {data,error} =
+    await supabaseClient
+      .from("products")
+      .select(`
+        id,
+        wholesaler_id,
+        category,
+        product_name,
+        description,
+        price,
+        unit,
+        stock,
+        image_url,
+        is_active,
+        mrp,
+        box_quantity,
+        suggested_selling_price,
+        retailer_selling_price
+      `)
+      .eq("is_active",true)
+      .order("created_at",{ascending:false});
+
+  if(error){
+
+    console.error(error);
+
+    document.getElementById("productsList").innerHTML =
+      `<div class="card">
+        Products load nahi hue.<br>
+        <span class="small">${escapeHtml(error.message)}</span>
+      </div>`;
+
+    return;
+
+  }
+
+  products = data || [];
+
+  renderProducts();
+
+}
+
+
+function setCategory(category,btn){
+
+  selectedCategory = category;
+  selectedSubcategory = "All";
+
+  document.querySelectorAll(".category-row:first-of-type button")
+    .forEach(b => b.classList.remove("active"));
+
+  if(btn){
+    btn.classList.add("active");
+  }
+
+  const grocery =
+    document.getElementById("grocerySubcategories");
+
+  grocery.style.display =
+    category === "Kirana/Grocery"
+      ? "flex"
+      : "none";
+
+  renderProducts();
+
+}
+
+
+function setSubcategory(sub,btn){
+
+  selectedSubcategory = sub;
+
+  document.querySelectorAll("#grocerySubcategories button")
+    .forEach(b => b.classList.remove("active"));
+
+  if(btn){
+    btn.classList.add("active");
+  }
+
+  renderProducts();
+
+}
+
+
+function renderProducts(){
+
+  const container =
+    document.getElementById("productsList");
+
+  const search =
+    document.getElementById("searchInput")
+      .value
+      .trim()
+      .toLowerCase();
+
+  let list = products.filter(p => {
+
+    if(selectedCategory !== "All" &&
+       p.category !== selectedCategory){
+
+      return false;
+
+    }
+
+    if(
+      selectedCategory === "Kirana/Grocery" &&
+      selectedSubcategory !== "All"
+    ){
+
+      const text =
+        (
+          p.product_name +
+          " " +
+          (p.description || "")
+        ).toLowerCase();
+
+      if(!text.includes(selectedSubcategory.toLowerCase())){
+        return false;
+      }
+
+    }
+
+    if(search){
+
+      const text =
+        (
+          p.product_name +
+          " " +
+          (p.description || "") +
+          " " +
+          (p.category || "")
+        ).toLowerCase();
+
+      if(!text.includes(search)){
+        return false;
+      }
+
+    }
+
+    return true;
+
+  });
+
+  if(!list.length){
+
+    container.innerHTML =
+      `<div class="card" style="grid-column:1/-1">
+        <div class="empty">
+          🔍 Product nahi mila.
+        </div>
+      </div>`;
+
+    return;
+
+  }
+
+  container.innerHTML =
+    list.map(renderProductCard).join("");
+
+}
+
+
+function renderProductCard(p){
+
+  const image =
+    p.image_url ||
+    "https://via.placeholder.com/500x400?text=Product";
+
+  const stock =
+    Number(p.stock || 0);
+
+  const price =
+    Number(p.price || 0);
+
+  const unit =
+    p.unit || "piece";
+
+  const boxQty =
+    Number(p.box_quantity || 1);
+
+  return `
+    <div class="product-card">
+
+      <img
+        class="product-img"
+        src="${escapeAttr(image)}"
+        onerror="this.src='https://via.placeholder.com/500x400?text=Product'"
+      >
+
+      <div class="product-info">
+
+        <h3>${escapeHtml(p.product_name)}</h3>
+
+        <div class="small">
+          ${escapeHtml(p.category || "")}
+        </div>
+
+        <div class="price">
+          ₹${price.toFixed(2)}
+          <span class="small"> / ${escapeHtml(unit)}</span>
+        </div>
+
+        ${
+          p.mrp
+          ? `<div class="small">MRP ₹${Number(p.mrp).toFixed(2)}</div>`
+          : ""
+        }
+
+        <div class="small">
+          Stock: ${stock}
+        </div>
+
+        ${
+          boxQty > 1
+          ? `<div class="small">
+              1 Box = ${boxQty} ${escapeHtml(unit)}
+             </div>`
+          : ""
+        }
+
+        <button
+          class="btn"
+          ${stock <= 0 ? "disabled" : ""}
+          onclick="addProduct('${p.id}')"
+        >
+          ${stock > 0 ? "Add to Cart" : "Out of Stock"}
+        </button>
+
+      </div>
+    </div>
+  `;
+
+}
+
+
+/* =========================
+   ADD PRODUCT
+========================= */
+
+function addProduct(id){
+
+  const p =
+    products.find(x => x.id === id);
+
+  if(!p) return;
+
+  if(Number(p.stock || 0) <= 0){
+
+    alert("Product out of stock.");
+    return;
+
+  }
+
+  const boxQty =
+    Number(p.box_quantity || 1);
+
+  if(boxQty > 1){
+
+    openUnitModal(p);
+    return;
+
+  }
+
+  addToCart(p,"packet",Number(p.price || 0));
+
+}
+
+
+function openUnitModal(p){
+
+  unitProduct = p;
+  selectedUnit = "packet";
+
+  document.getElementById("unitProductName").textContent =
+    p.product_name;
+
+  const price =
+    Number(p.price || 0);
+
+  const boxQty =
+    Number(p.box_quantity || 1);
+
+  let packetPrice = price;
+  let boxPrice = price;
+
+  if((p.unit || "").toLowerCase() === "box"){
+
+    packetPrice =
+      boxQty > 0 ? price / boxQty : price;
+
+    boxPrice = price;
+
+  }else{
+
+    packetPrice = price;
+    boxPrice = price * boxQty;
+
+  }
+
+  document.getElementById("packetPrice").textContent =
+    "₹" + packetPrice.toFixed(2);
+
+  document.getElementById("boxPrice").textContent =
+    "₹" + boxPrice.toFixed(2);
+
+  document.getElementById("packetOption")
+    .classList.add("selected");
+
+  document.getElementById("boxOption")
+    .classList.remove("selected");
+
+  document.getElementById("unitModal")
+    .classList.add("show");
+
+}
+
+
+function selectUnit(unit){
+
+  selectedUnit = unit;
+
+  document.getElementById("packetOption")
+    .classList.toggle("selected",unit === "packet");
+
+  document.getElementById("boxOption")
+    .classList.toggle("selected",unit === "box");
+
+}
+
+
+function confirmUnit(){
+
+  if(!unitProduct) return;
+
+  const p = unitProduct;
+
+  const price =
+    Number(p.price || 0);
+
+  const boxQty =
+    Number(p.box_quantity || 1);
+
+  let finalPrice = price;
+
+  if((p.unit || "").toLowerCase() === "box"){
+
+    if(selectedUnit === "packet"){
+      finalPrice =
+        boxQty > 0 ? price / boxQty : price;
+    }else{
+      finalPrice = price;
+    }
+
+  }else{
+
+    if(selectedUnit === "packet"){
+      finalPrice = price;
+    }else{
+      finalPrice = price * boxQty;
+    }
+
+  }
+
+  addToCart(p,selectedUnit,finalPrice);
+
+  closeUnitModal();
+
+}
+
+
+function closeUnitModal(){
+
+  document.getElementById("unitModal")
+    .classList.remove("show");
+
+  unitProduct = null;
+
+}
+
+
+/* =========================
+   CART
+========================= */
+
+function getCart(){
+
+  try{
+
+    return JSON.parse(
+      localStorage.getItem(CART_KEY) || "[]"
+    );
+
+  }catch(e){
+
+    return [];
+
+  }
+
+}
+
+
+function saveCart(cart){
+
+  localStorage.setItem(
+    CART_KEY,
+    JSON.stringify(cart)
+  );
+
+  updateCartCount();
+
+}
+
+
+function cartKey(productId,unit){
+
+  return productId + "__" + unit;
+
+}
+
+
+function addToCart(product,unit,price){
+
+  const cart = getCart();
+
+  const key =
+    cartKey(product.id,unit);
+
+  const existing =
+    cart.find(i => i.key === key);
+
+  if(existing){
+
+    existing.quantity =
+      Number(existing.quantity || 0) + 1;
+
+  }else{
+
+    cart.push({
+
+      key,
+
+      product_id:product.id,
+
+      wholesaler_id:product.wholesaler_id,
+
+      product_name:product.product_name,
+
+      image_url:product.image_url || "",
+
+      unit,
+
+      quantity:1,
+
+      price:Number(price || 0),
+
+      box_quantity:Number(product.box_quantity || 1)
+
+    });
+
+  }
+
+  saveCart(cart);
+
+  alert("Cart mein add ho gaya ✅");
+
+}
+
+
+function updateCartCount(){
+
+  const cart = getCart();
+
+  const count =
+    cart.reduce(
+      (sum,item) =>
+        sum + Number(item.quantity || 0),
+      0
+    );
+
+  document.getElementById("cartCount").textContent =
+    count;
+
+}
+
+
+function openCart(){
+
+  document.querySelectorAll(".section")
+    .forEach(s => s.classList.remove("active"));
+
+  document.getElementById("cart")
+    .classList.add("active");
+
+  document.querySelectorAll(".menu button")
+    .forEach(b => b.classList.remove("active"));
+
+  renderCart();
+
+}
+
+
+function renderCart(){
+
+  const cart = getCart();
+
+  const list =
+    document.getElementById("cartList");
+
+  const box =
+    document.getElementById("cartTotalBox");
+
+  if(!cart.length){
+
+    list.innerHTML =
+      `<div class="empty">
+        🛒 Cart empty hai.
+      </div>`;
+
+    box.style.display = "none";
+    return;
+
+  }
+
+  let total = 0;
+
+  list.innerHTML =
+    cart.map((item,index) => {
+
+      const qty =
+        Number(item.quantity || 0);
+
+      const price =
+        Number(item.price || 0);
+
+      const itemTotal =
+        qty * price;
+
+      total += itemTotal;
+
+      const image =
+        item.image_url ||
+        "https://via.placeholder.com/100?text=Product";
+
+      return `
+        <div class="cart-item">
+
+          <img
+            class="cart-img"
+            src="${escapeAttr(image)}"
+            onerror="this.src='https://via.placeholder.com/100?text=Product'"
+          >
+
+          <div class="cart-info">
+
+            <strong>
+              ${escapeHtml(item.product_name)}
+            </strong>
+
+            <div class="small">
+              ₹${price.toFixed(2)} / ${escapeHtml(item.unit)}
+            </div>
+
+            <div class="qty-row">
+
+              <button
+                class="qty-btn"
+                onclick="changeCartQty(${index},-1)"
+              >−</button>
+
+              <strong>${qty}</strong>
+
+              <button
+                class="qty-btn"
+                onclick="changeCartQty(${index},1)"
+              >+</button>
+
+              <button
+                class="qty-btn"
+                onclick="removeCartItem(${index})"
+              >🗑</button>
+
+            </div>
+
+            <div style="margin-top:5px;font-weight:bold">
+              ₹${itemTotal.toFixed(2)}
+            </div>
+
+          </div>
+
+        </div>
+      `;
+
+    }).join("");
+
+  document.getElementById("cartTotal").textContent =
+    "₹" + total.toFixed(2);
+
+  box.style.display = "block";
+
+}
+
+
+function changeCartQty(index,change){
+
+  const cart = getCart();
+
+  if(!cart[index]) return;
+
+  cart[index].quantity =
+    Number(cart[index].quantity || 0) + change;
+
+  if(cart[index].quantity <= 0){
+
+    cart.splice(index,1);
+
+  }
+
+  saveCart(cart);
+  renderCart();
+
+}
+
+
+function removeCartItem(index){
+
+  const cart = getCart();
+
+  cart.splice(index,1);
+
+  saveCart(cart);
+  renderCart();
+
+}
+
+
+/* =========================
+   PLACE ORDERS
+========================= */
+
+async function placeOrders(){
+
+  const cart = getCart();
+
+  if(!cart.length){
+
+    alert("Cart empty hai.");
+    return;
+
+  }
+
+  /*
+    Multi-wholesaler cart ko separate orders
+    mein split kiya jayega.
+  */
+
+  const groups = {};
+
+  cart.forEach(item => {
+
+    if(!groups[item.wholesaler_id]){
+      groups[item.wholesaler_id] = [];
+    }
+
+    groups[item.wholesaler_id].push(item);
+
+  });
+
+  for(const wholesalerId of Object.keys(groups)){
+
+    const items =
+      groups[wholesalerId];
+
+    const total =
+      items.reduce(
+        (sum,item) =>
+          sum +
+          Number(item.price || 0) *
+          Number(item.quantity || 0),
+        0
+      );
+
+    if(total < 1000){
+
+      alert(
+        "Har wholesaler ka minimum order ₹1,000 hai.\n" +
+        "Wholesaler order total: ₹" +
+        total.toFixed(2)
+      );
+
+      return;
+
+    }
+
+    if(total > 10000){
+
+      alert(
+        "Har wholesaler ka maximum order ₹10,000 hai."
+      );
+
+      return;
+
+    }
+
+  }
+
+  if(!confirm("Order place karna hai?")){
+    return;
+  }
+
+  try{
+
+    for(const wholesalerId of Object.keys(groups)){
+
+      const items =
+        groups[wholesalerId];
+
+      const total =
+        items.reduce(
+          (sum,item) =>
+            sum +
+            Number(item.price || 0) *
+            Number(item.quantity || 0),
+          0
+        );
+
+      const {data:order,error:orderError} =
+        await supabaseClient
+          .from("orders")
+          .insert({
+
+            retailer_id:currentUser.id,
+
+            wholesaler_id:wholesalerId,
+
+            total:total,
+
+            status:"pending",
+
+            delivery_status:"pending",
+
+            payment_status:"pending"
+
+          })
+          .select()
+          .single();
+
+      if(orderError){
+        throw orderError;
+      }
+
+      const orderItems =
+        items.map(item => ({
+
+          order_id:order.id,
+
+          product_id:item.product_id,
+
+          product_name:item.product_name,
+
+          quantity:Number(item.quantity || 0),
+
+          price:Number(item.price || 0),
+
+          image_url:item.image_url || null,
+
+          unit:item.unit || "piece",
+
+          accepted:true,
+
+          accepted_quantity:Number(item.quantity || 0)
+
+        }));
+
+      const {error:itemError} =
+        await supabaseClient
+          .from("order_items")
+          .insert(orderItems);
+
+      if(itemError){
+        throw itemError;
+      }
+
+    }
+
+    localStorage.removeItem(CART_KEY);
+
+    updateCartCount();
+
+    alert(
+      "Order successfully placed ✅\n" +
+      "Wholesaler ab products confirm karega."
+    );
+
+    showOrdersDirect();
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "Order place nahi hua:\n" +
+      error.message
+    );
+
+  }
+
+}
+
+
+function showOrdersDirect(){
+
+  document.querySelectorAll(".section")
+    .forEach(s => s.classList.remove("active"));
+
+  document.getElementById("orders")
+    .classList.add("active");
+
+  loadOrders();
+
+}
+
+
+/* =========================
+   ORDERS
+========================= */
+
+async function loadOrders(){
+
+  const container =
+    document.getElementById("ordersList");
+
+  container.innerHTML =
+    `<div class="card">Loading orders...</div>`;
+
+  const {data:orders,error} =
+    await supabaseClient
+      .from("orders")
+      .select(`
+        id,
+        wholesaler_id,
+        total,
+        status,
+        delivery_status,
+        payment_status,
+        wholesaler_message,
+        created_at
+      `)
+      .eq("retailer_id",currentUser.id)
+      .order("created_at",{ascending:false});
+
+  if(error){
+
+    container.innerHTML =
+      `<div class="card">
+        Orders load nahi hue.<br>
+        <span class="small">${escapeHtml(error.message)}</span>
+      </div>`;
+
+    return;
+
+  }
+
+  if(!orders || !orders.length){
+
+    container.innerHTML =
+      `<div class="card empty">
+        📦 Abhi koi order nahi hai.
+      </div>`;
+
+    return;
+
+  }
+
+  const orderIds =
+    orders.map(o => o.id);
+
+  const {data:items,error:itemError} =
+    await supabaseClient
+      .from("order_items")
+      .select(`
+        id,
+        order_id,
+        product_id,
+        product_name,
+        quantity,
+        price,
+        image_url,
+        unit,
+        accepted,
+        accepted_quantity
+      `)
+      .in("order_id",orderIds);
+
+  if(itemError){
+
+    console.error(itemError);
+
+  }
+
+  const itemsByOrder = {};
+
+  (items || []).forEach(item => {
+
+    if(!itemsByOrder[item.order_id]){
+      itemsByOrder[item.order_id] = [];
+    }
+
+    itemsByOrder[item.order_id].push(item);
+
+  });
+
+  container.innerHTML =
+    orders.map(order =>
+      renderOrder(
+        order,
+        itemsByOrder[order.id] || []
+      )
+    ).join("");
+
+}
+
+
+function renderOrder(order,items){
+
+  const status =
+    (order.status || "pending").toLowerCase();
+
+  const created =
+    order.created_at
+      ? new Date(order.created_at).toLocaleString("en-IN")
+      : "";
+
+  let statusClass = "orange";
+
+  if(status === "accepted" ||
+     status === "completed"){
+    statusClass = "green";
+  }
+
+  if(status === "rejected" ||
+     status === "cancelled"){
+    statusClass = "red";
+  }
+
+  let acceptedTotal = 0;
+
+  items.forEach(item => {
+
+    /*
+      IMPORTANT:
+      Pending order mein accepted=true ko final
+      acceptance nahi maana jayega.
+    */
+
+    if(status !== "pending" &&
+       item.accepted){
+
+      acceptedTotal +=
+        Number(item.price || 0) *
+        Number(
+          item.accepted_quantity ||
+          0
+        );
+
+    }
+
+  });
+
+  let itemsHtml = "";
+
+  if(!items.length){
+
+    itemsHtml =
+      `<div class="empty">
+        Order items nahi mile.
+      </div>`;
+
+  }else{
+
+    itemsHtml =
+      items.map(item => {
+
+        const orderedQty =
+          Number(item.quantity || 0);
+
+        const acceptedQty =
+          Number(item.accepted_quantity || 0);
+
+        let stateHtml = "";
+
+        let itemTotal = 0;
+
+        if(status === "pending"){
+
+          stateHtml =
+            `<div style="margin-top:5px">
+              <span class="badge orange">
+                ⏳ Wholesaler confirmation pending
+              </span>
+            </div>`;
+
+          itemTotal =
+            Number(item.price || 0) *
+            orderedQty;
+
+        }else if(item.accepted){
+
+          itemTotal =
+            Number(item.price || 0) *
+            acceptedQty;
+
+          stateHtml =
+            `<div style="margin-top:5px">
+              <span class="badge green">
+                ✅ Accepted
+              </span>
+            </div>
+            <div class="small" style="margin-top:5px">
+              Ordered: ${orderedQty}
+              &nbsp; | &nbsp;
+              Accepted: ${acceptedQty}
+            </div>`;
+
+        }else{
+
+          itemTotal = 0;
+
+          stateHtml =
+            `<div style="margin-top:5px">
+              <span class="badge red">
+                ❌ Unavailable
+              </span>
+            </div>
+            <div class="small" style="margin-top:5px">
+              Ordered: ${orderedQty}
+              &nbsp; | &nbsp;
+              Accepted: 0
+            </div>`;
+
+        }
+
+        const image =
+          item.image_url ||
+          "https://via.placeholder.com/100?text=Product";
+
+        return `
+          <div class="order-item">
+
+            <img
+              class="order-item-img"
+              src="${escapeAttr(image)}"
+              onerror="this.src='https://via.placeholder.com/100?text=Product'"
+            >
+
+            <div class="order-item-info">
+
+              <strong>
+                ${escapeHtml(item.product_name)}
+              </strong>
+
+              <div class="small">
+                ₹${Number(item.price || 0).toFixed(2)}
+                / ${escapeHtml(item.unit || "piece")}
+              </div>
+
+              ${stateHtml}
+
+              ${
+                status === "pending"
+                ? `<div class="small" style="margin-top:5px">
+                    Ordered quantity: ${orderedQty}
+                   </div>`
+                : ""
+              }
+
+              <div style="margin-top:5px;font-weight:bold">
+                ${
+                  status === "pending"
+                  ? "₹" + itemTotal.toFixed(2)
+                  : "Accepted value: ₹" + itemTotal.toFixed(2)
+                }
+              </div>
+
+            </div>
+
+          </div>
+        `;
+
+      }).join("");
+
+  }
+
+  let messageHtml = "";
+
+  if(order.wholesaler_message){
+
+    messageHtml =
+      `<div class="message-box">
+        <strong>💬 Wholesaler Message</strong>
+        <div style="margin-top:6px">
+          ${escapeHtml(order.wholesaler_message)}
+        </div>
+      </div>`;
+
+  }
+
+  let totalHtml = "";
+
+  if(status === "pending"){
+
+    totalHtml =
+      `<div class="total-box">
+        <div class="total-line">
+          <span>Current Order Total</span>
+          <strong>
+            ₹${Number(order.total || 0).toFixed(2)}
+          </strong>
+        </div>
+
+        <div class="small">
+          Final amount wholesaler confirmation ke baad change ho sakta hai.
+        </div>
+      </div>`;
+
+  }else{
+
+    totalHtml =
+      `<div class="total-box">
+        <div class="total-line">
+          <span>Accepted Total</span>
+          <strong>
+            ₹${acceptedTotal.toFixed(2)}
+          </strong>
+        </div>
+
+        <div class="small">
+          Retailer commission: ₹0
+        </div>
+      </div>`;
+
+  }
+
+  return `
+    <div class="card order-card">
+
+      <div class="order-header">
+
+        <div>
+          <strong>Order</strong>
+          <div class="small">
+            ${created}
+          </div>
+        </div>
+
+        <span class="badge ${statusClass}">
+          ${formatStatus(status)}
+        </span>
+
+      </div>
+
+      <div class="small" style="margin-top:8px">
+        Order ID: ${escapeHtml(order.id)}
+      </div>
+
+      ${messageHtml}
+
+      <div style="margin-top:12px">
+        ${itemsHtml}
+      </div>
+
+      ${totalHtml}
+
+      <div style="margin-top:12px">
+
+        <div class="small">
+          Delivery Status:
+          <strong>
+            ${formatStatus(order.delivery_status)}
+          </strong>
+        </div>
+
+        <div class="small" style="margin-top:5px">
+          Payment:
+          <strong>
+            ${formatStatus(order.payment_status)}
+          </strong>
+        </div>
+
+      </div>
+
+    </div>
+  `;
+
+}
+
+
+function formatStatus(value){
+
+  if(!value) return "Pending";
+
+  return String(value)
+    .replaceAll("_"," ")
+    .replace(/\b\w/g,c => c.toUpperCase());
+
+}
+
+
+/* =========================
+   REWARDS
+========================= */
+
+async function loadRewards(){
+
+  const box =
+    document.getElementById("rewardInfo");
+
+  try{
+
+    const {data,error} =
+      await supabaseClient
+        .from("orders")
+        .select("id,status,total")
+        .eq("retailer_id",currentUser.id)
+        .eq("status","completed");
+
+    if(error){
+      throw error;
+    }
+
+    const completed =
+      (data || []).length;
+
+    box.innerHTML =
+      `
+      <div>
+        Completed Orders:
+        <strong>${completed}</strong>
+      </div>
+
+      <div class="small" style="margin-top:7px">
+        Rewards programme future update mein expand kiya jayega.
+      </div>
+      `;
+
+  }catch(e){
+
+    box.innerHTML =
+      `<div class="small">
+        Rewards information abhi available nahi hai.
+      </div>`;
+
+  }
+
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+async function logout(){
+
+  await supabaseClient.auth.signOut();
+
+  localStorage.removeItem(CART_KEY);
+
+  window.location.href =
+    "index.html";
+
+}
+
+
+/* =========================
+   SECURITY / HTML HELPERS
+========================= */
+
+function escapeHtml(value){
+
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+function escapeAttr(value){
+
+  return escapeHtml(value);
+
+}
+
+</script>
+
+</body>
+</html>
