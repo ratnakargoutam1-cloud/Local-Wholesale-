@@ -3,10 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Local Wholesale - Add Product</title>
 
 <style>
-*{box-sizing:border-box}
+*{
+    box-sizing:border-box;
+}
 
 body{
     margin:0;
@@ -73,9 +76,17 @@ button{
     margin-top:16px;
 }
 
+button:disabled{
+    opacity:.6;
+}
+
 .secondary{
     background:#e5e7eb;
     color:#111827;
+}
+
+.new-category-btn{
+    background:#2563eb;
 }
 
 .hidden{
@@ -86,6 +97,20 @@ button{
     font-size:13px;
     color:#6b7280;
     margin-top:5px;
+}
+
+.custom-category-box{
+    margin-top:10px;
+    padding:12px;
+    background:#eff6ff;
+    border-radius:12px;
+    border:1px solid #bfdbfe;
+}
+
+.small-btn{
+    margin-top:10px;
+    padding:10px;
+    font-size:14px;
 }
 
 #status{
@@ -124,6 +149,7 @@ button{
 <input
     id="productName"
     type="text"
+    maxlength="100"
     placeholder="Example: Parle-G Biscuit"
 >
 
@@ -139,31 +165,49 @@ button{
     Select Category
 </option>
 
-<option value="Kirana/Grocery">
-    🛒 Kirana / Grocery
-</option>
-
-<option value="Cold Drinks/Beverages">
-    🥤 Cold Drinks / Beverages
-</option>
-
-<option value="Cosmetics">
-    💄 Cosmetics
-</option>
-
-<option value="Stationery">
-    ✏️ Stationery
-</option>
-
-<option value="Electrical">
-    💡 Electrical
-</option>
-
-<option value="Other">
-    📦 Other
-</option>
-
 </select>
+
+
+<button
+    type="button"
+    class="new-category-btn small-btn"
+    onclick="showNewCategory()"
+>
+    ➕ Category nahi mil rahi? New Category likhein
+</button>
+
+
+<!-- NEW CATEGORY -->
+
+<div
+    id="newCategoryBox"
+    class="custom-category-box hidden"
+>
+
+<label>
+    New Category Name
+</label>
+
+<input
+    id="newCategoryName"
+    type="text"
+    maxlength="60"
+    placeholder="Example: Plastic Household Items"
+>
+
+<div class="note">
+    Sirf valid category name likhein. 2–60 characters.
+</div>
+
+<button
+    type="button"
+    class="small-btn"
+    onclick="createNewCategory()"
+>
+    Add New Category
+</button>
+
+</div>
 
 
 <!-- GROCERY SUBCATEGORY -->
@@ -214,6 +258,7 @@ button{
 
 <textarea
     id="description"
+    maxlength="1000"
     placeholder="Brand, pack size, product details..."
 ></textarea>
 
@@ -331,7 +376,7 @@ button{
 <input
     id="image"
     type="file"
-    accept="image/*"
+    accept="image/jpeg,image/png,image/webp"
 >
 
 <div class="note">
@@ -382,6 +427,137 @@ let currentUser = null;
 
 
 /* =========================
+   DEFAULT CATEGORIES
+========================= */
+
+const defaultCategories = [
+
+    "Cold Drinks & Juices",
+    "Parle Products",
+    "Britannia Products",
+    "Tata Products",
+    "Toast & Petha",
+    "Patanjali Products",
+    "Daily Products",
+    "Hindustani Products",
+    "Reliance Products",
+    "Namkeens & Chips",
+    "Chocolates & Toffees",
+    "Red Label",
+    "Paan Corner",
+    "Biscuits & Cookies",
+    "Tea, Coffee & More",
+    "Instant Food",
+    "Personal Care",
+    "Dry Fruits & Nuts",
+    "Masala & Spices",
+    "Rice, Dal & Pulses",
+    "Atta, Flour & Grains",
+    "Sugar, Salt & Sweeteners",
+    "Edible Oil & Ghee",
+    "Home Cleaning",
+    "Household & Disposable",
+    "Baby Care",
+    "Beauty & Cosmetics",
+    "Stationery",
+    "Electrical",
+    "Water & Packaged Drinks",
+    "Sauces, Pickles & Spreads",
+    "Bakery Products",
+    "Pet Food & Care",
+    "Other Grocery"
+
+];
+
+
+/* =========================
+   LOAD CATEGORIES
+========================= */
+
+async function loadCategories(){
+
+    const category =
+        document.getElementById("category");
+
+    category.innerHTML =
+        `<option value="">Loading categories...</option>`;
+
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+    .from("categories")
+    .select("name,status")
+    .eq("status","approved")
+    .order("name");
+
+
+    let names = [];
+
+
+    if(!error && data){
+
+        names =
+            data
+            .map(x => x.name)
+            .filter(Boolean);
+
+    }
+
+
+    /*
+       Safety fallback:
+       Agar database mein category load
+       nahi hui to default list bhi rahegi.
+    */
+
+    names =
+        [
+            ...defaultCategories,
+            ...names
+        ];
+
+
+    /*
+       Duplicate remove
+    */
+
+    names =
+        [...new Map(
+            names.map(
+                x => [
+                    x.toLowerCase(),
+                    x
+                ]
+            )
+        ).values()];
+
+
+    category.innerHTML =
+        `<option value="">Select Category</option>`;
+
+
+    names.forEach(name => {
+
+        const option =
+            document.createElement("option");
+
+        option.value =
+            name;
+
+        option.textContent =
+            name;
+
+        category.appendChild(option);
+
+    });
+
+}
+
+
+/* =========================
    CATEGORY CHANGE
 ========================= */
 
@@ -393,7 +569,15 @@ function categoryChanged(){
     const groceryBox =
         document.getElementById("groceryBox");
 
-    if(category === "Kirana/Grocery"){
+
+    /*
+       Grocery ke liye subcategory
+    */
+
+    if(
+        category === "Kirana/Grocery" ||
+        category === "Other Grocery"
+    ){
 
         groceryBox.classList.remove("hidden");
 
@@ -411,6 +595,178 @@ function categoryChanged(){
 
 
 /* =========================
+   NEW CATEGORY UI
+========================= */
+
+function showNewCategory(){
+
+    const box =
+        document.getElementById(
+            "newCategoryBox"
+        );
+
+    box.classList.toggle("hidden");
+
+}
+
+
+/* =========================
+   CREATE NEW CATEGORY
+========================= */
+
+async function createNewCategory(){
+
+    const input =
+        document.getElementById(
+            "newCategoryName"
+        );
+
+    const name =
+        input.value
+        .trim()
+        .replace(/\s+/g," ");
+
+
+    if(name.length < 2){
+
+        showStatus(
+            "❌ Category name kam se kam 2 characters ka hona chahiye.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if(name.length > 60){
+
+        showStatus(
+            "❌ Category name maximum 60 characters ka ho sakta hai.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    /*
+       Frontend basic security validation
+    */
+
+    const safePattern =
+        /^[A-Za-z0-9 &'().\/-]+$/;
+
+
+    if(!safePattern.test(name)){
+
+        showStatus(
+            "❌ Category name mein invalid characters hain.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    try{
+
+        showStatus(
+            "Category check ho rahi hai...",
+            "success"
+        );
+
+
+        /*
+           Secure database RPC
+        */
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+        .rpc(
+            "create_wholesaler_category",
+            {
+                p_name:name
+            }
+        );
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        if(
+            !data ||
+            data.success !== true
+        ){
+
+            throw new Error(
+                "Category create nahi hui."
+            );
+
+        }
+
+
+        /*
+           Category dropdown mein add
+        */
+
+        await loadCategories();
+
+
+        const category =
+            document.getElementById(
+                "category"
+            );
+
+
+        category.value =
+            name;
+
+
+        categoryChanged();
+
+
+        input.value = "";
+
+
+        document
+        .getElementById(
+            "newCategoryBox"
+        )
+        .classList.add("hidden");
+
+
+        showStatus(
+            "✅ New category add ho gayi aur retailer category list mein available hai.",
+            "success"
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        showStatus(
+            "❌ " +
+            (
+                error.message ||
+                "New category create nahi hui."
+            ),
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================
    STATUS
 ========================= */
 
@@ -420,7 +776,9 @@ function showStatus(
 ){
 
     const status =
-        document.getElementById("status");
+        document.getElementById(
+            "status"
+        );
 
     status.textContent =
         message;
@@ -487,7 +845,15 @@ async function init(){
         location.href =
             "index.html";
 
+        return;
     }
+
+
+    /*
+       Categories load
+    */
+
+    await loadCategories();
 
 }
 
@@ -612,7 +978,9 @@ async function saveProduct(){
             .files[0];
 
 
-        /* VALIDATION */
+        /* =========================
+           VALIDATION
+        ========================= */
 
         if(
             !productName ||
@@ -626,14 +994,24 @@ async function saveProduct(){
         }
 
 
+        if(productName.length > 100){
+
+            throw new Error(
+                "Product name maximum 100 characters ka ho sakta hai."
+            );
+
+        }
+
+
         if(
             mrp < 0 ||
             price < 0 ||
-            stock < 0
+            stock < 0 ||
+            retailerPrice < 0
         ){
 
             throw new Error(
-                "MRP, price aur stock sahi enter karein."
+                "MRP, price, retailer price aur stock sahi enter karein."
             );
 
         }
@@ -662,6 +1040,50 @@ async function saveProduct(){
         }
 
 
+        /*
+           Image security
+        */
+
+        if(file){
+
+            const allowedTypes = [
+                "image/jpeg",
+                "image/png",
+                "image/webp"
+            ];
+
+
+            if(
+                !allowedTypes.includes(
+                    file.type
+                )
+            ){
+
+                throw new Error(
+                    "Sirf JPG, PNG ya WEBP image allowed hai."
+                );
+
+            }
+
+
+            /*
+               5 MB maximum
+            */
+
+            if(
+                file.size >
+                5 * 1024 * 1024
+            ){
+
+                throw new Error(
+                    "Image maximum 5 MB ki ho sakti hai."
+                );
+
+            }
+
+        }
+
+
         /* =========================
            IMAGE UPLOAD
         ========================= */
@@ -681,7 +1103,7 @@ async function saveProduct(){
             const filePath =
                 currentUser.id +
                 "/" +
-                Date.now() +
+                crypto.randomUUID() +
                 "_" +
                 safeName;
 
@@ -744,8 +1166,11 @@ async function saveProduct(){
                 category,
 
             subcategory:
-                category ===
-                "Kirana/Grocery"
+                (
+                    category ===
+                    "Kirana/Grocery" ||
+                    category === "Other Grocery"
+                )
                 ? subcategory
                 : null,
 
@@ -799,7 +1224,9 @@ async function saveProduct(){
         );
 
 
-        /* RESET */
+        /* =========================
+           RESET
+        ========================= */
 
         document
         .getElementById(
@@ -892,7 +1319,9 @@ async function saveProduct(){
 }
 
 
-/* START */
+/* =========================
+   START
+========================= */
 
 init();
 
