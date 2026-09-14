@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -8,481 +8,522 @@
 <style>
 *{box-sizing:border-box}
 body{
- margin:0;
- font-family:Arial,Helvetica,sans-serif;
- background:#f5f7fb;
- color:#172033;
- padding-bottom:78px
+margin:0;
+font-family:Arial,Helvetica,sans-serif;
+background:#f5f7fb;
+color:#172033;
+padding-bottom:80px
 }
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
 
 .header{
- background:#fff;
- position:sticky;
- top:0;
- z-index:50;
- padding:13px 16px 10px;
- box-shadow:0 2px 12px #00000012
+background:#fff;
+position:sticky;
+top:0;
+z-index:50;
+padding:12px 15px;
+box-shadow:0 2px 12px #0001
 }
 .top{
- display:flex;
- align-items:center;
- justify-content:space-between;
- gap:10px
+display:flex;
+align-items:center;
+justify-content:space-between
 }
 .logo{
- font-size:21px;
- font-weight:900;
- color:#173f91
+font-size:21px;
+font-weight:900;
+color:#173f91
 }
 .location{
- color:#667085;
- font-size:12px;
- margin-top:3px
+font-size:12px;
+color:#667085;
+margin-top:4px
 }
 .icon-btn{
- border:0;
- background:#eef3ff;
- color:#173f91;
- width:42px;
- height:42px;
- border-radius:50%;
- font-size:19px
+border:0;
+background:#edf3ff;
+color:#2454a0;
+width:42px;
+height:42px;
+border-radius:50%;
+font-size:19px
 }
-
 .search{
- width:100%;
- border:1px solid #e0e5ee;
- background:#f7f9fc;
- border-radius:14px;
- padding:13px 15px;
- outline:none;
- margin-top:12px
+width:100%;
+margin-top:11px;
+padding:13px;
+border:1px solid #e0e5ee;
+border-radius:14px;
+background:#f8f9fc;
+outline:none
 }
-.search:focus{border-color:#315bb5;background:#fff}
-
 main{
- max-width:1100px;
- margin:auto;
- padding:14px
+max-width:1100px;
+margin:auto;
+padding:14px
 }
-
-.hero{
- background:linear-gradient(135deg,#23458e,#3265c4);
- color:#fff;
- border-radius:24px;
- padding:22px;
- min-height:190px;
- position:relative;
- overflow:hidden
-}
-.hero:after{
- content:"";
- position:absolute;
- width:190px;
- height:190px;
- border-radius:50%;
- background:#ffffff18;
- right:-55px;
- top:-60px
-}
-.hero h1{
- margin:0;
- font-size:27px;
- line-height:1.15;
- max-width:330px
-}
-.hero p{
- margin:10px 0;
- color:#e7efff;
- max-width:380px
-}
-.hero-btn{
- background:#fff;
- color:#21478f;
- border:0;
- padding:11px 18px;
- border-radius:12px;
- font-weight:800
-}
-
-.section-title{
- display:flex;
- align-items:center;
- justify-content:space-between;
- margin:22px 2px 10px
-}
-.section-title h2{
- margin:0;
- font-size:19px
-}
-.small-link{
- color:#2455a4;
- font-size:13px;
- font-weight:700
-}
-
-.category-row{
- display:flex;
- gap:10px;
- overflow:auto;
- padding:3px 1px 8px
-}
-.category-row::-webkit-scrollbar{display:none}
-
-.cat{
- min-width:88px;
- height:92px;
- background:#fff;
- border:1px solid #e7eaf0;
- border-radius:17px;
- padding:8px;
- display:flex;
- flex-direction:column;
- justify-content:center;
- align-items:center;
- gap:5px;
- box-shadow:0 3px 12px #00000008
-}
-.cat span:first-child{font-size:29px}
-.cat b{
- font-size:11px;
- color:#344054;
- white-space:nowrap
-}
-.cat.active{
- background:#eaf1ff;
- border-color:#3765b9
-}
-
-.subcats{
- display:none;
- gap:7px;
- overflow:auto;
- margin:4px 0 13px
-}
-.subcats.show{display:flex}
-.subcat{
- white-space:nowrap;
- border:1px solid #dce3ef;
- background:#fff;
- border-radius:20px;
- padding:8px 13px;
- color:#344054
-}
-.subcat.active{
- background:#2454a0;
- color:#fff;
- border-color:#2454a0
-}
-
-.grid{
- display:grid;
- grid-template-columns:repeat(4,minmax(0,1fr));
- gap:13px
-}
-.card{
- background:#fff;
- border-radius:17px;
- box-shadow:0 3px 14px #0000000b;
- border:1px solid #edf0f5
-}
-.product{
- padding:10px;
- overflow:hidden
-}
-.product-img{
- width:100%;
- height:145px;
- object-fit:contain;
- background:#f7f8fa;
- border-radius:13px
-}
-.product-name{
- font-size:14px;
- font-weight:800;
- margin:9px 2px 4px;
- min-height:34px
-}
-.muted{
- color:#667085;
- font-size:12px
-}
-.price{
- font-size:18px;
- font-weight:900;
- margin:5px 2px
-}
-.mrp{
- color:#98a2b3;
- text-decoration:line-through;
- font-size:11px;
- margin-left:4px
-}
-.stock{
- color:#16804a;
- font-size:11px;
- font-weight:700
-}
-.add{
- width:100%;
- margin-top:8px;
- padding:10px;
- border:0;
- border-radius:11px;
- background:#2454a0;
- color:#fff;
- font-weight:800
-}
-
-.wholesaler-card{
- padding:15px
-}
-.wholesaler-card h3{margin:0 0 5px}
-.rating{color:#f59e0b;font-weight:800}
-.distance{color:#667085;font-size:12px}
-
-.empty{
- background:#fff;
- border-radius:16px;
- padding:35px 15px;
- text-align:center;
- color:#667085
-}
-
-/* sections */
 .section{display:none}
 .section.active{display:block}
 
-/* bottom navigation */
+.hero{
+background:linear-gradient(135deg,#24468e,#3268c7);
+color:white;
+border-radius:24px;
+padding:23px;
+min-height:190px
+}
+.hero h1{
+font-size:27px;
+line-height:1.15;
+margin:0;
+max-width:400px
+}
+.hero p{
+color:#e8efff;
+line-height:1.5;
+max-width:450px
+}
+.hero-btn{
+border:0;
+background:white;
+color:#244d9a;
+font-weight:800;
+padding:12px 18px;
+border-radius:12px
+}
+
+.section-title{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin:22px 2px 11px
+}
+.section-title h2{
+margin:0;
+font-size:19px
+}
+.small-link{
+color:#2455a4;
+font-size:13px;
+font-weight:700
+}
+
+.category-row{
+display:flex;
+gap:10px;
+overflow:auto;
+padding-bottom:7px
+}
+.category-row::-webkit-scrollbar{display:none}
+.cat{
+min-width:88px;
+height:90px;
+border:1px solid #e5e8ef;
+background:white;
+border-radius:17px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+gap:5px
+}
+.cat span{font-size:28px}
+.cat b{font-size:11px}
+.cat.active{
+background:#eaf1ff;
+border-color:#3564b7
+}
+
+.subcats{
+display:none;
+gap:7px;
+overflow:auto;
+margin:7px 0 12px
+}
+.subcats.show{display:flex}
+.subcat{
+white-space:nowrap;
+border:1px solid #dce3ef;
+background:#fff;
+border-radius:20px;
+padding:8px 13px
+}
+.subcat.active{
+background:#2454a0;
+color:white
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:13px
+}
+.card{
+background:white;
+border:1px solid #edf0f5;
+border-radius:17px;
+box-shadow:0 3px 14px #0000000a
+}
+.product{padding:10px}
+.product-img{
+width:100%;
+height:145px;
+object-fit:contain;
+background:#f7f8fa;
+border-radius:13px
+}
+.product-name{
+font-size:14px;
+font-weight:800;
+margin:9px 2px 4px;
+min-height:34px
+}
+.muted{
+font-size:12px;
+color:#667085
+}
+.price{
+font-size:18px;
+font-weight:900;
+margin:6px 2px
+}
+.mrp{
+font-size:11px;
+font-weight:normal;
+color:#98a2b3;
+text-decoration:line-through;
+margin-left:4px
+}
+.stock{
+font-size:11px;
+font-weight:700;
+color:#16804a
+}
+.add{
+width:100%;
+border:0;
+background:#2454a0;
+color:white;
+font-weight:800;
+padding:10px;
+border-radius:11px;
+margin-top:8px
+}
+
+.panel{
+background:white;
+border-radius:18px;
+padding:17px;
+margin-bottom:13px;
+box-shadow:0 3px 14px #0000000a
+}
+.field{
+width:100%;
+padding:12px;
+border:1px solid #d9dee8;
+border-radius:11px;
+margin:5px 0 12px;
+outline:none
+}
+.primary{
+background:#2454a0;
+color:white;
+border:0;
+border-radius:11px;
+padding:12px 17px;
+font-weight:800
+}
+.secondary{
+background:#eef1f5;
+color:#344054;
+border:0;
+border-radius:11px;
+padding:12px 17px;
+font-weight:700
+}
+
+.empty{
+background:white;
+padding:35px 15px;
+border-radius:17px;
+text-align:center;
+color:#667085
+}
+
+/* Bottom navigation */
 .bottom{
- position:fixed;
- left:0;
- right:0;
- bottom:0;
- height:70px;
- background:#fff;
- border-top:1px solid #e5e7eb;
- display:flex;
- justify-content:space-around;
- align-items:center;
- z-index:100
+position:fixed;
+left:0;
+right:0;
+bottom:0;
+height:70px;
+background:white;
+border-top:1px solid #e5e7eb;
+display:flex;
+justify-content:space-around;
+align-items:center;
+z-index:100
 }
 .bottom button{
- border:0;
- background:none;
- color:#98a2b3;
- font-size:10px;
- font-weight:700;
- display:flex;
- flex-direction:column;
- align-items:center;
- gap:3px
+border:0;
+background:none;
+color:#98a2b3;
+font-size:10px;
+font-weight:700;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:3px
 }
 .bottom button span{font-size:21px}
 .bottom button.active{color:#2454a0}
 
-/* cards */
-.panel{
- background:#fff;
- border-radius:18px;
- padding:17px;
- box-shadow:0 3px 14px #0000000a;
- margin-bottom:13px
+/* AI floating button */
+.ai-float{
+position:fixed;
+right:17px;
+bottom:88px;
+width:58px;
+height:58px;
+border:0;
+border-radius:50%;
+background:#2454a0;
+color:white;
+font-size:27px;
+box-shadow:0 7px 22px #0003;
+z-index:150
 }
-.panel h3{margin-top:0}
-
-.field{
- width:100%;
- padding:12px;
- border:1px solid #d9dee8;
- border-radius:11px;
- margin:5px 0 12px;
- outline:none
-}
-.primary{
- background:#2454a0;
- color:#fff;
- border:0;
- border-radius:11px;
- padding:12px 17px;
- font-weight:800
-}
-.secondary{
- background:#eef1f5;
- color:#344054;
- border:0;
- border-radius:11px;
- padding:12px 17px;
- font-weight:700
-}
-.danger{
- background:#dc2626;
- color:#fff
+.ai-label{
+position:fixed;
+right:82px;
+bottom:98px;
+background:#172033;
+color:white;
+padding:7px 10px;
+border-radius:9px;
+font-size:11px;
+z-index:149
 }
 
-/* cart */
+/* AI chat */
+.ai-modal{
+position:fixed;
+inset:0;
+background:#0007;
+display:none;
+align-items:flex-end;
+justify-content:center;
+z-index:300
+}
+.ai-modal.show{display:flex}
+.ai-box{
+width:min(520px,100%);
+height:min(650px,88vh);
+background:#fff;
+border-radius:25px 25px 0 0;
+display:flex;
+flex-direction:column;
+overflow:hidden
+}
+.ai-head{
+background:#2454a0;
+color:white;
+padding:15px;
+display:flex;
+justify-content:space-between;
+align-items:center
+}
+.ai-head strong{font-size:17px}
+.ai-close{
+border:0;
+background:#ffffff22;
+color:white;
+width:35px;
+height:35px;
+border-radius:50%
+}
+.ai-messages{
+flex:1;
+padding:15px;
+overflow:auto;
+background:#f5f7fb
+}
+.msg{
+max-width:85%;
+padding:10px 12px;
+border-radius:14px;
+margin-bottom:10px;
+line-height:1.45;
+font-size:13px
+}
+.bot{
+background:white;
+border:1px solid #e7eaf0;
+margin-right:auto
+}
+.user{
+background:#2454a0;
+color:white;
+margin-left:auto
+}
+.quick{
+display:flex;
+gap:7px;
+overflow:auto;
+padding:10px;
+background:white;
+border-top:1px solid #eee
+}
+.quick button{
+white-space:nowrap;
+border:1px solid #dce3ef;
+background:#f8f9fc;
+border-radius:20px;
+padding:8px 11px;
+font-size:11px
+}
+.ai-input{
+display:flex;
+gap:7px;
+padding:10px;
+background:white;
+border-top:1px solid #eee
+}
+.ai-input input{
+flex:1;
+border:1px solid #d9dee8;
+border-radius:22px;
+padding:11px 14px;
+outline:none
+}
+.ai-send{
+border:0;
+background:#2454a0;
+color:white;
+width:44px;
+border-radius:50%
+}
+
+/* Cart */
 .cart-row{
- display:flex;
- gap:10px;
- align-items:center;
- padding:10px 0;
- border-bottom:1px solid #eee
+display:flex;
+gap:10px;
+align-items:center;
+padding:10px 0;
+border-bottom:1px solid #eee
 }
 .cart-row img{
- width:58px;
- height:58px;
- object-fit:contain;
- background:#f5f6f8;
- border-radius:10px
+width:58px;
+height:58px;
+object-fit:contain;
+border-radius:10px;
+background:#f5f6f8
 }
 .qty{
- display:flex;
- align-items:center;
- gap:7px
+display:flex;
+align-items:center;
+gap:7px;
+margin-top:7px
 }
 .qty button{
- width:29px;
- height:29px;
- border:0;
- border-radius:8px;
- background:#edf1f7
+width:29px;
+height:29px;
+border:0;
+border-radius:8px;
+background:#edf1f7
 }
 
-/* order */
+/* Orders */
 .order-card{
- background:#fff;
- border-radius:18px;
- padding:16px;
- margin-bottom:13px;
- box-shadow:0 3px 14px #0000000a
+background:white;
+border-radius:18px;
+padding:16px;
+margin-bottom:13px;
+box-shadow:0 3px 14px #0000000a
 }
 .order-head{
- display:flex;
- justify-content:space-between;
- gap:10px
+display:flex;
+justify-content:space-between;
+gap:10px
 }
 .badge{
- padding:6px 10px;
- border-radius:20px;
- background:#eaf7ef;
- color:#167344;
- font-size:11px;
- font-weight:800
+padding:6px 10px;
+border-radius:20px;
+background:#eaf7ef;
+color:#167344;
+font-size:11px;
+font-weight:800
 }
 .order-item{
- display:flex;
- gap:10px;
- padding:10px 0;
- border-bottom:1px solid #eee
+display:flex;
+gap:10px;
+padding:10px 0;
+border-bottom:1px solid #eee
 }
 .order-item img{
- width:52px;
- height:52px;
- object-fit:contain;
- border-radius:9px;
- background:#f5f6f8
+width:52px;
+height:52px;
+object-fit:contain;
+border-radius:9px;
+background:#f5f6f8
 }
 
-/* tracking */
+/* Tracking */
 .timeline{
- display:flex;
- justify-content:space-between;
- position:relative;
- margin:20px 0
+display:flex;
+justify-content:space-between;
+position:relative;
+margin:22px 0
 }
 .timeline:before{
- content:"";
- position:absolute;
- top:17px;
- left:35px;
- right:35px;
- height:3px;
- background:#dfe5ee
+content:"";
+position:absolute;
+top:17px;
+left:35px;
+right:35px;
+height:3px;
+background:#dfe5ee
 }
 .step{
- position:relative;
- z-index:2;
- width:25%;
- text-align:center;
- font-size:10px;
- color:#98a2b3
+position:relative;
+z-index:2;
+width:25%;
+text-align:center;
+font-size:10px;
+color:#98a2b3
 }
 .circle{
- width:35px;
- height:35px;
- margin:auto;
- border-radius:50%;
- background:#e9edf3;
- display:flex;
- align-items:center;
- justify-content:center;
- font-size:16px;
- border:3px solid #fff
+width:35px;
+height:35px;
+margin:auto;
+border-radius:50%;
+background:#e9edf3;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:16px;
+border:3px solid white
 }
-.step.done{color:#18864c;font-weight:800}
+.step.done{
+color:#18864c;
+font-weight:800
+}
 .step.done .circle{
- background:#18864c;
- color:#fff
+background:#18864c;
+color:white
 }
 
-/* modal */
-.modal{
- position:fixed;
- inset:0;
- background:#0008;
- display:none;
- align-items:flex-end;
- justify-content:center;
- z-index:200
-}
-.modal.show{display:flex}
-.modal-box{
- width:min(520px,100%);
- background:#fff;
- border-radius:24px 24px 0 0;
- padding:20px;
- max-height:80vh;
- overflow:auto
-}
-
-/* desktop menu */
-.desktop-menu{
- display:flex;
- gap:8px;
- margin-top:10px;
- overflow:auto
-}
-.desktop-menu button{
- white-space:nowrap;
- border:1px solid #e2e6ee;
- background:#fff;
- border-radius:12px;
- padding:9px 12px;
- color:#344054
-}
-.desktop-menu button.active{
- background:#2454a0;
- color:#fff
-}
-
-/* responsive */
 @media(max-width:800px){
- .grid{grid-template-columns:repeat(3,minmax(0,1fr))}
- .desktop-menu{display:none}
+.grid{grid-template-columns:repeat(3,1fr)}
 }
 @media(max-width:600px){
- main{padding:10px}
- .header{padding:11px 10px}
- .logo{font-size:18px}
- .hero{min-height:175px;padding:18px}
- .hero h1{font-size:23px}
- .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
- .product-img{height:125px}
- .product{padding:8px}
- .product-name{font-size:13px}
- .price{font-size:16px}
+main{padding:10px}
+.grid{grid-template-columns:repeat(2,1fr);gap:9px}
+.product-img{height:125px}
+.product{padding:8px}
+.hero{padding:19px}
+.hero h1{font-size:23px}
 }
 </style>
 </head>
@@ -490,29 +531,22 @@ main{
 <body>
 
 <header class="header">
- <div class="top">
-  <div>
-   <div class="logo">🛒 Local Wholesale</div>
-   <div class="location" id="headerLocation">📍 Delivery location set karein</div>
-  </div>
+<div class="top">
+<div>
+<div class="logo">🛒 Local Wholesale</div>
+<div class="location" id="headerLocation">
+📍 Delivery location set karein
+</div>
+</div>
 
-  <button class="icon-btn" onclick="showSection('profile')">👤</button>
- </div>
+<button class="icon-btn" onclick="showSection('profile')">👤</button>
+</div>
 
- <input
-   id="search"
-   class="search"
-   placeholder="Search products, brands or wholesalers..."
-   oninput="renderProducts()">
-
- <div class="desktop-menu">
-  <button class="active" onclick="showSection('home',this)">Home</button>
-  <button onclick="showSection('products',this)">Products</button>
-  <button onclick="showSection('orders',this)">My Orders</button>
-  <button onclick="showSection('cart',this)">🛒 Cart</button>
-  <button onclick="showSection('location',this)">📍 Location</button>
-  <button onclick="showSection('profile',this)">Profile</button>
- </div>
+<input
+id="search"
+class="search"
+placeholder="Search products, brands or wholesalers..."
+oninput="renderProducts">
 </header>
 
 
@@ -521,64 +555,72 @@ main{
 <!-- HOME -->
 <section id="home" class="section active">
 
- <div class="hero">
-  <h1>Apne Local Wholesaler Se Direct Order Karein</h1>
-  <p>
-   Grocery, beverages, cosmetics, stationery aur daily-use products
-   wholesale price par.
-  </p>
-  <button class="hero-btn" onclick="showSection('products')">
-   Shop Now →
-  </button>
- </div>
+<div class="hero">
+<h1>Apne Local Wholesaler Se Direct Order Karein</h1>
 
- <div class="section-title">
-  <h2>Explore Categories</h2>
-  <span class="small-link" onclick="showSection('products')">View All</span>
- </div>
+<p>
+Grocery, beverages, cosmetics, stationery aur daily-use products
+wholesale price par.
+</p>
 
- <div class="category-row">
-  <button class="cat active" onclick="setCategory('All',this)">
-   <span>🛍️</span><b>All</b>
-  </button>
+<button class="hero-btn" onclick="showSection('products')">
+Shop Now →
+</button>
+</div>
 
-  <button class="cat" onclick="setCategory('Kirana/Grocery',this)">
-   <span>🍪</span><b>Grocery</b>
-  </button>
+<div class="section-title">
+<h2>Explore Categories</h2>
+<span class="small-link" onclick="showSection('products')">
+View All
+</span>
+</div>
 
-  <button class="cat" onclick="setCategory('Cold Drinks/Beverages',this)">
-   <span>🥤</span><b>Beverages</b>
-  </button>
+<div class="category-row">
 
-  <button class="cat" onclick="setCategory('Cosmetics',this)">
-   <span>💄</span><b>Cosmetics</b>
-  </button>
+<button class="cat active" onclick="setCategory('All',this)">
+<span>🛍️</span><b>All</b>
+</button>
 
-  <button class="cat" onclick="setCategory('Stationery',this)">
-   <span>✏️</span><b>Stationery</b>
-  </button>
+<button class="cat" onclick="setCategory('Kirana/Grocery',this)">
+<span>🍪</span><b>Grocery</b>
+</button>
 
-  <button class="cat" onclick="setCategory('Electrical',this)">
-   <span>⚡</span><b>Electrical</b>
-  </button>
+<button class="cat" onclick="setCategory('Cold Drinks/Beverages',this)">
+<span>🥤</span><b>Beverages</b>
+</button>
 
-  <button class="cat" onclick="setCategory('Other',this)">
-   <span>📦</span><b>Other</b>
-  </button>
- </div>
+<button class="cat" onclick="setCategory('Cosmetics',this)">
+<span>💄</span><b>Cosmetics</b>
+</button>
 
- <div class="section-title">
-  <h2>Nearby Wholesale Products</h2>
-  <span class="small-link" onclick="showSection('products')">View All</span>
- </div>
+<button class="cat" onclick="setCategory('Stationery',this)">
+<span>✏️</span><b>Stationery</b>
+</button>
 
- <div id="homeProducts" class="grid"></div>
+<button class="cat" onclick="setCategory('Electrical',this)">
+<span>⚡</span><b>Electrical</b>
+</button>
 
- <div class="section-title">
-  <h2>Local Wholesalers</h2>
- </div>
+<button class="cat" onclick="setCategory('Other',this)">
+<span>📦</span><b>Other</b>
+</button>
 
- <div id="wholesalers"></div>
+</div>
+
+<div class="section-title">
+<h2>Wholesale Products</h2>
+<span class="small-link" onclick="showSection('products')">
+View All
+</span>
+</div>
+
+<div id="homeProducts" class="grid"></div>
+
+<div class="section-title">
+<h2>Local Wholesalers</h2>
+</div>
+
+<div id="wholesalers"></div>
 
 </section>
 
@@ -586,41 +628,41 @@ main{
 <!-- PRODUCTS -->
 <section id="products" class="section">
 
- <div class="section-title">
-  <h2>Wholesale Products</h2>
- </div>
+<div class="section-title">
+<h2>Wholesale Products</h2>
+</div>
 
- <div class="category-row">
+<div class="category-row">
 
-  <button class="cat active" onclick="setCategory('All',this)">
-   <span>🛍️</span><b>All</b>
-  </button>
+<button class="cat active" onclick="setCategory('All',this)">
+<span>🛍️</span><b>All</b>
+</button>
 
-  <button class="cat" onclick="setCategory('Kirana/Grocery',this)">
-   <span>🍪</span><b>Grocery</b>
-  </button>
+<button class="cat" onclick="setCategory('Kirana/Grocery',this)">
+<span>🍪</span><b>Grocery</b>
+</button>
 
-  <button class="cat" onclick="setCategory('Cold Drinks/Beverages',this)">
-   <span>🥤</span><b>Drinks</b>
-  </button>
+<button class="cat" onclick="setCategory('Cold Drinks/Beverages',this)">
+<span>🥤</span><b>Drinks</b>
+</button>
 
-  <button class="cat" onclick="setCategory('Cosmetics',this)">
-   <span>💄</span><b>Cosmetics</b>
-  </button>
+<button class="cat" onclick="setCategory('Cosmetics',this)">
+<span>💄</span><b>Cosmetics</b>
+</button>
 
-  <button class="cat" onclick="setCategory('Stationery',this)">
-   <span>✏️</span><b>Stationery</b>
-  </button>
+<button class="cat" onclick="setCategory('Stationery',this)">
+<span>✏️</span><b>Stationery</b>
+</button>
 
-  <button class="cat" onclick="setCategory('Electrical',this)">
-   <span>⚡</span><b>Electrical</b>
-  </button>
+<button class="cat" onclick="setCategory('Electrical',this)">
+<span>⚡</span><b>Electrical</b>
+</button>
 
- </div>
+</div>
 
- <div id="subcats" class="subcats"></div>
+<div id="subcats" class="subcats"></div>
 
- <div id="productGrid" class="grid"></div>
+<div id="productGrid" class="grid"></div>
 
 </section>
 
@@ -628,13 +670,12 @@ main{
 <!-- CART -->
 <section id="cart" class="section">
 
- <div class="section-title">
-  <h2>🛒 My Cart</h2>
- </div>
+<div class="section-title">
+<h2>🛒 My Cart</h2>
+</div>
 
- <div id="cartList"></div>
-
- <div id="cartSummary"></div>
+<div id="cartList"></div>
+<div id="cartSummary"></div>
 
 </section>
 
@@ -642,11 +683,11 @@ main{
 <!-- ORDERS -->
 <section id="orders" class="section">
 
- <div class="section-title">
-  <h2>📦 My Orders</h2>
- </div>
+<div class="section-title">
+<h2>📦 My Orders</h2>
+</div>
 
- <div id="ordersList"></div>
+<div id="ordersList"></div>
 
 </section>
 
@@ -654,11 +695,11 @@ main{
 <!-- TRACKING -->
 <section id="tracking" class="section">
 
- <div class="section-title">
-  <h2>🚚 Order Tracking</h2>
- </div>
+<div class="section-title">
+<h2>🚚 Order Tracking</h2>
+</div>
 
- <div id="trackingBox"></div>
+<div id="trackingBox"></div>
 
 </section>
 
@@ -666,34 +707,54 @@ main{
 <!-- PROFILE -->
 <section id="profile" class="section">
 
- <div class="section-title">
-  <h2>👤 My Profile</h2>
- </div>
+<div class="section-title">
+<h2>👤 My Profile</h2>
+</div>
 
- <div class="panel">
+<div class="panel">
 
-  <label>Name</label>
-  <input id="pName" class="field">
+<label>Name</label>
+<input id="pName" class="field">
 
-  <label>Shop Name</label>
-  <input id="pShop" class="field">
+<label>Shop Name</label>
+<input id="pShop" class="field">
 
-  <label>Mobile</label>
-  <input id="pMobile" class="field" readonly>
+<label>Mobile</label>
+<input id="pMobile" class="field" readonly>
 
-  <label>Delivery Address</label>
-  <textarea id="pAddress" class="field" rows="4"></textarea>
+<label>Delivery Address</label>
+<textarea id="pAddress" class="field" rows="4"></textarea>
 
-  <button class="primary" onclick="saveProfile()">
-   Save Profile
-  </button>
+<button class="primary" onclick="saveProfile()">
+Save Profile
+</button>
 
- </div>
+</div>
 
- <div class="panel">
-  <h3>🔐 Account</h3>
-  <button class="primary danger" onclick="logout()">Logout</button>
- </div>
+<div class="panel">
+<h3>☎️ Customer Support</h3>
+<p class="muted">
+Order ya account problem ke liye support se contact karein.
+</p>
+
+<button class="primary" onclick="openSupport()">
+Contact Support
+</button>
+</div>
+
+<div class="panel">
+<h3>📜 Retailer Policy</h3>
+<p>• Retailer commission ₹0.</p>
+<p>• Minimum order ₹1,000 per wholesaler.</p>
+<p>• Maximum order ₹10,000 per wholesaler.</p>
+<p>• Product availability wholesaler stock par depend karegi.</p>
+</div>
+
+<div class="panel">
+<button class="primary" style="background:#dc2626" onclick="logout()">
+Logout
+</button>
+</div>
 
 </section>
 
@@ -701,114 +762,112 @@ main{
 <!-- LOCATION -->
 <section id="location" class="section">
 
- <div class="section-title">
-  <h2>📍 Delivery Location</h2>
- </div>
+<div class="section-title">
+<h2>📍 Delivery Location</h2>
+</div>
 
- <div class="panel">
+<div class="panel">
 
-  <p class="muted">
-   Wholesaler ko sahi delivery address dene ke liye apna address save karein.
-  </p>
+<textarea
+id="locAddress"
+class="field"
+rows="4"
+placeholder="House no., street, area, city..."></textarea>
 
-  <textarea
-   id="locAddress"
-   class="field"
-   rows="4"
-   placeholder="House no., street, area, city..."></textarea>
+<button class="primary" onclick="getGPS()">
+📍 Use Current GPS Location
+</button>
 
-  <button class="primary" onclick="getGPS()">
-   📍 Use Current GPS Location
-  </button>
+<br><br>
 
-  <button class="secondary" onclick="saveLocation()">
-   Save Address
-  </button>
+<button class="secondary" onclick="saveLocation()">
+Save Address
+</button>
 
-  <p id="gpsStatus" class="muted"></p>
+<p id="gpsStatus" class="muted"></p>
 
- </div>
-
-</section>
-
-
-<!-- AI HELP -->
-<section id="help" class="section">
-
- <div class="section-title">
-  <h2>🤖 AI Help</h2>
- </div>
-
- <div class="panel">
-  <h3>Local Wholesale AI Help</h3>
-  <p class="muted">
-   Product, wholesale price, order, delivery ya cart se related
-   information ke liye yahan help milegi.
-  </p>
-  <button class="primary" onclick="alert('AI Help system next version me connect kiya jayega.')">
-   Start AI Help
-  </button>
- </div>
-
-</section>
-
-
-<!-- POLICY -->
-<section id="policy" class="section">
-
- <div class="section-title">
-  <h2>📜 Retailer Policy</h2>
- </div>
-
- <div class="panel">
-  <h3>Retailer Rules</h3>
-  <p>• Retailer commission ₹0 hai.</p>
-  <p>• Per wholesaler order minimum ₹1,000.</p>
-  <p>• Per wholesaler order maximum ₹10,000.</p>
-  <p>• Product availability wholesaler ke stock par depend karegi.</p>
-  <p>• Order accept hone ke baad delivery status update hoga.</p>
- </div>
-
-</section>
-
-
-<!-- SUPPORT -->
-<section id="support" class="section">
-
- <div class="section-title">
-  <h2>☎️ Customer Support</h2>
- </div>
-
- <div class="panel">
-  <h3>Need Help?</h3>
-  <p class="muted">
-   Support se contact karte waqt apna Order ID zaroor batayein.
-  </p>
-  <button class="primary"
-   onclick="alert('Customer Support system next version me connect kiya jayega.')">
-   Contact Support
-  </button>
- </div>
+</div>
 
 </section>
 
 </main>
 
 
-<!-- UNIT MODAL -->
-<div id="unitModal" class="modal">
+<!-- FLOATING AI -->
+<button class="ai-float" onclick="openAI()" title="AI Help">
+🤖
+</button>
 
- <div class="modal-box">
+<div class="ai-label">
+AI Help
+</div>
 
-  <h3 id="unitTitle">Select Unit</h3>
 
-  <div id="unitOptions"></div>
+<!-- AI CHAT -->
+<div id="aiModal" class="ai-modal">
 
-  <button class="secondary" onclick="closeUnit()">
-   Cancel
-  </button>
+<div class="ai-box">
 
- </div>
+<div class="ai-head">
+<div>
+<strong>🤖 Local Wholesale AI Help</strong>
+<div style="font-size:11px;color:#dce8ff">
+Retailer Assistant
+</div>
+</div>
+
+<button class="ai-close" onclick="closeAI()">✕</button>
+</div>
+
+<div id="aiMessages" class="ai-messages">
+
+<div class="msg bot">
+Namaste! 👋 Main Local Wholesale AI Help hoon.
+<br><br>
+Aap mujhe order, product, cart, delivery, profile ya
+account ke baare mein pooch sakte hain.
+</div>
+
+</div>
+
+<div class="quick">
+
+<button onclick="askAI('Mera order kaha hai?')">
+📦 Order
+</button>
+
+<button onclick="askAI('Minimum order kitna hai?')">
+💰 Minimum Order
+</button>
+
+<button onclick="askAI('Product cart me kaise add kare?')">
+🛒 Cart
+</button>
+
+<button onclick="askAI('Delivery kab hogi?')">
+🚚 Delivery
+</button>
+
+<button onclick="askAI('Address kaise change kare?')">
+📍 Address
+</button>
+
+</div>
+
+<div class="ai-input">
+
+<input
+id="aiInput"
+placeholder="Apna question likhein..."
+onkeydown="if(event.key==='Enter')sendAI()">
+
+<button class="ai-send" onclick="sendAI()">
+➤
+</button>
+
+</div>
+
+</div>
 
 </div>
 
@@ -816,25 +875,30 @@ main{
 <!-- BOTTOM NAV -->
 <nav class="bottom">
 
- <button class="active" onclick="showSection('home',this)">
-  <span>⌂</span>Home
- </button>
+<button class="active" onclick="showSection('home',this)">
+<span>⌂</span>
+Home
+</button>
 
- <button onclick="showSection('products',this)">
-  <span>▦</span>Category
- </button>
+<button onclick="showSection('products',this)">
+<span>▦</span>
+Category
+</button>
 
- <button onclick="showSection('cart',this)">
-  <span>🛒</span>Cart
- </button>
+<button onclick="showSection('cart',this)">
+<span>🛒</span>
+Cart
+</button>
 
- <button onclick="showSection('orders',this)">
-  <span>📦</span>Orders
- </button>
+<button onclick="showSection('orders',this)">
+<span>📦</span>
+Orders
+</button>
 
- <button onclick="showSection('profile',this)">
-  <span>👤</span>Profile
- </button>
+<button onclick="showSection('profile',this)">
+<span>👤</span>
+Profile
+</button>
 
 </nav>
 
@@ -851,8 +915,8 @@ const SUPABASE_KEY =
 
 const supabaseClient =
 window.supabase.createClient(
- SUPABASE_URL,
- SUPABASE_KEY
+SUPABASE_URL,
+SUPABASE_KEY
 );
 
 let currentUser=null;
@@ -863,40 +927,23 @@ let grocerySub="All";
 let pendingProduct=null;
 
 
-/* ---------- BASIC ---------- */
+/* ---------- HELPERS ---------- */
 
 function esc(v){
- return String(v??"").replace(
-  /[&<>"']/g,
-  m=>({
-   "&":"&amp;",
-   "<":"&lt;",
-   ">":"&gt;",
-   '"':"&quot;",
-   "'":"&#039;"
-  }[m])
- );
+return String(v??"").replace(
+/[&<>"']/g,
+m=>({
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+}[m])
+);
 }
 
 function money(v){
- return "₹"+Number(v||0).toFixed(2);
-}
-
-function getCart(){
- try{
-  return JSON.parse(
-   localStorage.getItem("localWholesaleCart")||"[]"
-  );
- }catch(e){
-  return [];
- }
-}
-
-function saveCart(c){
- localStorage.setItem(
-  "localWholesaleCart",
-  JSON.stringify(c)
- );
+return "₹"+Number(v||0).toFixed(2);
 }
 
 
@@ -904,30 +951,22 @@ function saveCart(c){
 
 function showSection(id,btn){
 
- document.querySelectorAll(".section")
- .forEach(x=>x.classList.remove("active"));
+document.querySelectorAll(".section")
+.forEach(x=>x.classList.remove("active"));
 
- const target=document.getElementById(id);
+const target=document.getElementById(id);
 
- if(target) target.classList.add("active");
+if(target)target.classList.add("active");
 
- document.querySelectorAll(".bottom button")
- .forEach(x=>x.classList.remove("active"));
+document.querySelectorAll(".bottom button")
+.forEach(x=>x.classList.remove("active"));
 
- document.querySelectorAll(".desktop-menu button")
- .forEach(x=>x.classList.remove("active"));
+if(btn)btn.classList.add("active");
 
- if(btn) btn.classList.add("active");
-
- if(id==="products") renderProducts();
-
- if(id==="cart") renderCart();
-
- if(id==="orders") loadOrders();
-
- if(id==="tracking") loadLatestTracking();
-
- if(id==="profile" || id==="location") loadProfile();
+if(id==="products")renderProducts();
+if(id==="cart")renderCart();
+if(id==="orders")loadOrders();
+if(id==="profile"||id==="location")loadProfile();
 }
 
 
@@ -935,55 +974,55 @@ function showSection(id,btn){
 
 function setCategory(c,btn){
 
- category=c;
- grocerySub="All";
+category=c;
+grocerySub="All";
 
- document.querySelectorAll(".cat")
- .forEach(x=>x.classList.remove("active"));
+document.querySelectorAll(".cat")
+.forEach(x=>x.classList.remove("active"));
 
- if(btn) btn.classList.add("active");
+if(btn)btn.classList.add("active");
 
- const sub=document.getElementById("subcats");
+const sub=document.getElementById("subcats");
 
- if(c==="Kirana/Grocery"){
+if(c==="Kirana/Grocery"){
 
-  sub.classList.add("show");
+sub.classList.add("show");
 
-  sub.innerHTML=[
-   "All",
-   "Biscuit",
-   "Snacks",
-   "Namkeen",
-   "Chips",
-   "Other"
-  ].map(x=>`
-   <button
-    class="subcat ${x==="All"?"active":""}"
-    onclick="filterGrocery('${x}',this)">
-    ${x}
-   </button>
-  `).join("");
+sub.innerHTML=[
+"All",
+"Biscuit",
+"Snacks",
+"Namkeen",
+"Chips",
+"Other"
+].map(x=>`
+<button
+class="subcat ${x==="All"?"active":""}"
+onclick="filterGrocery('${x}',this)">
+${x}
+</button>
+`).join("");
 
- }else{
+}else{
 
-  sub.classList.remove("show");
-  sub.innerHTML="";
- }
+sub.classList.remove("show");
+sub.innerHTML="";
+}
 
- renderProducts();
+renderProducts();
 }
 
 
 function filterGrocery(x,btn){
 
- grocerySub=x;
+grocerySub=x;
 
- document.querySelectorAll(".subcat")
- .forEach(b=>b.classList.remove("active"));
+document.querySelectorAll(".subcat")
+.forEach(b=>b.classList.remove("active"));
 
- if(btn)btn.classList.add("active");
+if(btn)btn.classList.add("active");
 
- renderProducts();
+renderProducts();
 }
 
 
@@ -991,36 +1030,37 @@ function filterGrocery(x,btn){
 
 async function init(){
 
- const {data,error}=await supabaseClient.auth.getSession();
+const {data,error}=await supabaseClient.auth.getSession();
 
- if(error || !data.session){
+if(error||!data.session){
 
-  location.href="index.html";
-  return;
- }
+location.href="index.html";
+return;
+}
 
- currentUser=data.session.user;
+currentUser=data.session.user;
 
- const result=await supabaseClient
- .from("profiles")
- .select("*")
- .eq("id",currentUser.id)
- .single();
+const result=await supabaseClient
+.from("profiles")
+.select("*")
+.eq("id",currentUser.id)
+.single();
 
- if(result.error || !result.data ||
-    result.data.role!=="retailer"){
+if(result.error||
+!result.data||
+result.data.role!=="retailer"){
 
-  alert("Retailer profile nahi mila.");
-  await supabaseClient.auth.signOut();
-  location.href="index.html";
-  return;
- }
+await supabaseClient.auth.signOut();
 
- profile=result.data;
+location.href="index.html";
+return;
+}
 
- loadProfile();
- loadProducts();
- loadWholesalers();
+profile=result.data;
+
+loadProfile();
+loadProducts();
+loadWholesalers();
 }
 
 
@@ -1028,455 +1068,392 @@ async function init(){
 
 async function loadProducts(){
 
- const {data,error}=await supabaseClient
- .from("products")
- .select("*")
- .eq("is_active",true)
- .order("created_at",{ascending:false});
+const {data,error}=await supabaseClient
+.from("products")
+.select("*")
+.eq("is_active",true)
+.order("created_at",{ascending:false});
 
- if(error){
+if(error){
 
-  document.getElementById("productGrid").innerHTML=
-  `<div class="empty">${esc(error.message)}</div>`;
+document.getElementById("productGrid").innerHTML=
+`<div class="empty">${esc(error.message)}</div>`;
 
-  return;
- }
+return;
+}
 
- products=data||[];
+products=data||[];
 
- renderProducts();
- renderHomeProducts();
+renderProducts();
+renderHomeProducts();
 }
 
 
 function renderProducts(){
 
- const q=
-  (document.getElementById("search")?.value||"")
-  .toLowerCase()
-  .trim();
+const q=
+(document.getElementById("search")?.value||"")
+.toLowerCase()
+.trim();
 
- let list=products.filter(p=>{
+let list=products.filter(p=>{
 
-  const text=(
-   (p.product_name||"")+" "+
-   (p.description||"")+" "+
-   (p.category||"")+" "+
-   (p.subcategory||"")
-  ).toLowerCase();
+const text=(
+(p.product_name||"")+" "+
+(p.description||"")+" "+
+(p.category||"")+" "+
+(p.subcategory||"")
+).toLowerCase();
 
-  let ok=!q || text.includes(q);
+let ok=!q||text.includes(q);
 
-  if(category!=="All")
-   ok=ok && p.category===category;
+if(category!=="All")
+ok=ok&&p.category===category;
 
-  if(
-   category==="Kirana/Grocery" &&
-   grocerySub!=="All"
-  ){
-   ok=ok &&
-    (p.subcategory===grocerySub ||
-     (
-      grocerySub==="Other" &&
-      (!p.subcategory ||
-       ![
-        "Biscuit",
-        "Snacks",
-        "Namkeen",
-        "Chips"
-       ].includes(p.subcategory))
-     ));
-  }
+if(category==="Kirana/Grocery"&&grocerySub!=="All"){
 
-  return ok;
- });
+if(grocerySub==="Other"){
 
- const grid=document.getElementById("productGrid");
+ok=ok&&
+(!p.subcategory||
+!["Biscuit","Snacks","Namkeen","Chips"]
+.includes(p.subcategory));
 
- if(!grid)return;
+}else{
 
- if(!list.length){
+ok=ok&&p.subcategory===grocerySub;
+}
+}
 
-  grid.innerHTML=
-  `<div class="empty">
-    Koi product nahi mila.
-   </div>`;
+return ok;
+});
 
-  return;
- }
+const grid=document.getElementById("productGrid");
 
- grid.innerHTML=
- list.map(productHTML).join("");
+if(!grid)return;
+
+if(!list.length){
+
+grid.innerHTML=
+`<div class="empty">
+Koi product nahi mila.
+</div>`;
+
+return;
+}
+
+grid.innerHTML=list.map(productHTML).join("");
 }
 
 
 function renderHomeProducts(){
 
- const el=document.getElementById("homeProducts");
+const el=document.getElementById("homeProducts");
 
- if(!el)return;
+if(!el)return;
 
- const list=products.slice(0,8);
+const list=products.slice(0,8);
 
- if(!list.length){
+if(!list.length){
 
-  el.innerHTML=
-  `<div class="empty">
-    Abhi products available nahi hain.
-   </div>`;
+el.innerHTML=
+`<div class="empty">
+Abhi products available nahi hain.
+</div>`;
 
-  return;
- }
+return;
+}
 
- el.innerHTML=list.map(productHTML).join("");
+el.innerHTML=list.map(productHTML).join("");
 }
 
 
 function productHTML(p){
 
- const image=p.image_url
-  ? `<img
-      class="product-img"
-      src="${esc(p.image_url)}"
-      onerror="this.style.display='none'">`
-  : `<div class="product-img"></div>`;
+const image=p.image_url
+?`<img class="product-img"
+src="${esc(p.image_url)}"
+onerror="this.style.display='none'">`
+:`<div class="product-img"></div>`;
 
- const mrp=Number(p.mrp||0);
+return `
+<div class="card product">
 
- return `
- <div class="card product">
+${image}
 
-  ${image}
+<div class="product-name">
+${esc(p.product_name)}
+</div>
 
-  <div class="product-name">
-   ${esc(p.product_name)}
-  </div>
+<div class="muted">
+${esc(p.category||"")}
+${p.subcategory?" • "+esc(p.subcategory):""}
+</div>
 
-  <div class="muted">
-   ${esc(p.category||"")}
-   ${p.subcategory?" • "+esc(p.subcategory):""}
-  </div>
+<div class="price">
+${money(p.price)}
 
-  <div class="price">
-   ${money(p.price)}
-   ${mrp>0 && mrp>Number(p.price)
-    ? `<span class="mrp">${money(mrp)}</span>`
-    : ""}
-  </div>
-
-  <div class="stock">
-   ${Number(p.stock||0)>0
-    ?"✓ In Stock"
-    :"Out of Stock"}
-  </div>
-
-  <button
-   class="add"
-   ${Number(p.stock||0)<=0?"disabled":""}
-   onclick="chooseUnit('${p.id}')">
-   ${Number(p.stock||0)>0
-    ?"ADD"
-    :"OUT OF STOCK"}
-  </button>
-
- </div>`;
+${
+Number(p.mrp||0)>Number(p.price||0)
+?`<span class="mrp">${money(p.mrp)}</span>`
+:""
 }
 
+</div>
 
-/* ---------- UNIT ---------- */
+<div class="stock">
+${Number(p.stock||0)>0
+?"✓ In Stock"
+:"Out of Stock"}
+</div>
 
-function chooseUnit(id){
+<button
+class="add"
+${Number(p.stock||0)<=0?"disabled":""}
+onclick="addProduct('${p.id}')">
 
- pendingProduct=
-  products.find(p=>p.id===id);
+${Number(p.stock||0)>0?"ADD":"OUT OF STOCK"}
 
- if(!pendingProduct)return;
+</button>
 
- const boxQty=
-  Number(pendingProduct.box_quantity||1);
-
- if(boxQty<=1){
-
-  addToCart(
-   pendingProduct,
-   pendingProduct.unit||"piece",
-   1
-  );
-
-  return;
- }
-
- document.getElementById("unitTitle").textContent=
-  pendingProduct.product_name+
-  " - Select Unit";
-
- document.getElementById("unitOptions").innerHTML=`
-
-  <button
-   class="primary"
-   style="width:100%;margin-bottom:9px"
-   onclick="selectUnit('packet')">
-   📦 Packet
-  </button>
-
-  <button
-   class="secondary"
-   style="width:100%;"
-   onclick="selectUnit('box')">
-   📦 Box (${boxQty} packets)
-  </button>
- `;
-
- document
-  .getElementById("unitModal")
-  .classList.add("show");
-}
-
-
-function closeUnit(){
-
- document
-  .getElementById("unitModal")
-  .classList.remove("show");
-
- pendingProduct=null;
-}
-
-
-function selectUnit(unit){
-
- if(pendingProduct)
-  addToCart(pendingProduct,unit,1);
-
- closeUnit();
-}
-
-
-function unitPrice(p,unit){
-
- const q=Number(p.box_quantity||1);
- const base=Number(p.price||0);
-
- if(q<=1)return base;
-
- if(p.unit==="box")
-  return unit==="packet"?base/q:base;
-
- return unit==="box"?base*q:base;
+</div>
+`;
 }
 
 
 /* ---------- CART ---------- */
 
-function addToCart(p,unit,qty){
+function getCart(){
 
- const c=getCart();
+try{
+return JSON.parse(
+localStorage.getItem("localWholesaleCart")||"[]"
+);
+}catch(e){
+return [];
+}
+}
 
- const key=p.id+"_"+unit;
+function saveCart(c){
 
- const price=unitPrice(p,unit);
+localStorage.setItem(
+"localWholesaleCart",
+JSON.stringify(c)
+);
+}
 
- const found=c.find(x=>x.key===key);
 
- if(found){
+function addProduct(id){
 
-  found.quantity+=qty;
+const p=products.find(x=>x.id===id);
 
- }else{
+if(!p)return;
 
-  c.push({
-   key:key,
-   product_id:p.id,
-   wholesaler_id:p.wholesaler_id,
-   product_name:p.product_name,
-   price:price,
-   unit:unit,
-   quantity:qty,
-   image_url:p.image_url||"",
-   box_quantity:p.box_quantity||1
-  });
- }
+const c=getCart();
 
- saveCart(c);
+const key=p.id+"_piece";
 
- alert("🛒 Cart me add ho gaya!");
+const found=c.find(x=>x.key===key);
 
- renderCart();
+if(found){
+
+found.quantity++;
+
+}else{
+
+c.push({
+key:key,
+product_id:p.id,
+wholesaler_id:p.wholesaler_id,
+product_name:p.product_name,
+price:Number(p.price||0),
+unit:p.unit||"piece",
+quantity:1,
+image_url:p.image_url||""
+});
+}
+
+saveCart(c);
+
+alert("🛒 Product cart me add ho gaya!");
+
+renderCart();
 }
 
 
 function renderCart(){
 
- const el=document.getElementById("cartList");
- const summary=document.getElementById("cartSummary");
+const el=document.getElementById("cartList");
+const summary=document.getElementById("cartSummary");
 
- if(!el)return;
+if(!el)return;
 
- const c=getCart();
+const c=getCart();
 
- if(!c.length){
+if(!c.length){
 
-  el.innerHTML=
-  `<div class="empty">
-    🛒 Cart abhi empty hai.
-    <br><br>
-    Products add karke order karein.
-   </div>`;
+el.innerHTML=
+`<div class="empty">
+🛒 Cart abhi empty hai.
+<br><br>
+Products add karke order karein.
+</div>`;
 
-  summary.innerHTML="";
-  return;
- }
+summary.innerHTML="";
+return;
+}
 
- el.innerHTML=c.map((x,i)=>`
+el.innerHTML=c.map((x,i)=>`
 
-  <div class="cart-row">
+<div class="cart-row">
 
-   ${
-    x.image_url
-    ? `<img src="${esc(x.image_url)}">`
-    : `<div style="width:58px;height:58px;background:#f3f4f6;border-radius:10px"></div>`
-   }
+${
+x.image_url
+?`<img src="${esc(x.image_url)}">`
+:`<div style="width:58px;height:58px;background:#f3f4f6;border-radius:10px"></div>`
+}
 
-   <div style="flex:1">
+<div style="flex:1">
 
-    <b>${esc(x.product_name)}</b>
+<b>${esc(x.product_name)}</b>
 
-    <div class="muted">
-     ${money(x.price)} / ${esc(x.unit)}
-    </div>
+<div class="muted">
+${money(x.price)} / ${esc(x.unit)}
+</div>
 
-    <div class="qty">
+<div class="qty">
 
-     <button onclick="changeQty(${i},-1)">−</button>
+<button onclick="changeQty(${i},-1)">
+−
+</button>
 
-     <b>${x.quantity}</b>
+<b>${x.quantity}</b>
 
-     <button onclick="changeQty(${i},1)">+</button>
+<button onclick="changeQty(${i},1)">
++
+</button>
 
-     <button
-      class="secondary"
-      onclick="removeCart(${i})">
-      Remove
-     </button>
+<button class="secondary"
+onclick="removeCart(${i})">
+Remove
+</button>
 
-    </div>
+</div>
 
-   </div>
+</div>
 
-   <b>
-    ${money(x.price*x.quantity)}
-   </b>
+<b>
+${money(x.price*x.quantity)}
+</b>
 
-  </div>
- `).join("");
+</div>
 
- let total=0;
+`).join("");
 
- c.forEach(x=>{
-  total+=Number(x.price)*Number(x.quantity);
- });
+let total=0;
 
- summary.innerHTML=`
+c.forEach(x=>{
+total+=Number(x.price)*Number(x.quantity);
+});
 
-  <div class="panel">
+summary.innerHTML=`
 
-   <div class="section-title">
-    <h3>Total</h3>
-    <strong>${money(total)}</strong>
-   </div>
+<div class="panel">
 
-   <p class="muted">
-    Minimum order ₹1,000 • Maximum ₹10,000 per wholesaler
-   </p>
+<div class="section-title">
+<h3>Total</h3>
+<strong>${money(total)}</strong>
+</div>
 
-   <button
-    class="primary"
-    style="width:100%"
-    onclick="goCheckout()">
-    Continue to Checkout →
-   </button>
+<p class="muted">
+Minimum ₹1,000 • Maximum ₹10,000 per wholesaler
+</p>
 
-  </div>
- `;
+<button
+class="primary"
+style="width:100%"
+onclick="checkoutInfo()">
+Continue to Checkout →
+</button>
+
+</div>
+`;
 }
 
 
-function changeQty(index,change){
+function changeQty(i,n){
 
- const c=getCart();
+const c=getCart();
 
- if(!c[index])return;
+if(!c[i])return;
 
- c[index].quantity+=change;
+c[i].quantity+=n;
 
- if(c[index].quantity<=0)
-  c.splice(index,1);
+if(c[i].quantity<=0)
+c.splice(i,1);
 
- saveCart(c);
- renderCart();
+saveCart(c);
+renderCart();
 }
 
 
-function removeCart(index){
+function removeCart(i){
 
- const c=getCart();
+const c=getCart();
 
- c.splice(index,1);
+c.splice(i,1);
 
- saveCart(c);
- renderCart();
+saveCart(c);
+renderCart();
 }
 
 
-/* ---------- CHECKOUT ---------- */
+function checkoutInfo(){
 
-function goCheckout(){
+const c=getCart();
 
- const c=getCart();
+if(!c.length){
 
- if(!c.length){
+alert("Cart empty hai.");
+return;
+}
 
-  alert("Cart empty hai.");
-  return;
- }
+const totals={};
 
- const groups={};
+c.forEach(x=>{
 
- c.forEach(x=>{
+if(!totals[x.wholesaler_id])
+totals[x.wholesaler_id]=0;
 
-  if(!groups[x.wholesaler_id])
-   groups[x.wholesaler_id]=0;
+totals[x.wholesaler_id]+=
+Number(x.price)*Number(x.quantity);
+});
 
-  groups[x.wholesaler_id]+=
-   Number(x.price)*Number(x.quantity);
- });
+for(const id in totals){
 
- for(const id in groups){
+if(totals[id]<1000){
 
-  if(groups[id]<1000){
+alert(
+"Minimum order ₹1,000 hai.\n\n"+
+"Wholesaler total: "+money(totals[id])
+);
 
-   alert(
-    "Har wholesaler ka minimum order ₹1,000 hai.\n\n"+
-    "Ek wholesaler ka current total: "+
-    money(groups[id])
-   );
+return;
+}
 
-   return;
-  }
+if(totals[id]>10000){
 
-  if(groups[id]>10000){
+alert(
+"Maximum order ₹10,000 hai."
+);
 
-   alert(
-    "Har wholesaler ka maximum order ₹10,000 hai."
-   );
+return;
+}
+}
 
-   return;
-  }
- }
-
- alert(
-  "Checkout system next step me secure order creation ke saath connect kiya jayega."
- );
+alert(
+"Checkout secure order system next step me connect hoga."
+);
 }
 
 
@@ -1484,137 +1461,132 @@ function goCheckout(){
 
 function loadProfile(){
 
- if(!profile)return;
+if(!profile)return;
 
- const name=document.getElementById("pName");
- const shop=document.getElementById("pShop");
- const mobile=document.getElementById("pMobile");
- const address=document.getElementById("pAddress");
- const loc=document.getElementById("locAddress");
+const name=document.getElementById("pName");
+const shop=document.getElementById("pShop");
+const mobile=document.getElementById("pMobile");
+const address=document.getElementById("pAddress");
+const loc=document.getElementById("locAddress");
 
- if(name)name.value=profile.full_name||"";
- if(shop)shop.value=profile.shop_name||"";
- if(mobile)mobile.value=profile.mobile||"";
- if(address)address.value=profile.address||"";
- if(loc)loc.value=profile.address||"";
+if(name)name.value=profile.full_name||"";
+if(shop)shop.value=profile.shop_name||"";
+if(mobile)mobile.value=profile.mobile||"";
+if(address)address.value=profile.address||"";
+if(loc)loc.value=profile.address||"";
 
- document.getElementById("headerLocation").textContent=
-  profile.address
-   ? "📍 "+profile.address
-   : "📍 Delivery location set karein";
+document.getElementById("headerLocation").textContent=
+profile.address
+?"📍 "+profile.address
+:"📍 Delivery location set karein";
 }
 
 
 async function saveProfile(){
 
- const patch={
-  full_name:
-   document.getElementById("pName").value.trim(),
+const patch={
+full_name:document.getElementById("pName").value.trim(),
+shop_name:document.getElementById("pShop").value.trim(),
+address:document.getElementById("pAddress").value.trim()
+};
 
-  shop_name:
-   document.getElementById("pShop").value.trim(),
+const {error}=await supabaseClient
+.from("profiles")
+.update(patch)
+.eq("id",currentUser.id);
 
-  address:
-   document.getElementById("pAddress").value.trim()
- };
+if(error){
 
- const {error}=await supabaseClient
- .from("profiles")
- .update(patch)
- .eq("id",currentUser.id);
+alert(error.message);
 
- if(error){
+}else{
 
-  alert(error.message);
+profile={...profile,...patch};
 
- }else{
+loadProfile();
 
-  profile={...profile,...patch};
-
-  loadProfile();
-
-  alert("✅ Profile saved.");
- }
+alert("✅ Profile saved.");
+}
 }
 
 
 async function saveLocation(){
 
- const address=
-  document.getElementById("locAddress")
-  .value.trim();
+const address=
+document.getElementById("locAddress").value.trim();
 
- if(!address){
+if(!address){
 
-  alert("Address enter karein.");
-  return;
- }
+alert("Address enter karein.");
+return;
+}
 
- const {error}=await supabaseClient
- .from("profiles")
- .update({address})
- .eq("id",currentUser.id);
+const {error}=await supabaseClient
+.from("profiles")
+.update({address})
+.eq("id",currentUser.id);
 
- if(error){
+if(error){
 
-  alert(error.message);
+alert(error.message);
 
- }else{
+}else{
 
-  profile.address=address;
+profile.address=address;
 
-  loadProfile();
+loadProfile();
 
-  alert("📍 Location saved.");
- }
+alert("📍 Address saved.");
+}
 }
 
 
 function getGPS(){
 
- if(!navigator.geolocation){
+if(!navigator.geolocation){
 
-  alert("GPS supported nahi hai.");
-  return;
- }
+alert("GPS supported nahi hai.");
+return;
+}
 
- document.getElementById("gpsStatus").textContent=
-  "Location mil rahi hai...";
+document.getElementById("gpsStatus").textContent=
+"Location mil rahi hai...";
 
- navigator.geolocation.getCurrentPosition(
+navigator.geolocation.getCurrentPosition(
 
-  async pos=>{
+async pos=>{
 
-   const lat=pos.coords.latitude;
-   const lon=pos.coords.longitude;
+const lat=pos.coords.latitude;
+const lon=pos.coords.longitude;
 
-   const {error}=await supabaseClient
-   .from("profiles")
-   .update({
-    latitude:lat,
-    longitude:lon
-   })
-   .eq("id",currentUser.id);
+const {error}=await supabaseClient
+.from("profiles")
+.update({
+latitude:lat,
+longitude:lon
+})
+.eq("id",currentUser.id);
 
-   if(error){
+if(error){
 
-    document.getElementById("gpsStatus")
-    .textContent=error.message;
+document.getElementById("gpsStatus")
+.textContent=error.message;
 
-   }else{
+}else{
 
-    document.getElementById("gpsStatus")
-    .textContent=
-     `GPS saved: ${lat.toFixed(5)}, ${lon.toFixed(5)}`;
-   }
-  },
+document.getElementById("gpsStatus")
+.textContent=
+"GPS location saved successfully.";
+}
+},
 
-  ()=>{
-   document.getElementById("gpsStatus")
-   .textContent=
-    "GPS permission/location nahi mili.";
-  }
- );
+()=>{
+
+document.getElementById("gpsStatus")
+.textContent=
+"GPS permission/location nahi mili.";
+}
+);
 }
 
 
@@ -1622,46 +1594,47 @@ function getGPS(){
 
 async function loadWholesalers(){
 
- const el=document.getElementById("wholesalers");
+const el=document.getElementById("wholesalers");
 
- const {data,error}=await supabaseClient
- .from("profiles")
- .select("id,full_name,shop_name,address,role")
- .eq("role","wholesaler")
- .limit(8);
+const {data,error}=await supabaseClient
+.from("profiles")
+.select("id,full_name,shop_name,address,role")
+.eq("role","wholesaler")
+.limit(8);
 
- if(error||!data?.length){
+if(error||!data?.length){
 
-  el.innerHTML=
-   `<div class="empty">
-     Nearby wholesalers yahan dikhenge.
-    </div>`;
+el.innerHTML=
+`<div class="empty">
+Nearby wholesalers yahan dikhenge.
+</div>`;
 
-  return;
- }
+return;
+}
 
- el.innerHTML=data.map(w=>`
+el.innerHTML=data.map(w=>`
 
-  <div class="card wholesaler-card">
+<div class="card" style="padding:15px;margin-bottom:10px">
 
-   <h3>
-    🏪 ${esc(w.shop_name||"Wholesale Shop")}
-   </h3>
+<h3 style="margin:0 0 5px">
+🏪 ${esc(w.shop_name||"Wholesale Shop")}
+</h3>
 
-   <div class="muted">
-    ${esc(w.full_name||"Wholesaler")}
-   </div>
+<div class="muted">
+${esc(w.full_name||"Wholesaler")}
+</div>
 
-   <div class="rating">
-    ★ 4.8
-   </div>
+<div style="color:#f59e0b;font-weight:800;margin-top:5px">
+★ 4.8
+</div>
 
-   <div class="distance">
-    📍 ${esc(w.address||"Local wholesaler")}
-   </div>
+<div class="muted">
+📍 ${esc(w.address||"Local wholesaler")}
+</div>
 
-  </div>
- `).join("");
+</div>
+
+`).join("");
 }
 
 
@@ -1669,157 +1642,79 @@ async function loadWholesalers(){
 
 async function loadOrders(){
 
- const el=document.getElementById("ordersList");
+const el=document.getElementById("ordersList");
 
- el.innerHTML="Loading...";
+el.innerHTML="Loading orders...";
 
- const {data:orders,error}=await supabaseClient
- .from("orders")
- .select("*")
- .eq("retailer_id",currentUser.id)
- .order("created_at",{ascending:false});
+const {data,error}=await supabaseClient
+.from("orders")
+.select("*")
+.eq("retailer_id",currentUser.id)
+.order("created_at",{ascending:false});
 
- if(error){
+if(error){
 
-  el.innerHTML=
-   `<div class="empty">${esc(error.message)}</div>`;
+el.innerHTML=
+`<div class="empty">${esc(error.message)}</div>`;
 
-  return;
- }
-
- if(!orders?.length){
-
-  el.innerHTML=
-   `<div class="empty">
-    📦 Abhi koi order nahi hai.
-    </div>`;
-
-  return;
- }
-
- const ids=orders.map(o=>o.id);
-
- const {data:items}=await supabaseClient
- .from("order_items")
- .select("*")
- .in("order_id",ids);
-
- el.innerHTML=orders.map(o=>
-  renderOrder(
-   o,
-   (items||[]).filter(i=>i.order_id===o.id)
-  )
- ).join("");
+return;
 }
 
+if(!data?.length){
 
-function renderOrder(o,items){
+el.innerHTML=
+`<div class="empty">
+📦 Abhi koi order nahi hai.
+</div>`;
 
- const rows=items.map(i=>`
+return;
+}
 
-  <div class="order-item">
+el.innerHTML=data.map(o=>`
 
-   ${
-    i.image_url
-    ? `<img src="${esc(i.image_url)}">`
-    : `<div style="width:52px;height:52px;background:#f3f4f6;border-radius:9px"></div>`
-   }
+<div class="order-card">
 
-   <div style="flex:1">
+<div class="order-head">
 
-    <b>${esc(i.product_name)}</b>
+<div>
+<b>Order #${esc(o.id.slice(0,8))}</b>
 
-    <div class="muted">
-     Ordered: ${i.quantity} ${esc(i.unit||"")}
-    </div>
+<div class="muted">
+${new Date(o.created_at).toLocaleString()}
+</div>
+</div>
 
-    ${
-     o.status!=="pending"
-     ? `<div class="muted">
-        ${i.accepted
-         ?"✅ Accepted: "+i.accepted_quantity
-         :"❌ Unavailable"}
-        </div>`
-     :""
-    }
+<span class="badge">
+${esc(o.status||"pending")}
+</span>
 
-   </div>
+</div>
 
-   <b>
-    ${money(Number(i.price)*Number(i.accepted_quantity||i.quantity))}
-   </b>
+<h3>${money(o.total)}</h3>
 
-  </div>
- `).join("");
+<div class="muted">
+🚚 Delivery:
+${esc(o.delivery_status||"pending")}
+</div>
 
- let statusText="Pending";
+${
+o.wholesaler_message
+?`<p class="muted">
+💬 ${esc(o.wholesaler_message)}
+</p>`
+:""
+}
 
- if(o.status==="accepted")
-  statusText="Accepted";
+<button
+class="primary"
+style="width:100%;margin-top:12px"
+onclick="openTracking('${o.id}')">
+🚚 Track Order
+</button>
 
- if(o.status==="rejected")
-  statusText="Rejected";
+</div>
 
- if(o.status==="completed")
-  statusText="Completed";
-
- if(o.status==="cancelled")
-  statusText="Cancelled";
-
- return `
-
- <div class="order-card">
-
-  <div class="order-head">
-
-   <div>
-    <b>Order #${esc(o.id.slice(0,8))}</b>
-    <div class="muted">
-     ${new Date(o.created_at).toLocaleString()}
-    </div>
-   </div>
-
-   <span class="badge">
-    ${statusText}
-   </span>
-
-  </div>
-
-  ${rows}
-
-  ${
-   o.wholesaler_message
-   ? `<div class="panel" style="margin-top:10px;background:#fff8ed">
-       <b>Wholesaler Message</b>
-       <div class="muted">
-        ${esc(o.wholesaler_message)}
-       </div>
-      </div>`
-   :""
-  }
-
-  <div class="muted" style="margin-top:10px">
-   🚚 Delivery: ${esc(o.delivery_status||"pending")}
-   <br>
-   💳 Payment: ${esc(o.payment_status||"pending")}
-  </div>
-
-  ${
-   o.status==="accepted" ||
-   o.delivery_status==="preparing" ||
-   o.delivery_status==="out_for_delivery" ||
-   o.delivery_status==="delivered"
-   ? `<button
-       class="primary"
-       style="margin-top:10px;width:100%"
-       onclick="openTracking('${o.id}')">
-       🚚 Track Order
-      </button>`
-   :""
-  }
-
- </div>
- `;
+`).join("");
 }
 
 
@@ -1827,132 +1722,254 @@ function renderOrder(o,items){
 
 async function openTracking(orderId){
 
- await loadTracking(orderId);
+showSection("tracking");
 
- showSection("tracking");
+const el=document.getElementById("trackingBox");
+
+const {data:o,error}=await supabaseClient
+.from("orders")
+.select("*")
+.eq("id",orderId)
+.eq("retailer_id",currentUser.id)
+.single();
+
+if(error||!o){
+
+el.innerHTML=
+`<div class="empty">Order nahi mila.</div>`;
+
+return;
+}
+
+let current=0;
+
+if(o.status==="accepted"||
+o.delivery_status==="preparing")
+current=1;
+
+if(o.delivery_status==="out_for_delivery")
+current=2;
+
+if(o.delivery_status==="delivered")
+current=3;
+
+el.innerHTML=`
+
+<div class="panel">
+
+<h3>
+Order #${esc(o.id.slice(0,8))}
+</h3>
+
+<div class="timeline">
+
+${[
+["🛒","Placed"],
+["📦","Preparing"],
+["🚚","On Way"],
+["🏠","Delivered"]
+].map((s,i)=>`
+
+<div class="step ${i<current?"done":""}">
+
+<div class="circle">
+${s[0]}
+</div>
+
+<div>${s[1]}</div>
+
+</div>
+
+`).join("")}
+
+</div>
+
+<h3>
+
+${
+o.status==="completed"
+?"🎉 Order Completed!"
+:o.delivery_status==="delivered"
+?"📦 Order Delivered"
+:o.delivery_status==="out_for_delivery"
+?"🚚 Order is on the way"
+:o.status==="accepted"
+?"📦 Order Accepted"
+:"⏳ Waiting for confirmation"
+}
+
+</h3>
+
+<div class="muted">
+Delivery Status:
+<b>${esc(o.delivery_status||"pending")}</b>
+</div>
+
+</div>
+`;
 }
 
 
-async function loadLatestTracking(){
+/* ---------- AI HELP ---------- */
 
- const {data}=await supabaseClient
- .from("orders")
- .select("*")
- .eq("retailer_id",currentUser.id)
- .order("created_at",{ascending:false})
- .limit(1)
- .single();
+function openAI(){
 
- if(data)
-  loadTracking(data.id);
+document.getElementById("aiModal")
+.classList.add("show");
+
+document.getElementById("aiInput")
+.focus();
 }
 
 
-async function loadTracking(orderId){
+function closeAI(){
 
- const el=document.getElementById("trackingBox");
+document.getElementById("aiModal")
+.classList.remove("show");
+}
 
- el.innerHTML="Loading...";
 
- const {data:o,error}=await supabaseClient
- .from("orders")
- .select("*")
- .eq("id",orderId)
- .eq("retailer_id",currentUser.id)
- .single();
+function addAIMessage(text,type){
 
- if(error||!o){
+const box=document.getElementById("aiMessages");
 
-  el.innerHTML=
-   `<div class="empty">
-    Order nahi mila.
-    </div>`;
+const div=document.createElement("div");
 
-  return;
- }
+div.className="msg "+type;
 
- let current=0;
+div.innerHTML=esc(text).replace(/\n/g,"<br>");
 
- if(o.status==="accepted" ||
-    o.delivery_status==="preparing")
-  current=1;
+box.appendChild(div);
 
- if(o.delivery_status==="out_for_delivery")
-  current=2;
+box.scrollTop=box.scrollHeight;
+}
 
- if(o.delivery_status==="delivered")
-  current=3;
 
- if(o.status==="completed")
-  current=4;
+function askAI(question){
 
- const steps=[
-  ["🛒","Order Placed"],
-  ["📦","Preparing"],
-  ["🚚","Out for Delivery"],
-  ["🏠","Delivered"]
- ];
+document.getElementById("aiInput").value=question;
 
- el.innerHTML=`
+sendAI();
+}
 
- <div class="panel">
 
-  <h3>Order #${esc(o.id.slice(0,8))}</h3>
+function sendAI(){
 
-  <div class="timeline">
+const input=document.getElementById("aiInput");
 
-   ${steps.map((s,i)=>`
+const question=input.value.trim();
 
-    <div class="step ${i<current?"done":""}">
+if(!question)return;
 
-     <div class="circle">
-      ${s[0]}
-     </div>
+addAIMessage(question,"user");
 
-     <div>
-      ${s[1]}
-     </div>
+input.value="";
 
-    </div>
+setTimeout(()=>{
 
-   `).join("")}
+const q=question.toLowerCase();
 
-  </div>
+let answer=
+"Main aapki help karne ke liye yahan hoon. 😊";
 
-  <h2>
-   ${
-    o.status==="completed"
-    ?"🎉 Order Completed!"
-    :
-    o.delivery_status==="delivered"
-    ?"📦 Order Delivered"
-    :
-    o.delivery_status==="out_for_delivery"
-    ?"🚚 Your order is on its way!"
-    :
-    o.status==="accepted"
-    ?"📦 Wholesaler has accepted your order"
-    :
-    "⏳ Waiting for wholesaler confirmation"
-   }
-  </h2>
+if(
+q.includes("order")||
+q.includes("ऑर्डर")
+){
 
-  <p class="muted">
-   Delivery Status:
-   <b>${esc(o.delivery_status||"pending")}</b>
-  </p>
+answer=
+"📦 My Orders me jaakar aap apne orders dekh sakte hain. Order accept hone ke baad Preparing → Out for Delivery → Delivered status dikhega.";
 
-  ${
-   o.wholesaler_message
-   ? `<div class="panel" style="background:#fff8ed">
-       <b>Message</b>
-       <p>${esc(o.wholesaler_message)}</p>
-      </div>`
-   :""
-  }
+}
 
- </div>
- `;
+else if(
+q.includes("minimum")||
+q.includes("1000")||
+q.includes("minimum order")
+){
+
+answer=
+"💰 Har wholesaler ke liye minimum order ₹1,000 hai. Maximum ₹10,000 hai.";
+
+}
+
+else if(
+q.includes("cart")||
+q.includes("कार्ट")
+){
+
+answer=
+"🛒 Product ke neeche ADD button dabaiye. Product Cart me chala jayega. Phir Cart section se quantity change kar sakte hain.";
+
+}
+
+else if(
+q.includes("delivery")||
+q.includes("डिलीवरी")
+){
+
+answer=
+"🚚 Order accept hone ke baad wholesaler order ko Preparing aur phir Out for Delivery karega. Delivery status My Orders → Track Order me dikhega.";
+
+}
+
+else if(
+q.includes("address")||
+q.includes("location")||
+q.includes("पता")
+){
+
+answer=
+"📍 Profile ya Location section me apna delivery address save kar sakte hain. GPS se location bhi save ki ja sakti hai.";
+
+}
+
+else if(
+q.includes("product")||
+q.includes("सामान")
+){
+
+answer=
+"🛍️ Category ya Search se product dhoondhiye. Product card par ADD dabakar cart me add kar sakte hain.";
+
+}
+
+else if(
+q.includes("commission")||
+q.includes("कमिशन")
+){
+
+answer=
+"💰 Retailer se platform commission ₹0 hai. Wholesaler-side commission rules alag hain.";
+
+}
+
+else if(
+q.includes("support")||
+q.includes("help")||
+q.includes("मदद")
+){
+
+answer=
+"☎️ Profile section me Customer Support option available hai. Order problem batate waqt Order ID dena useful rahega.";
+
+}
+
+addAIMessage(answer,"bot");
+
+},450);
+}
+
+
+/* ---------- SUPPORT ---------- */
+
+function openSupport(){
+
+alert(
+"☎️ Customer Support\n\n"+
+"Support system ko next step me connect kiya jayega.\n\n"+
+"Order problem ke liye Order ID ready rakhein."
+);
 }
 
 
@@ -1960,10 +1977,16 @@ async function loadTracking(orderId){
 
 async function logout(){
 
- await supabaseClient.auth.signOut();
+await supabaseClient.auth.signOut();
 
- location.href="index.html";
+location.href="index.html";
 }
+
+
+/* ---------- SEARCH FIX ---------- */
+
+document.getElementById("search")
+.addEventListener("input",renderProducts);
 
 
 /* ---------- START ---------- */
