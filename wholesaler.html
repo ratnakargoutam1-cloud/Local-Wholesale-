@@ -434,6 +434,7 @@ button{
   justify-content:space-between;
   color:#64748b;
   font-size:12px;
+  gap:8px;
 }
 
 .price{
@@ -915,6 +916,7 @@ th{
 
     <div class="profile-mini">
       <div class="avatar" id="avatar">W</div>
+
       <div>
         <strong id="headerName">Wholesaler</strong>
         <small id="headerShop">My Shop</small>
@@ -994,6 +996,7 @@ th{
 <section id="dashboard" class="page active">
 
   <div class="top-title">
+
     <div>
       <h1>Wholesaler Dashboard 👋</h1>
       <p>Apne products, orders aur business ko manage karein.</p>
@@ -1002,45 +1005,61 @@ th{
     <button class="btn btn-primary" onclick="showPage('add-product')">
       + Add Product
     </button>
+
   </div>
 
 
   <div class="stats">
 
     <div class="stat">
+
       <div class="stat-top">
         <p>My Products</p>
         <div class="stat-icon">📦</div>
       </div>
+
       <h3 id="statProducts">0</h3>
       <p>Active products</p>
+
     </div>
 
+
     <div class="stat">
+
       <div class="stat-top">
         <p>Total Orders</p>
         <div class="stat-icon">🛒</div>
       </div>
+
       <h3 id="statOrders">0</h3>
       <p>All orders</p>
+
     </div>
 
+
     <div class="stat">
+
       <div class="stat-top">
         <p>Customers</p>
         <div class="stat-icon">👥</div>
       </div>
+
       <h3 id="statCustomers">0</h3>
       <p>Retailers</p>
+
     </div>
 
+
     <div class="stat">
+
       <div class="stat-top">
         <p>Sales</p>
         <div class="stat-icon">📈</div>
       </div>
+
       <h3 id="statSales">₹0</h3>
       <p>Completed orders</p>
+
     </div>
 
   </div>
@@ -1054,7 +1073,9 @@ th{
     </div>
 
     <div class="wallet-right">
-      <small>Wallet commission reserve system</small><br>
+      <small>Wallet commission reserve system</small>
+      <br>
+
       <button class="btn btn-light" onclick="showPage('wallet')">
         Manage Wallet →
       </button>
@@ -1104,6 +1125,7 @@ th{
 
     <div class="card-header">
       <h2>Recent Orders</h2>
+
       <button class="btn btn-light" onclick="showPage('orders')">
         View All
       </button>
@@ -1120,6 +1142,7 @@ th{
 <section id="products" class="page">
 
   <div class="top-title">
+
     <div>
       <h1>My Products</h1>
       <p>Aapke listed products</p>
@@ -1128,7 +1151,9 @@ th{
     <button class="btn btn-primary" onclick="showPage('add-product')">
       + Add Product
     </button>
+
   </div>
+
 
   <div class="card">
 
@@ -1148,11 +1173,14 @@ th{
 <section id="stock" class="page">
 
   <div class="top-title">
+
     <div>
       <h1>Stock Management</h1>
       <p>Products ka stock update karein.</p>
     </div>
+
   </div>
+
 
   <div class="card">
 
@@ -1161,6 +1189,7 @@ th{
       <table>
 
         <thead>
+
           <tr>
             <th>Product</th>
             <th>Category</th>
@@ -1168,6 +1197,7 @@ th{
             <th>Unit</th>
             <th>Update</th>
           </tr>
+
         </thead>
 
         <tbody id="stockTable"></tbody>
@@ -1185,11 +1215,14 @@ th{
 <section id="add-product" class="page">
 
   <div class="top-title">
+
     <div>
       <h1>Add Product</h1>
       <p>Apne wholesaler account se product add karein.</p>
     </div>
+
   </div>
+
 
   <div class="card">
 
@@ -1197,34 +1230,84 @@ th{
 
       <div class="form-grid">
 
+
+        <!-- FINAL 34 CATEGORIES -->
+
         <div class="form-group">
+
           <label>Category</label>
 
           <select id="category" required>
+
             <option value="">Select Category</option>
-            <option value="Kirana/Grocery">Kirana/Grocery</option>
-            <option value="Cold Drinks/Beverages">Cold Drinks/Beverages</option>
-            <option value="Cosmetics">Cosmetics</option>
-            <option value="Stationery">Stationery</option>
-            <option value="Electrical">Electrical</option>
-            <option value="Other">Other</option>
-          </select>
 
-        </div>
+            <option value="Cold Drinks & Juices">🥤 Cold Drinks & Juices</option>
 
+            <option value="Parle Products">🍪 Parle Products</option>
 
-        <div class="form-group" id="subcategoryBox" style="display:none">
+            <option value="Britannia Products">🧈 Britannia Products</option>
 
-          <label>Grocery Subcategory</label>
+            <option value="Tata Products">🛍️ Tata Products</option>
 
-          <select id="subcategory">
+            <option value="Toast & Petha">🍞 Toast & Petha</option>
 
-            <option value="">Select</option>
-            <option value="Biscuit">Biscuit</option>
-            <option value="Snacks">Snacks</option>
-            <option value="Namkeen">Namkeen</option>
-            <option value="Chips">Chips</option>
-            <option value="Other">Other Grocery</option>
+            <option value="Patanjali Products">🌿 Patanjali Products</option>
+
+            <option value="Daily Products">🧺 Daily Products</option>
+
+            <option value="Hindustani Products">🇮🇳 Hindustani Products</option>
+
+            <option value="Reliance Products">🛒 Reliance Products</option>
+
+            <option value="Namkeens & Chips">🥜 Namkeens & Chips</option>
+
+            <option value="Chocolates & Toffees">🍫 Chocolates & Toffees</option>
+
+            <option value="Red Label">☕ Red Label</option>
+
+            <option value="Paan Corner">🥥 Paan Corner</option>
+
+            <option value="Biscuits & Cookies">🍪 Biscuits & Cookies</option>
+
+            <option value="Tea, Coffee & More">☕ Tea, Coffee & More</option>
+
+            <option value="Instant Food">🍜 Instant Food</option>
+
+            <option value="Personal Care">🧴 Personal Care</option>
+
+            <option value="Dry Fruits & Nuts">🥜 Dry Fruits & Nuts</option>
+
+            <option value="Masala & Spices">🧂 Masala & Spices</option>
+
+            <option value="Rice, Dal & Pulses">🍚 Rice, Dal & Pulses</option>
+
+            <option value="Atta, Flour & Grains">🌾 Atta, Flour & Grains</option>
+
+            <option value="Sugar, Salt & Sweeteners">🍬 Sugar, Salt & Sweeteners</option>
+
+            <option value="Edible Oil & Ghee">🫗 Edible Oil & Ghee</option>
+
+            <option value="Home Cleaning">🧼 Home Cleaning</option>
+
+            <option value="Household & Disposable">🧻 Household & Disposable</option>
+
+            <option value="Baby Care">👶 Baby Care</option>
+
+            <option value="Beauty & Cosmetics">🧴 Beauty & Cosmetics</option>
+
+            <option value="Stationery">✏️ Stationery</option>
+
+            <option value="Electrical">💡 Electrical</option>
+
+            <option value="Water & Packaged Drinks">🧃 Water & Packaged Drinks</option>
+
+            <option value="Sauces, Pickles & Spreads">🥫 Sauces, Pickles & Spreads</option>
+
+            <option value="Bakery Products">🍰 Bakery Products</option>
+
+            <option value="Pet Food & Care">🐶 Pet Food & Care</option>
+
+            <option value="Other Grocery">📦 Other Grocery</option>
 
           </select>
 
@@ -1232,71 +1315,148 @@ th{
 
 
         <div class="form-group">
+
           <label>Product Name</label>
-          <input id="productName" required placeholder="Example: Parle G Biscuit">
+
+          <input
+            id="productName"
+            required
+            placeholder="Example: Parle G Biscuit"
+          >
+
         </div>
 
 
         <div class="form-group">
+
           <label>Description</label>
-          <input id="description" placeholder="Product description">
+
+          <input
+            id="description"
+            placeholder="Product description"
+          >
+
         </div>
 
 
         <div class="form-group">
+
           <label>MRP ₹</label>
-          <input id="mrp" type="number" min="0" step="0.01" required>
+
+          <input
+            id="mrp"
+            type="number"
+            min="0"
+            step="0.01"
+            required
+          >
+
         </div>
 
 
         <div class="form-group">
+
           <label>Wholesale Price ₹</label>
-          <input id="price" type="number" min="0" step="0.01" required>
+
+          <input
+            id="price"
+            type="number"
+            min="0"
+            step="0.01"
+            required
+          >
+
         </div>
 
 
         <div class="form-group">
+
           <label>Unit</label>
 
           <select id="unit">
+
             <option value="piece">Piece</option>
+
             <option value="packet">Packet</option>
+
             <option value="box">Box</option>
+
             <option value="kg">Kg</option>
+
             <option value="liter">Liter</option>
+
           </select>
 
         </div>
 
 
         <div class="form-group">
+
           <label>Box Quantity</label>
-          <input id="boxQuantity" type="number" min="1" value="1">
+
+          <input
+            id="boxQuantity"
+            type="number"
+            min="1"
+            value="1"
+          >
+
         </div>
 
 
         <div class="form-group">
+
           <label>Retailer Selling Price ₹</label>
-          <input id="retailerPrice" type="number" min="0" step="0.01" required>
+
+          <input
+            id="retailerPrice"
+            type="number"
+            min="0"
+            step="0.01"
+            required
+          >
+
         </div>
 
 
         <div class="form-group">
+
           <label>Stock</label>
-          <input id="stock" type="number" min="0" step="0.01" value="0" required>
+
+          <input
+            id="stock"
+            type="number"
+            min="0"
+            step="0.01"
+            value="0"
+            required
+          >
+
         </div>
 
 
         <div class="form-group full">
+
           <label>Product Image</label>
-          <input id="image" type="file" accept="image/*">
+
+          <input
+            id="image"
+            type="file"
+            accept="image/*"
+          >
+
         </div>
 
       </div>
 
+
       <br>
 
-      <button class="btn btn-primary" type="submit" id="saveProductBtn">
+      <button
+        class="btn btn-primary"
+        type="submit"
+        id="saveProductBtn"
+      >
         Save Product
       </button>
 
@@ -1311,11 +1471,14 @@ th{
 <section id="orders" class="page">
 
   <div class="top-title">
+
     <div>
       <h1>Orders</h1>
       <p>Retailers ke orders manage karein.</p>
     </div>
+
   </div>
+
 
   <div class="card">
 
@@ -1330,13 +1493,19 @@ th{
 <section id="customers" class="page">
 
   <div class="top-title">
+
     <div>
       <h1>Customers</h1>
       <p>Aapke retailer customers.</p>
     </div>
+
   </div>
 
-  <div class="customer-grid" id="customersGrid"></div>
+
+  <div
+    class="customer-grid"
+    id="customersGrid"
+  ></div>
 
 </section>
 
@@ -1345,13 +1514,19 @@ th{
 <section id="delivery" class="page">
 
   <div class="top-title">
+
     <div>
       <h1>Delivery Management</h1>
       <p>Order delivery status update karein.</p>
     </div>
+
   </div>
 
-  <div class="delivery-grid" id="deliveryGrid"></div>
+
+  <div
+    class="delivery-grid"
+    id="deliveryGrid"
+  ></div>
 
 </section>
 
@@ -1360,11 +1535,14 @@ th{
 <section id="hisaab" class="page">
 
   <div class="top-title">
+
     <div>
       <h1>Hisaab 🧾</h1>
       <p>Customer payment records.</p>
     </div>
+
   </div>
+
 
   <div class="card">
 
@@ -1383,29 +1561,49 @@ th{
 <section id="wallet" class="page">
 
   <div class="top-title">
+
     <div>
       <h1>Wallet 💰</h1>
       <p>Commission aur wallet transactions.</p>
     </div>
 
-    <button class="btn btn-primary" onclick="addMoney()">
+    <button
+      class="btn btn-primary"
+      onclick="addMoney()"
+    >
       + Add Money
     </button>
+
   </div>
 
 
   <div class="wallet">
 
     <div>
+
       <small>AVAILABLE BALANCE</small>
-      <h2 id="walletBalance">₹0.00</h2>
+
+      <h2 id="walletBalance">
+        ₹0.00
+      </h2>
+
     </div>
 
+
     <div class="wallet-right">
+
       <small>Total Added</small>
-      <h3 id="walletAdded">₹0.00</h3>
+
+      <h3 id="walletAdded">
+        ₹0.00
+      </h3>
+
       <small>Total Commission</small>
-      <h3 id="walletCommission">₹0.00</h3>
+
+      <h3 id="walletCommission">
+        ₹0.00
+      </h3>
+
     </div>
 
   </div>
@@ -1417,17 +1615,20 @@ th{
       <h2>Wallet History</h2>
     </div>
 
+
     <div class="table-wrap">
 
       <table>
 
         <thead>
+
           <tr>
             <th>Date</th>
             <th>Type</th>
             <th>Amount</th>
             <th>Description</th>
           </tr>
+
         </thead>
 
         <tbody id="walletHistory"></tbody>
@@ -1445,11 +1646,14 @@ th{
 <section id="profile" class="page">
 
   <div class="top-title">
+
     <div>
       <h1>Edit Profile</h1>
       <p>Apne account ki details update karein.</p>
     </div>
+
   </div>
+
 
   <div class="card">
 
@@ -1458,25 +1662,43 @@ th{
       <div class="form-grid">
 
         <div class="form-group">
+
           <label>Name</label>
+
           <input id="profileName">
+
         </div>
 
+
         <div class="form-group">
+
           <label>Shop Name</label>
+
           <input id="profileShop">
+
         </div>
 
+
         <div class="form-group">
+
           <label>Mobile</label>
-          <input id="profileMobile" readonly>
+
+          <input
+            id="profileMobile"
+            readonly
+          >
+
         </div>
 
       </div>
 
+
       <br>
 
-      <button class="btn btn-primary" type="submit">
+      <button
+        class="btn btn-primary"
+        type="submit"
+      >
         Save Profile
       </button>
 
@@ -1491,11 +1713,14 @@ th{
 <section id="policy" class="page">
 
   <div class="top-title">
+
     <div>
       <h1>App Policy</h1>
       <p>Local Wholesale wholesaler rules.</p>
     </div>
+
   </div>
+
 
   <div class="card">
 
@@ -1503,25 +1728,45 @@ th{
 
     <br>
 
-    <p>• Product ki sahi information aur price provide karein.</p>
+    <p>
+      • Product ki sahi information aur price provide karein.
+    </p>
+
     <br>
 
-    <p>• Available stock ke according order accept karein.</p>
+    <p>
+      • Available stock ke according order accept karein.
+    </p>
+
     <br>
 
-    <p>• Retailer se kisi bhi platform commission ka payment nahi liya jayega.</p>
+    <p>
+      • Retailer se kisi bhi platform commission ka payment nahi liya jayega.
+    </p>
+
     <br>
 
-    <p>• Pehle 5 completed orders par platform commission nahi hai.</p>
+    <p>
+      • Pehle 5 completed orders par platform commission nahi hai.
+    </p>
+
     <br>
 
-    <p>• 6th completed order se general platform commission 8% applicable hai.</p>
+    <p>
+      • 6th completed order se general platform commission 8% applicable hai.
+    </p>
+
     <br>
 
-    <p>• Special products par alag commission rules ho sakte hain.</p>
+    <p>
+      • Special products par alag commission rules ho sakte hain.
+    </p>
+
     <br>
 
-    <p>• Delivery aur order status sahi information ke saath update karein.</p>
+    <p>
+      • Delivery aur order status sahi information ke saath update karein.
+    </p>
 
   </div>
 
@@ -1534,37 +1779,74 @@ th{
 
 
 <!-- AI BUTTON -->
-<button class="ai-btn" onclick="toggleAI()">🤖</button>
+<button
+  class="ai-btn"
+  onclick="toggleAI()"
+>
+  🤖
+</button>
 
 
 <!-- AI MODAL -->
-<div class="ai-modal" id="aiModal">
+<div
+  class="ai-modal"
+  id="aiModal"
+>
 
   <div class="ai-head">
+
     <strong>AI Help</strong>
-    <button style="border:0;background:transparent;color:white;font-size:20px" onclick="toggleAI()">×</button>
+
+    <button
+      style="border:0;background:transparent;color:white;font-size:20px"
+      onclick="toggleAI()"
+    >
+      ×
+    </button>
+
   </div>
 
-  <div class="ai-body" id="aiBody">
+
+  <div
+    class="ai-body"
+    id="aiBody"
+  >
 
     <div class="message bot">
-      Namaste 👋 Main Local Wholesale AI Help hoon. Aap products, orders, wallet, commission ya delivery ke baare mein pooch sakte hain.
+
+      Namaste 👋 Main Local Wholesale AI Help hoon.
+      Aap products, orders, wallet, commission ya delivery ke
+      baare mein pooch sakte hain.
+
     </div>
 
   </div>
 
+
   <div class="ai-input">
 
-    <input id="aiInput" placeholder="Apna question likhein..." onkeydown="if(event.key==='Enter')sendAI()">
+    <input
+      id="aiInput"
+      placeholder="Apna question likhein..."
+      onkeydown="if(event.key==='Enter')sendAI()"
+    >
 
-    <button class="btn btn-primary" onclick="sendAI()">Send</button>
+    <button
+      class="btn btn-primary"
+      onclick="sendAI()"
+    >
+      Send
+    </button>
 
   </div>
 
 </div>
 
 
-<div class="toast" id="toast"></div>
+<div
+  class="toast"
+  id="toast"
+></div>
 
 
 <script>
@@ -1585,7 +1867,8 @@ window.supabase.createClient(
   SUPABASE_KEY
 );
 
-const BUCKET = "Product image";
+const BUCKET =
+"Product image";
 
 let currentUser = null;
 let profile = null;
@@ -1599,23 +1882,37 @@ let wallet = null;
 ========================= */
 
 function money(value){
-  return "₹" + Number(value || 0).toLocaleString("en-IN",{
-    minimumFractionDigits:2,
-    maximumFractionDigits:2
-  });
+
+  return "₹" +
+    Number(value || 0).toLocaleString(
+      "en-IN",
+      {
+        minimumFractionDigits:2,
+        maximumFractionDigits:2
+      }
+    );
+
 }
 
 
 function showToast(message){
 
-  const el = document.getElementById("toast");
+  const el =
+    document.getElementById("toast");
 
-  el.textContent = message;
-  el.style.display = "block";
+  el.textContent =
+    message;
+
+  el.style.display =
+    "block";
 
   setTimeout(()=>{
-    el.style.display = "none";
+
+    el.style.display =
+      "none";
+
   },2500);
+
 }
 
 
@@ -1627,6 +1924,7 @@ function escapeHtml(value){
     .replace(/>/g,"&gt;")
     .replace(/"/g,"&quot;")
     .replace(/'/g,"&#039;");
+
 }
 
 
@@ -1637,32 +1935,67 @@ function escapeHtml(value){
 function showPage(page,button){
 
   document.querySelectorAll(".page")
-    .forEach(p=>p.classList.remove("active"));
+    .forEach(p=>
+      p.classList.remove("active")
+    );
 
-  const target=document.getElementById(page);
+
+  const target =
+    document.getElementById(page);
+
 
   if(target){
     target.classList.add("active");
   }
 
+
   document.querySelectorAll(".nav-btn")
-    .forEach(b=>b.classList.remove("active"));
+    .forEach(b=>
+      b.classList.remove("active")
+    );
+
 
   if(button){
     button.classList.add("active");
   }
 
+
   document.getElementById("sidebar")
     .classList.remove("open");
 
-  if(page==="products") renderProducts();
-  if(page==="stock") renderStock();
-  if(page==="orders") renderOrders();
-  if(page==="customers") renderCustomers();
-  if(page==="delivery") renderDelivery();
-  if(page==="hisaab") loadHisaab();
-  if(page==="wallet") loadWallet();
-  if(page==="profile") loadProfileForm();
+
+  if(page==="products"){
+    renderProducts();
+  }
+
+  if(page==="stock"){
+    renderStock();
+  }
+
+  if(page==="orders"){
+    renderOrders();
+  }
+
+  if(page==="customers"){
+    renderCustomers();
+  }
+
+  if(page==="delivery"){
+    renderDelivery();
+  }
+
+  if(page==="hisaab"){
+    loadHisaab();
+  }
+
+  if(page==="wallet"){
+    loadWallet();
+  }
+
+  if(page==="profile"){
+    loadProfileForm();
+  }
+
 }
 
 
@@ -1670,6 +2003,7 @@ function toggleSidebar(){
 
   document.getElementById("sidebar")
     .classList.toggle("open");
+
 }
 
 
@@ -1682,29 +2016,43 @@ async function init(){
   const {data,error} =
     await supabaseClient.auth.getUser();
 
+
   if(error || !data.user){
 
     alert("Please login first.");
 
-    location.href="index.html";
+    location.href =
+      "index.html";
 
     return;
   }
 
-  currentUser=data.user;
+
+  currentUser =
+    data.user;
+
 
   await loadProfile();
 
-  if(!profile || profile.role!=="wholesaler"){
 
-    alert("Wholesaler account required.");
+  if(
+    !profile ||
+    profile.role !== "wholesaler"
+  ){
 
-    location.href="index.html";
+    alert(
+      "Wholesaler account required."
+    );
+
+    location.href =
+      "index.html";
 
     return;
   }
 
+
   updateHeader();
+
 
   await Promise.all([
     loadProducts(),
@@ -1712,10 +2060,15 @@ async function init(){
     loadWallet()
   ]);
 
+
   renderDashboard();
 
 }
 
+
+/* =========================
+   PROFILE LOAD
+========================= */
 
 async function loadProfile(){
 
@@ -1726,13 +2079,18 @@ async function loadProfile(){
       .eq("id",currentUser.id)
       .maybeSingle();
 
+
   if(error){
 
     console.error(error);
+
     return;
   }
 
-  profile=data;
+
+  profile =
+    data;
+
 }
 
 
@@ -1742,18 +2100,26 @@ function updateHeader(){
     profile?.full_name ||
     "Wholesaler";
 
+
   const shop =
     profile?.shop_name ||
     "My Shop";
 
+
   document.getElementById("headerName")
-    .textContent=name;
+    .textContent =
+      name;
+
 
   document.getElementById("headerShop")
-    .textContent=shop;
+    .textContent =
+      shop;
+
 
   document.getElementById("avatar")
-    .textContent=name.charAt(0).toUpperCase();
+    .textContent =
+      name.charAt(0).toUpperCase();
+
 }
 
 
@@ -1767,19 +2133,30 @@ async function loadProducts(){
     await supabaseClient
       .from("products")
       .select("*")
-      .eq("wholesaler_id",currentUser.id)
-      .order("created_at",{ascending:false});
+      .eq(
+        "wholesaler_id",
+        currentUser.id
+      )
+      .order(
+        "created_at",
+        {ascending:false}
+      );
+
 
   if(error){
 
     console.error(error);
 
-    showToast("Products load nahi ho paaye.");
+    showToast(
+      "Products load nahi ho paaye."
+    );
 
     return;
   }
 
-  products=data || [];
+
+  products =
+    data || [];
 
 }
 
@@ -1787,298 +2164,408 @@ async function loadProducts(){
 function renderProducts(){
 
   const grid =
-    document.getElementById("productsGrid");
+    document.getElementById(
+      "productsGrid"
+    );
 
-  document.getElementById("productCountText")
-    .textContent=products.length+" products";
+
+  document.getElementById(
+    "productCountText"
+  ).textContent =
+    products.length +
+    " products";
+
 
   if(!products.length){
 
-    grid.innerHTML=`
-      <div class="empty" style="grid-column:1/-1">
-        <div class="empty-icon">📦</div>
-        <h3>No products yet</h3>
-        <p>Apna first product add karein.</p>
+    grid.innerHTML = `
+
+      <div
+        class="empty"
+        style="grid-column:1/-1"
+      >
+
+        <div class="empty-icon">
+          📦
+        </div>
+
+        <h3>
+          No products yet
+        </h3>
+
+        <p>
+          Apna first product add karein.
+        </p>
+
         <br>
-        <button class="btn btn-primary" onclick="showPage('add-product')">
+
+        <button
+          class="btn btn-primary"
+          onclick="showPage('add-product')"
+        >
           + Add Product
         </button>
+
       </div>
+
     `;
 
     return;
   }
 
 
-  grid.innerHTML=products.map(p=>{
+  grid.innerHTML =
+    products.map(p=>{
 
-    const image =
-      p.image_url ||
-      "https://via.placeholder.com/500x350?text=Product";
+      const image =
+        p.image_url ||
+        "https://via.placeholder.com/500x350?text=Product";
 
-    const stockClass =
-      Number(p.stock)<=0 ?
-      "color:#dc2626" :
-      Number(p.stock)<10 ?
-      "color:#d97706" :
-      "color:#15803d";
 
-    return `
+      const stockClass =
+        Number(p.stock)<=0
+        ? "color:#dc2626"
+        : Number(p.stock)<10
+        ? "color:#d97706"
+        : "color:#15803d";
 
-      <div class="product searchable">
 
-        <div class="product-img">
-          <img src="${escapeHtml(image)}"
-               onerror="this.src='https://via.placeholder.com/500x350?text=Product'">
+      return `
+
+        <div class="product searchable">
+
+          <div class="product-img">
+
+            <img
+              src="${escapeHtml(image)}"
+              onerror="this.src='https://via.placeholder.com/500x350?text=Product'"
+            >
+
+          </div>
+
+
+          <div class="product-body">
+
+            <h3>
+              ${escapeHtml(p.product_name)}
+            </h3>
+
+
+            <div class="product-meta">
+
+              <span>
+                ${escapeHtml(p.category)}
+              </span>
+
+              <span>
+                ${escapeHtml(p.unit || "piece")}
+              </span>
+
+            </div>
+
+
+            <div class="price">
+              ${money(p.price)}
+            </div>
+
+
+            <div
+              class="stock"
+              style="${stockClass}"
+            >
+              Stock:
+              ${Number(p.stock || 0)}
+            </div>
+
+
+            <div class="product-actions">
+
+              <button
+                class="btn btn-light"
+                onclick="editProduct('${p.id}')"
+              >
+                Edit
+              </button>
+
+
+              <button
+                class="btn btn-success"
+                onclick="addStock('${p.id}')"
+              >
+                + Stock
+              </button>
+
+
+              <button
+                class="btn btn-danger"
+                onclick="deleteProduct('${p.id}')"
+              >
+                Delete
+              </button>
+
+            </div>
+
+          </div>
+
         </div>
 
-        <div class="product-body">
+      `;
 
-          <h3>${escapeHtml(p.product_name)}</h3>
+    }).join("");
 
-          <div class="product-meta">
-            <span>${escapeHtml(p.category)}</span>
-            <span>${escapeHtml(p.unit || "piece")}</span>
-          </div>
-
-          <div class="price">
-            ${money(p.price)}
-          </div>
-
-          <div class="stock" style="${stockClass}">
-            Stock: ${Number(p.stock || 0)}
-          </div>
-
-          <div class="product-actions">
-
-            <button class="btn btn-light"
-              onclick="editProduct('${p.id}')">
-              Edit
-            </button>
-
-            <button class="btn btn-success"
-              onclick="addStock('${p.id}')">
-              + Stock
-            </button>
-
-            <button class="btn btn-danger"
-              onclick="deleteProduct('${p.id}')">
-              Delete
-            </button>
-
-          </div>
-
-        </div>
-
-      </div>
-    `;
-
-  }).join("");
 }
-
-
-/* =========================
-   CATEGORY
-========================= */
-
-document.getElementById("category")
-.addEventListener("change",function(){
-
-  const box =
-    document.getElementById("subcategoryBox");
-
-  const sub =
-    document.getElementById("subcategory");
-
-  if(this.value==="Kirana/Grocery"){
-
-    box.style.display="block";
-    sub.required=true;
-
-  }else{
-
-    box.style.display="none";
-    sub.required=false;
-    sub.value="";
-
-  }
-
-});
 
 
 /* =========================
    ADD PRODUCT
 ========================= */
 
-document.getElementById("productForm")
-.addEventListener("submit",async function(e){
+document.getElementById(
+  "productForm"
+).addEventListener(
+  "submit",
+  async function(e){
 
-  e.preventDefault();
-
-  const btn =
-    document.getElementById("saveProductBtn");
-
-  btn.disabled=true;
-  btn.textContent="Saving...";
+    e.preventDefault();
 
 
-  try{
-
-    const category =
-      document.getElementById("category").value;
-
-    const subcategory =
-      category==="Kirana/Grocery"
-      ? document.getElementById("subcategory").value
-      : null;
-
-    const productName =
-      document.getElementById("productName").value.trim();
-
-    const description =
-      document.getElementById("description").value.trim();
-
-    const mrp =
-      Number(document.getElementById("mrp").value || 0);
-
-    const price =
-      Number(document.getElementById("price").value || 0);
-
-    const unit =
-      document.getElementById("unit").value;
-
-    const boxQuantity =
-      Number(document.getElementById("boxQuantity").value || 1);
-
-    const retailerPrice =
-      Number(document.getElementById("retailerPrice").value || 0);
-
-    const stock =
-      Number(document.getElementById("stock").value || 0);
-
-    const file =
-      document.getElementById("image").files[0];
+    const btn =
+      document.getElementById(
+        "saveProductBtn"
+      );
 
 
-    let imageUrl=null;
+    btn.disabled =
+      true;
+
+    btn.textContent =
+      "Saving...";
 
 
-    if(file){
+    try{
 
-      const extension =
-        file.name.split(".").pop();
-
-      const filePath =
-        `${currentUser.id}/${crypto.randomUUID()}.${extension}`;
-
-
-      const {error:uploadError} =
-        await supabaseClient
-          .storage
-          .from(BUCKET)
-          .upload(
-            filePath,
-            file,
-            {
-              upsert:false,
-              contentType:file.type
-            }
-          );
+      const category =
+        document.getElementById(
+          "category"
+        ).value;
 
 
-      if(uploadError){
+      const productName =
+        document.getElementById(
+          "productName"
+        ).value.trim();
 
-        throw uploadError;
+
+      const description =
+        document.getElementById(
+          "description"
+        ).value.trim();
+
+
+      const mrp =
+        Number(
+          document.getElementById(
+            "mrp"
+          ).value || 0
+        );
+
+
+      const price =
+        Number(
+          document.getElementById(
+            "price"
+          ).value || 0
+        );
+
+
+      const unit =
+        document.getElementById(
+          "unit"
+        ).value;
+
+
+      const boxQuantity =
+        Number(
+          document.getElementById(
+            "boxQuantity"
+          ).value || 1
+        );
+
+
+      const retailerPrice =
+        Number(
+          document.getElementById(
+            "retailerPrice"
+          ).value || 0
+        );
+
+
+      const stock =
+        Number(
+          document.getElementById(
+            "stock"
+          ).value || 0
+        );
+
+
+      const file =
+        document.getElementById(
+          "image"
+        ).files[0];
+
+
+      let imageUrl =
+        null;
+
+
+      /* IMAGE UPLOAD */
+
+      if(file){
+
+        const extension =
+          file.name
+            .split(".")
+            .pop();
+
+
+        const filePath =
+          `${currentUser.id}/${crypto.randomUUID()}.${extension}`;
+
+
+        const {error:uploadError} =
+          await supabaseClient
+            .storage
+            .from(BUCKET)
+            .upload(
+              filePath,
+              file,
+              {
+                upsert:false,
+                contentType:file.type
+              }
+            );
+
+
+        if(uploadError){
+
+          throw uploadError;
+
+        }
+
+
+        const {data:publicData} =
+          supabaseClient
+            .storage
+            .from(BUCKET)
+            .getPublicUrl(
+              filePath
+            );
+
+
+        imageUrl =
+          publicData.publicUrl;
+
       }
 
 
-      const {data:publicData} =
-        supabaseClient
-          .storage
-          .from(BUCKET)
-          .getPublicUrl(filePath);
+      /* PRODUCT INSERT */
 
-      imageUrl=publicData.publicUrl;
+      const {error} =
+        await supabaseClient
+          .from("products")
+          .insert({
+
+            wholesaler_id:
+              currentUser.id,
+
+            category:
+              category,
+
+            product_name:
+              productName,
+
+            description:
+              description,
+
+            mrp:
+              mrp,
+
+            price:
+              price,
+
+            unit:
+              unit,
+
+            box_quantity:
+              boxQuantity,
+
+            suggested_selling_price:
+              retailerPrice,
+
+            retailer_selling_price:
+              retailerPrice,
+
+            stock:
+              stock,
+
+            image_url:
+              imageUrl,
+
+            is_active:
+              true
+
+          });
+
+
+      if(error){
+
+        throw error;
+
+      }
+
+
+      showToast(
+        "Product successfully added ✅"
+      );
+
+
+      this.reset();
+
+
+      await loadProducts();
+
+
+      renderProducts();
+
+
+      showPage(
+        "products"
+      );
+
+    }
+    catch(error){
+
+      console.error(error);
+
+
+      alert(
+        "Product save nahi hua:\n" +
+        (error.message || error)
+      );
+
+    }
+    finally{
+
+      btn.disabled =
+        false;
+
+      btn.textContent =
+        "Save Product";
 
     }
 
-
-    const {error} =
-      await supabaseClient
-        .from("products")
-        .insert({
-
-          wholesaler_id:currentUser.id,
-
-          category,
-
-          subcategory,
-
-          product_name:productName,
-
-          description,
-
-          mrp,
-
-          price,
-
-          unit,
-
-          box_quantity:boxQuantity,
-
-          suggested_selling_price:
-            retailerPrice,
-
-          retailer_selling_price:
-            retailerPrice,
-
-          stock,
-
-          image_url:imageUrl,
-
-          is_active:true
-
-        });
-
-
-    if(error){
-
-      throw error;
-    }
-
-
-    showToast("Product successfully added ✅");
-
-    this.reset();
-
-    document.getElementById("subcategoryBox")
-      .style.display="none";
-
-    await loadProducts();
-
-    renderProducts();
-
-    showPage("products");
-
   }
-  catch(error){
-
-    console.error(error);
-
-    alert(
-      "Product save nahi hua:\n"+
-      (error.message || error)
-    );
-
-  }
-  finally{
-
-    btn.disabled=false;
-    btn.textContent="Save Product";
-
-  }
-
-});
+);
 
 
 /* =========================
@@ -2088,25 +2575,40 @@ document.getElementById("productForm")
 async function editProduct(id){
 
   const p =
-    products.find(x=>x.id===id);
+    products.find(
+      x=>x.id===id
+    );
+
 
   if(!p) return;
 
 
   const name =
-    prompt("Product name:",p.product_name);
+    prompt(
+      "Product name:",
+      p.product_name
+    );
+
 
   if(name===null) return;
 
 
   const price =
-    prompt("Wholesale price:",p.price);
+    prompt(
+      "Wholesale price:",
+      p.price
+    );
+
 
   if(price===null) return;
 
 
   const stock =
-    prompt("Stock:",p.stock);
+    prompt(
+      "Stock:",
+      p.stock
+    );
+
 
   if(stock===null) return;
 
@@ -2116,31 +2618,49 @@ async function editProduct(id){
       .from("products")
       .update({
 
-        product_name:name.trim(),
+        product_name:
+          name.trim(),
 
-        price:Number(price),
+        price:
+          Number(price),
 
-        stock:Number(stock),
+        stock:
+          Number(stock),
 
-        updated_at:new Date().toISOString()
+        updated_at:
+          new Date().toISOString()
 
       })
-      .eq("id",id)
-      .eq("wholesaler_id",currentUser.id);
+      .eq(
+        "id",
+        id
+      )
+      .eq(
+        "wholesaler_id",
+        currentUser.id
+      );
 
 
   if(error){
 
-    alert(error.message);
+    alert(
+      error.message
+    );
+
     return;
   }
 
 
-  showToast("Product updated ✅");
+  showToast(
+    "Product updated ✅"
+  );
+
 
   await loadProducts();
 
+
   renderProducts();
+
 
   renderStock();
 
@@ -2154,7 +2674,10 @@ async function editProduct(id){
 async function addStock(id){
 
   const p =
-    products.find(x=>x.id===id);
+    products.find(
+      x=>x.id===id
+    );
+
 
   if(!p) return;
 
@@ -2165,44 +2688,76 @@ async function addStock(id){
       "10"
     );
 
+
   if(qty===null) return;
 
-  const amount=Number(qty);
 
-  if(!amount || amount<=0){
+  const amount =
+    Number(qty);
 
-    alert("Valid quantity enter karein.");
+
+  if(
+    !amount ||
+    amount<=0
+  ){
+
+    alert(
+      "Valid quantity enter karein."
+    );
+
     return;
   }
 
 
   const newStock =
-    Number(p.stock || 0)+amount;
+    Number(
+      p.stock || 0
+    ) +
+    amount;
 
 
   const {error} =
     await supabaseClient
       .from("products")
       .update({
-        stock:newStock,
-        updated_at:new Date().toISOString()
+
+        stock:
+          newStock,
+
+        updated_at:
+          new Date().toISOString()
+
       })
-      .eq("id",id)
-      .eq("wholesaler_id",currentUser.id);
+      .eq(
+        "id",
+        id
+      )
+      .eq(
+        "wholesaler_id",
+        currentUser.id
+      );
 
 
   if(error){
 
-    alert(error.message);
+    alert(
+      error.message
+    );
+
     return;
   }
 
 
-  showToast("Stock updated ✅");
+  showToast(
+    "Stock updated ✅"
+  );
+
 
   await loadProducts();
 
+
   renderProducts();
+
 
   renderStock();
 
@@ -2215,8 +2770,14 @@ async function addStock(id){
 
 async function deleteProduct(id){
 
-  if(!confirm("Kya aap ye product delete karna chahte hain?")){
+  if(
+    !confirm(
+      "Kya aap ye product delete karna chahte hain?"
+    )
+  ){
+
     return;
+
   }
 
 
@@ -2224,20 +2785,33 @@ async function deleteProduct(id){
     await supabaseClient
       .from("products")
       .delete()
-      .eq("id",id)
-      .eq("wholesaler_id",currentUser.id);
+      .eq(
+        "id",
+        id
+      )
+      .eq(
+        "wholesaler_id",
+        currentUser.id
+      );
 
 
   if(error){
 
-    alert(error.message);
+    alert(
+      error.message
+    );
+
     return;
   }
 
 
-  showToast("Product deleted");
+  showToast(
+    "Product deleted"
+  );
+
 
   await loadProducts();
+
 
   renderProducts();
 
@@ -2251,45 +2825,65 @@ async function deleteProduct(id){
 function renderStock(){
 
   const tbody =
-    document.getElementById("stockTable");
+    document.getElementById(
+      "stockTable"
+    );
 
 
   if(!products.length){
 
-    tbody.innerHTML=`
+    tbody.innerHTML = `
+
       <tr>
+
         <td colspan="5">
-          <div class="empty">No products found.</div>
+
+          <div class="empty">
+            No products found.
+          </div>
+
         </td>
+
       </tr>
+
     `;
 
     return;
+
   }
 
 
-  tbody.innerHTML=
+  tbody.innerHTML =
     products.map(p=>`
 
       <tr>
 
         <td>
-          <strong>${escapeHtml(p.product_name)}</strong>
+          <strong>
+            ${escapeHtml(p.product_name)}
+          </strong>
         </td>
-
-        <td>${escapeHtml(p.category)}</td>
 
         <td>
-          <strong>${Number(p.stock || 0)}</strong>
+          ${escapeHtml(p.category)}
         </td>
 
-        <td>${escapeHtml(p.unit || "piece")}</td>
+        <td>
+          <strong>
+            ${Number(p.stock || 0)}
+          </strong>
+        </td>
+
+        <td>
+          ${escapeHtml(p.unit || "piece")}
+        </td>
 
         <td>
 
           <button
             class="btn btn-success"
-            onclick="addStock('${p.id}')">
+            onclick="addStock('${p.id}')"
+          >
             + Add Stock
           </button>
 
@@ -2312,18 +2906,27 @@ async function loadOrders(){
     await supabaseClient
       .from("orders")
       .select("*")
-      .eq("wholesaler_id",currentUser.id)
-      .order("created_at",{ascending:false});
+      .eq(
+        "wholesaler_id",
+        currentUser.id
+      )
+      .order(
+        "created_at",
+        {ascending:false}
+      );
 
 
   if(error){
 
     console.error(error);
+
     return;
   }
 
 
-  orders=data || [];
+  orders =
+    data || [];
+
 
   updateNotification();
 
@@ -2334,22 +2937,31 @@ async function loadOrders(){
    ORDER ITEMS
 ========================= */
 
-async function getOrderItems(orderId){
+async function getOrderItems(
+  orderId
+){
 
   const {data,error} =
     await supabaseClient
       .from("order_items")
       .select("*")
-      .eq("order_id",orderId);
+      .eq(
+        "order_id",
+        orderId
+      );
 
 
   if(error){
 
     console.error(error);
+
     return [];
+
   }
 
+
   return data || [];
+
 }
 
 
@@ -2360,30 +2972,51 @@ async function getOrderItems(orderId){
 async function renderOrders(){
 
   const container =
-    document.getElementById("ordersList");
+    document.getElementById(
+      "ordersList"
+    );
 
 
   if(!orders.length){
 
-    container.innerHTML=`
+    container.innerHTML = `
+
       <div class="empty">
-        <div class="empty-icon">🛒</div>
-        <h3>No orders yet</h3>
-        <p>Retailer order place karega to yahan dikhega.</p>
+
+        <div class="empty-icon">
+          🛒
+        </div>
+
+        <h3>
+          No orders yet
+        </h3>
+
+        <p>
+          Retailer order place karega
+          to yahan dikhega.
+        </p>
+
       </div>
+
     `;
 
     return;
+
   }
 
 
-  container.innerHTML="";
+  container.innerHTML =
+    "";
 
 
-  for(const order of orders){
+  for(
+    const order of orders
+  ){
 
     const items =
-      await getOrderItems(order.id);
+      await getOrderItems(
+        order.id
+      );
 
 
     const statusClass =
@@ -2402,12 +3035,26 @@ async function renderOrders(){
         <div class="order-item">
 
           <span>
-            ${escapeHtml(item.product_name)}
-            × ${Number(item.quantity)}
+
+            ${escapeHtml(
+              item.product_name
+            )}
+
+            ×
+            ${Number(
+              item.quantity
+            )}
+
           </span>
 
+
           <strong>
-            ${money(Number(item.price)*Number(item.quantity))}
+
+            ${money(
+              Number(item.price) *
+              Number(item.quantity)
+            )}
+
           </strong>
 
         </div>
@@ -2416,61 +3063,101 @@ async function renderOrders(){
 
 
     const div =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
-    div.className="order searchable";
 
-    div.innerHTML=`
+    div.className =
+      "order searchable";
+
+
+    div.innerHTML = `
 
       <div class="order-head">
 
         <div>
 
           <div class="order-title">
-            Order #${order.id.slice(0,8)}
+
+            Order #
+            ${order.id.slice(0,8)}
+
           </div>
 
+
           <div class="order-info">
-            ${new Date(order.created_at).toLocaleString("en-IN")}
+
+            ${new Date(
+              order.created_at
+            ).toLocaleString(
+              "en-IN"
+            )}
+
           </div>
 
         </div>
 
+
         <div>
-          <span class="status ${statusClass}">
-            ${escapeHtml(order.status)}
+
+          <span
+            class="status ${statusClass}"
+          >
+
+            ${escapeHtml(
+              order.status
+            )}
+
           </span>
+
         </div>
 
       </div>
 
 
       <div class="order-info">
-        Total: <strong>${money(order.total)}</strong>
+
+        Total:
+        <strong>
+          ${money(order.total)}
+        </strong>
+
       </div>
 
 
       <div class="order-items">
 
-        ${itemsHtml || "<small>No items</small>"}
+        ${
+          itemsHtml ||
+          "<small>No items</small>"
+        }
 
       </div>
 
 
       <div class="order-buttons">
 
+
         ${
           order.status==="pending"
           ? `
-            <button class="btn btn-primary"
-              onclick="acceptOrder('${order.id}')">
+
+            <button
+              class="btn btn-primary"
+              onclick="acceptOrder('${order.id}')"
+            >
               Accept Order
             </button>
 
-            <button class="btn btn-danger"
-              onclick="rejectOrder('${order.id}')">
+
+            <button
+              class="btn btn-danger"
+              onclick="rejectOrder('${order.id}')"
+            >
               Reject
             </button>
+
           `
           : ""
         }
@@ -2479,32 +3166,41 @@ async function renderOrders(){
         ${
           order.status==="accepted"
           ? `
-            <button class="btn btn-warning"
-              onclick="updateDelivery('${order.id}','out_for_delivery')">
+
+            <button
+              class="btn btn-warning"
+              onclick="updateDelivery(
+                '${order.id}',
+                'out_for_delivery'
+              )"
+            >
               🚚 Out for Delivery
             </button>
-          `
-          : ""
-        }
 
 
-        ${
-          order.status==="accepted"
-          ? `
-            <button class="btn btn-success"
-              onclick="updateDelivery('${order.id}','delivered')">
+            <button
+              class="btn btn-success"
+              onclick="updateDelivery(
+                '${order.id}',
+                'delivered'
+              )"
+            >
               ✓ Delivered
             </button>
+
           `
           : ""
         }
+
 
       </div>
 
     `;
 
 
-    container.appendChild(div);
+    container.appendChild(
+      div
+    );
 
   }
 
@@ -2515,49 +3211,72 @@ async function renderOrders(){
    ACCEPT ORDER
 ========================= */
 
-async function acceptOrder(orderId){
+async function acceptOrder(
+  orderId
+){
 
   const items =
-    await getOrderItems(orderId);
+    await getOrderItems(
+      orderId
+    );
 
 
   if(!items.length){
 
-    alert("Order items nahi mile.");
+    alert(
+      "Order items nahi mile."
+    );
+
     return;
   }
 
 
-  const accepted=[];
+  const accepted =
+    [];
 
 
-  for(const item of items){
+  for(
+    const item of items
+  ){
 
     const max =
-      Number(item.quantity || 0);
+      Number(
+        item.quantity || 0
+      );
+
 
     const value =
       prompt(
-        `${item.product_name}\nOrdered quantity: ${max}\nAccepted quantity:`,
+        `${item.product_name}\n` +
+        `Ordered quantity: ${max}\n` +
+        `Accepted quantity:`,
         max
       );
 
 
     if(value===null){
+
       continue;
+
     }
 
 
-    const qty=Number(value);
+    const qty =
+      Number(value);
 
 
     if(qty>0){
 
       accepted.push({
 
-        product_id:item.product_id,
+        product_id:
+          item.product_id,
 
-        accepted_quantity:Math.min(qty,max)
+        accepted_quantity:
+          Math.min(
+            qty,
+            max
+          )
 
       });
 
@@ -2568,7 +3287,10 @@ async function acceptOrder(orderId){
 
   if(!accepted.length){
 
-    alert("Kam se kam ek product accept karein.");
+    alert(
+      "Kam se kam ek product accept karein."
+    );
+
     return;
   }
 
@@ -2585,27 +3307,43 @@ async function acceptOrder(orderId){
       .rpc(
         "accept_selected_order_products",
         {
-          p_order_id:orderId,
-          p_accepted_items:accepted,
-          p_wholesaler_message:message || null
+
+          p_order_id:
+            orderId,
+
+          p_accepted_items:
+            accepted,
+
+          p_wholesaler_message:
+            message || null
+
         }
       );
 
 
   if(error){
 
-    alert(error.message);
+    alert(
+      error.message
+    );
+
     return;
   }
 
 
   console.log(data);
 
-  showToast("Order accepted ✅");
+
+  showToast(
+    "Order accepted ✅"
+  );
+
 
   await loadOrders();
 
+
   renderOrders();
+
 
   renderDashboard();
 
@@ -2616,10 +3354,18 @@ async function acceptOrder(orderId){
    REJECT ORDER
 ========================= */
 
-async function rejectOrder(orderId){
+async function rejectOrder(
+  orderId
+){
 
-  if(!confirm("Kya aap poora order reject karna chahte hain?")){
+  if(
+    !confirm(
+      "Kya aap poora order reject karna chahte hain?"
+    )
+  ){
+
     return;
+
   }
 
 
@@ -2629,20 +3375,33 @@ async function rejectOrder(orderId){
       .update({
         status:"rejected"
       })
-      .eq("id",orderId)
-      .eq("wholesaler_id",currentUser.id);
+      .eq(
+        "id",
+        orderId
+      )
+      .eq(
+        "wholesaler_id",
+        currentUser.id
+      );
 
 
   if(error){
 
-    alert(error.message);
+    alert(
+      error.message
+    );
+
     return;
   }
 
 
-  showToast("Order rejected");
+  showToast(
+    "Order rejected"
+  );
+
 
   await loadOrders();
+
 
   renderOrders();
 
@@ -2653,20 +3412,31 @@ async function rejectOrder(orderId){
    DELIVERY
 ========================= */
 
-async function updateDelivery(orderId,status){
+async function updateDelivery(
+  orderId,
+  status
+){
 
-  const updates={
-    delivery_status:status
+  const updates = {
+
+    delivery_status:
+      status
+
   };
 
 
-  if(status==="delivered"){
+  if(
+    status==="delivered"
+  ){
 
-    updates.status="completed";
+    updates.status =
+      "completed";
 
-  }else{
+  }
+  else{
 
-    updates.status="accepted";
+    updates.status =
+      "accepted";
 
   }
 
@@ -2674,25 +3444,42 @@ async function updateDelivery(orderId,status){
   const {error} =
     await supabaseClient
       .from("orders")
-      .update(updates)
-      .eq("id",orderId)
-      .eq("wholesaler_id",currentUser.id);
+      .update(
+        updates
+      )
+      .eq(
+        "id",
+        orderId
+      )
+      .eq(
+        "wholesaler_id",
+        currentUser.id
+      );
 
 
   if(error){
 
-    alert(error.message);
+    alert(
+      error.message
+    );
+
     return;
   }
 
 
-  showToast("Delivery status updated ✅");
+  showToast(
+    "Delivery status updated ✅"
+  );
+
 
   await loadOrders();
 
+
   renderDelivery();
 
+
   renderOrders();
+
 
   renderDashboard();
 
@@ -2706,22 +3493,39 @@ async function updateDelivery(orderId,status){
 async function renderCustomers(){
 
   const grid =
-    document.getElementById("customersGrid");
+    document.getElementById(
+      "customersGrid"
+    );
 
 
   const retailerIds =
-    [...new Set(
-      orders.map(o=>o.retailer_id).filter(Boolean)
-    )];
+    [
+      ...new Set(
+        orders
+          .map(
+            o=>o.retailer_id
+          )
+          .filter(Boolean)
+      )
+    ];
 
 
   if(!retailerIds.length){
 
-    grid.innerHTML=`
+    grid.innerHTML = `
+
       <div class="empty">
-        <div class="empty-icon">👥</div>
-        <h3>No customers yet</h3>
+
+        <div class="empty-icon">
+          👥
+        </div>
+
+        <h3>
+          No customers yet
+        </h3>
+
       </div>
+
     `;
 
     return;
@@ -2732,49 +3536,101 @@ async function renderCustomers(){
     await supabaseClient
       .from("profiles")
       .select("*")
-      .in("id",retailerIds);
+      .in(
+        "id",
+        retailerIds
+      );
 
 
   if(error){
 
-    grid.innerHTML=
-      `<div class="empty">Customers load nahi ho paaye.</div>`;
+    grid.innerHTML =
+      `<div class="empty">
+        Customers load nahi ho paaye.
+      </div>`;
 
     return;
   }
 
 
-  grid.innerHTML=
-    (data || []).map(c=>`
+  grid.innerHTML =
+    (data || [])
+      .map(c=>`
 
-      <div class="customer searchable">
+        <div
+          class="customer searchable"
+        >
 
-        <div class="customer-avatar">
-          ${(c.full_name || "R").charAt(0).toUpperCase()}
+          <div
+            class="customer-avatar"
+          >
+            ${
+              (
+                c.full_name ||
+                "R"
+              )
+              .charAt(0)
+              .toUpperCase()
+            }
+          </div>
+
+
+          <h3>
+
+            ${escapeHtml(
+              c.full_name ||
+              "Retailer"
+            )}
+
+          </h3>
+
+
+          <p>
+
+            ${escapeHtml(
+              c.shop_name ||
+              "Retail Shop"
+            )}
+
+          </p>
+
+
+          <p>
+
+            📱
+            ${escapeHtml(
+              c.mobile ||
+              "Mobile not available"
+            )}
+
+          </p>
+
+
+          ${
+            c.mobile
+            ? `
+
+              <a
+                class="btn btn-success"
+                style="
+                  display:inline-block;
+                  text-decoration:none
+                "
+                href="tel:${escapeHtml(
+                  c.mobile
+                )}"
+              >
+                📞 Call Customer
+              </a>
+
+            `
+            : ""
+          }
+
         </div>
 
-        <h3>${escapeHtml(c.full_name || "Retailer")}</h3>
-
-        <p>${escapeHtml(c.shop_name || "Retail Shop")}</p>
-
-        <p>📱 ${escapeHtml(c.mobile || "Mobile not available")}</p>
-
-        ${
-          c.mobile
-          ? `
-            <a
-              class="btn btn-success"
-              style="display:inline-block;text-decoration:none"
-              href="tel:${escapeHtml(c.mobile)}">
-              📞 Call Customer
-            </a>
-          `
-          : ""
-        }
-
-      </div>
-
-    `).join("");
+      `)
+      .join("");
 
 }
 
@@ -2786,70 +3642,137 @@ async function renderCustomers(){
 function renderDelivery(){
 
   const grid =
-    document.getElementById("deliveryGrid");
+    document.getElementById(
+      "deliveryGrid"
+    );
 
 
   const activeOrders =
-    orders.filter(o=>
-      ["accepted"].includes(o.status)
+    orders.filter(
+      o=>
+        ["accepted"]
+        .includes(
+          o.status
+        )
     );
 
 
   if(!activeOrders.length){
 
-    grid.innerHTML=`
+    grid.innerHTML = `
+
       <div class="empty">
-        <div class="empty-icon">🚚</div>
-        <h3>No active deliveries</h3>
+
+        <div class="empty-icon">
+          🚚
+        </div>
+
+        <h3>
+          No active deliveries
+        </h3>
+
       </div>
+
     `;
 
     return;
   }
 
 
-  grid.innerHTML=
+  grid.innerHTML =
     activeOrders.map(o=>`
 
-      <div class="delivery-card searchable">
+      <div
+        class="delivery-card searchable"
+      >
 
         <strong>
-          Order #${o.id.slice(0,8)}
+
+          Order #
+          ${o.id.slice(0,8)}
+
         </strong>
 
-        <p style="margin-top:7px;color:#64748b">
-          Total: ${money(o.total)}
+
+        <p
+          style="
+            margin-top:7px;
+            color:#64748b
+          "
+        >
+
+          Total:
+          ${money(o.total)}
+
         </p>
 
-        <select
-          onchange="updateDelivery('${o.id}',this.value)">
 
-          <option value="pending"
-            ${o.delivery_status==="pending"?"selected":""}>
+        <select
+          id="delivery-${o.id}"
+        >
+
+          <option
+            value="pending"
+            ${
+              o.delivery_status==="pending"
+              ? "selected"
+              : ""
+            }
+          >
             Pending
           </option>
 
-          <option value="preparing"
-            ${o.delivery_status==="preparing"?"selected":""}>
+
+          <option
+            value="preparing"
+            ${
+              o.delivery_status==="preparing"
+              ? "selected"
+              : ""
+            }
+          >
             Preparing
           </option>
 
-          <option value="out_for_delivery"
-            ${o.delivery_status==="out_for_delivery"?"selected":""}>
+
+          <option
+            value="out_for_delivery"
+            ${
+              o.delivery_status==="out_for_delivery"
+              ? "selected"
+              : ""
+            }
+          >
             Out for Delivery
           </option>
 
-          <option value="delivered"
-            ${o.delivery_status==="delivered"?"selected":""}>
+
+          <option
+            value="delivered"
+            ${
+              o.delivery_status==="delivered"
+              ? "selected"
+              : ""
+            }
+          >
             Delivered
           </option>
 
         </select>
 
+
         <button
           class="btn btn-primary"
           style="width:100%"
-          onclick="updateDelivery('${o.id}',document.querySelector('#deliveryGrid select').value)">
+          onclick="
+            updateDelivery(
+              '${o.id}',
+              document.getElementById(
+                'delivery-${o.id}'
+              ).value
+            )
+          "
+        >
           Update Status
         </button>
 
@@ -2867,23 +3790,35 @@ function renderDelivery(){
 async function loadHisaab(){
 
   const box =
-    document.getElementById("hisaabContent");
+    document.getElementById(
+      "hisaabContent"
+    );
 
 
   const {data,error} =
     await supabaseClient
       .from("customer_payments")
       .select("*")
-      .eq("wholesaler_id",currentUser.id)
-      .order("created_at",{ascending:false});
+      .eq(
+        "wholesaler_id",
+        currentUser.id
+      )
+      .order(
+        "created_at",
+        {ascending:false}
+      );
 
 
   if(error){
 
-    box.innerHTML=`
+    box.innerHTML = `
+
       <div class="empty">
+
         Hisaab data load nahi hua.
+
       </div>
+
     `;
 
     return;
@@ -2892,18 +3827,27 @@ async function loadHisaab(){
 
   if(!data?.length){
 
-    box.innerHTML=`
+    box.innerHTML = `
+
       <div class="empty">
-        <div class="empty-icon">🧾</div>
-        <h3>No payment records</h3>
+
+        <div class="empty-icon">
+          🧾
+        </div>
+
+        <h3>
+          No payment records
+        </h3>
+
       </div>
+
     `;
 
     return;
   }
 
 
-  box.innerHTML=`
+  box.innerHTML = `
 
     <div class="table-wrap">
 
@@ -2912,43 +3856,79 @@ async function loadHisaab(){
         <thead>
 
           <tr>
-            <th>Date</th>
-            <th>Customer</th>
-            <th>Amount</th>
-            <th>Status</th>
+
+            <th>
+              Date
+            </th>
+
+            <th>
+              Customer
+            </th>
+
+            <th>
+              Amount
+            </th>
+
+            <th>
+              Status
+            </th>
+
           </tr>
 
         </thead>
 
+
         <tbody>
 
-          ${data.map(x=>`
+          ${
+            data.map(x=>`
 
-            <tr>
+              <tr>
 
-              <td>
-                ${new Date(x.created_at).toLocaleDateString("en-IN")}
-              </td>
+                <td>
 
-              <td>
-                ${escapeHtml(
-                  x.customer_name ||
-                  x.retailer_id ||
-                  "Customer"
-                )}
-              </td>
+                  ${new Date(
+                    x.created_at
+                  ).toLocaleDateString(
+                    "en-IN"
+                  )}
 
-              <td>
-                ${money(x.amount)}
-              </td>
+                </td>
 
-              <td>
-                ${escapeHtml(x.status || "pending")}
-              </td>
 
-            </tr>
+                <td>
 
-          `).join("")}
+                  ${escapeHtml(
+                    x.customer_name ||
+                    x.retailer_id ||
+                    "Customer"
+                  )}
+
+                </td>
+
+
+                <td>
+
+                  ${money(
+                    x.amount
+                  )}
+
+                </td>
+
+
+                <td>
+
+                  ${escapeHtml(
+                    x.status ||
+                    "pending"
+                  )}
+
+                </td>
+
+              </tr>
+
+            `).join("")
+          }
 
         </tbody>
 
@@ -2971,46 +3951,78 @@ async function loadWallet(){
     await supabaseClient
       .from("wholesaler_wallets")
       .select("*")
-      .eq("wholesaler_id",currentUser.id)
+      .eq(
+        "wholesaler_id",
+        currentUser.id
+      )
       .maybeSingle();
 
 
   if(error){
 
     console.error(error);
+
     return;
   }
 
 
-  wallet=data;
+  wallet =
+    data;
 
 
   if(!wallet){
 
-    document.getElementById("walletBalance")
-      .textContent="₹0.00";
+    document.getElementById(
+      "walletBalance"
+    ).textContent =
+      "₹0.00";
 
-    document.getElementById("dashboardWallet")
-      .textContent="₹0.00";
+
+    document.getElementById(
+      "dashboardWallet"
+    ).textContent =
+      "₹0.00";
+
 
     return;
   }
 
 
-  document.getElementById("walletBalance")
-    .textContent=money(wallet.balance);
-
-  document.getElementById("dashboardWallet")
-    .textContent=money(
-      Number(wallet.balance || 0) -
-      Number(wallet.reserved_balance || 0)
+  document.getElementById(
+    "walletBalance"
+  ).textContent =
+    money(
+      wallet.balance
     );
 
-  document.getElementById("walletAdded")
-    .textContent=money(wallet.total_added);
 
-  document.getElementById("walletCommission")
-    .textContent=money(wallet.total_commission);
+  document.getElementById(
+    "dashboardWallet"
+  ).textContent =
+    money(
+      Number(
+        wallet.balance || 0
+      ) -
+      Number(
+        wallet.reserved_balance || 0
+      )
+    );
+
+
+  document.getElementById(
+    "walletAdded"
+  ).textContent =
+    money(
+      wallet.total_added
+    );
+
+
+  document.getElementById(
+    "walletCommission"
+  ).textContent =
+    money(
+      wallet.total_commission
+    );
 
 
   await loadWalletHistory();
@@ -3018,61 +4030,104 @@ async function loadWallet(){
 }
 
 
+/* =========================
+   WALLET HISTORY
+========================= */
+
 async function loadWalletHistory(){
 
   const tbody =
-    document.getElementById("walletHistory");
+    document.getElementById(
+      "walletHistory"
+    );
 
 
   const {data,error} =
     await supabaseClient
       .from("wallet_transactions")
       .select("*")
-      .eq("wholesaler_id",currentUser.id)
-      .order("created_at",{ascending:false})
+      .eq(
+        "wholesaler_id",
+        currentUser.id
+      )
+      .order(
+        "created_at",
+        {ascending:false}
+      )
       .limit(100);
 
 
   if(error){
 
     console.error(error);
+
     return;
   }
 
 
   if(!data?.length){
 
-    tbody.innerHTML=`
+    tbody.innerHTML = `
+
       <tr>
+
         <td colspan="4">
-          <div class="empty">No wallet transactions.</div>
+
+          <div class="empty">
+            No wallet transactions.
+          </div>
+
         </td>
+
       </tr>
+
     `;
 
     return;
   }
 
 
-  tbody.innerHTML=
+  tbody.innerHTML =
     data.map(x=>`
 
       <tr>
 
         <td>
-          ${new Date(x.created_at).toLocaleString("en-IN")}
+
+          ${new Date(
+            x.created_at
+          ).toLocaleString(
+            "en-IN"
+          )}
+
         </td>
 
-        <td>
-          ${escapeHtml(x.type)}
-        </td>
 
         <td>
-          ${money(x.amount)}
+
+          ${escapeHtml(
+            x.type
+          )}
+
         </td>
 
+
         <td>
-          ${escapeHtml(x.description || "-")}
+
+          ${money(
+            x.amount
+          )}
+
+        </td>
+
+
+        <td>
+
+          ${escapeHtml(
+            x.description ||
+            "-"
+          )}
+
         </td>
 
       </tr>
@@ -3082,10 +4137,14 @@ async function loadWalletHistory(){
 }
 
 
+/* =========================
+   ADD MONEY
+========================= */
+
 function addMoney(){
 
   alert(
-    "Wallet top-up ke liye payment gateway abhi connect nahi hai.\n\n"+
+    "Wallet top-up ke liye payment gateway abhi connect nahi hai.\n\n" +
     "Next step mein secure payment gateway add kiya jayega."
   );
 
@@ -3098,58 +4157,92 @@ function addMoney(){
 
 function loadProfileForm(){
 
-  document.getElementById("profileName")
-    .value=profile?.full_name || "";
+  document.getElementById(
+    "profileName"
+  ).value =
+    profile?.full_name ||
+    "";
 
-  document.getElementById("profileShop")
-    .value=profile?.shop_name || "";
 
-  document.getElementById("profileMobile")
-    .value=profile?.mobile || "";
+  document.getElementById(
+    "profileShop"
+  ).value =
+    profile?.shop_name ||
+    "";
+
+
+  document.getElementById(
+    "profileMobile"
+  ).value =
+    profile?.mobile ||
+    "";
 
 }
 
 
-document.getElementById("profileForm")
-.addEventListener("submit",async function(e){
+document.getElementById(
+  "profileForm"
+).addEventListener(
+  "submit",
+  async function(e){
 
-  e.preventDefault();
-
-
-  const full_name =
-    document.getElementById("profileName")
-      .value.trim();
-
-  const shop_name =
-    document.getElementById("profileShop")
-      .value.trim();
+    e.preventDefault();
 
 
-  const {error} =
-    await supabaseClient
-      .from("profiles")
-      .update({
-        full_name,
-        shop_name
-      })
-      .eq("id",currentUser.id);
+    const full_name =
+      document.getElementById(
+        "profileName"
+      ).value.trim();
 
 
-  if(error){
+    const shop_name =
+      document.getElementById(
+        "profileShop"
+      ).value.trim();
 
-    alert(error.message);
-    return;
+
+    const {error} =
+      await supabaseClient
+        .from("profiles")
+        .update({
+
+          full_name,
+          shop_name
+
+        })
+        .eq(
+          "id",
+          currentUser.id
+        );
+
+
+    if(error){
+
+      alert(
+        error.message
+      );
+
+      return;
+    }
+
+
+    profile.full_name =
+      full_name;
+
+
+    profile.shop_name =
+      shop_name;
+
+
+    updateHeader();
+
+
+    showToast(
+      "Profile updated ✅"
+    );
+
   }
-
-
-  profile.full_name=full_name;
-  profile.shop_name=shop_name;
-
-  updateHeader();
-
-  showToast("Profile updated ✅");
-
-});
+);
 
 
 /* =========================
@@ -3158,34 +4251,55 @@ document.getElementById("profileForm")
 
 function renderDashboard(){
 
-  document.getElementById("statProducts")
-    .textContent=products.filter(p=>p.is_active!==false).length;
+  document.getElementById(
+    "statProducts"
+  ).textContent =
+    products.filter(
+      p=>p.is_active!==false
+    ).length;
 
-  document.getElementById("statOrders")
-    .textContent=orders.length;
+
+  document.getElementById(
+    "statOrders"
+  ).textContent =
+    orders.length;
 
 
   const customerCount =
     new Set(
-      orders.map(o=>o.retailer_id).filter(Boolean)
+      orders
+        .map(
+          o=>o.retailer_id
+        )
+        .filter(Boolean)
     ).size;
 
 
-  document.getElementById("statCustomers")
-    .textContent=customerCount;
+  document.getElementById(
+    "statCustomers"
+  ).textContent =
+    customerCount;
 
 
   const sales =
     orders
-      .filter(o=>o.status==="completed")
+      .filter(
+        o=>o.status==="completed"
+      )
       .reduce(
-        (sum,o)=>sum+Number(o.total || 0),
+        (sum,o)=>
+          sum +
+          Number(
+            o.total || 0
+          ),
         0
       );
 
 
-  document.getElementById("statSales")
-    .textContent=money(sales);
+  document.getElementById(
+    "statSales"
+  ).textContent =
+    money(sales);
 
 
   renderRecentOrders();
@@ -3193,68 +4307,116 @@ function renderDashboard(){
 }
 
 
+/* =========================
+   RECENT ORDERS
+========================= */
+
 function renderRecentOrders(){
 
   const box =
-    document.getElementById("recentOrders");
+    document.getElementById(
+      "recentOrders"
+    );
 
 
   const recent =
-    orders.slice(0,5);
+    orders.slice(
+      0,
+      5
+    );
 
 
   if(!recent.length){
 
-    box.innerHTML=`
+    box.innerHTML = `
+
       <div class="empty">
-        <div class="empty-icon">🛒</div>
-        <p>Abhi koi order nahi hai.</p>
+
+        <div class="empty-icon">
+          🛒
+        </div>
+
+        <p>
+          Abhi koi order nahi hai.
+        </p>
+
       </div>
+
     `;
 
     return;
   }
 
 
-  box.innerHTML=
+  box.innerHTML =
     recent.map(o=>`
 
-      <div style="
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        padding:13px 0;
-        border-bottom:1px solid #edf0f4;
-      ">
+      <div
+        style="
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          padding:13px 0;
+          border-bottom:1px solid #edf0f4;
+        "
+      >
 
         <div>
 
           <strong>
-            Order #${o.id.slice(0,8)}
+
+            Order #
+            ${o.id.slice(0,8)}
+
           </strong>
 
-          <p style="font-size:12px;color:#64748b;margin-top:4px">
-            ${new Date(o.created_at).toLocaleString("en-IN")}
+
+          <p
+            style="
+              font-size:12px;
+              color:#64748b;
+              margin-top:4px
+            "
+          >
+
+            ${new Date(
+              o.created_at
+            ).toLocaleString(
+              "en-IN"
+            )}
+
           </p>
 
         </div>
 
-        <div style="text-align:right">
 
-          <strong>${money(o.total)}</strong>
+        <div
+          style="text-align:right"
+        >
+
+          <strong>
+            ${money(o.total)}
+          </strong>
 
           <br>
 
-          <span class="status ${
-            o.status==="pending"
-            ? "pending"
-            : o.status==="completed"
-            ? "completed"
-            : o.status==="accepted"
-            ? "accepted"
-            : "cancelled"
-          }">
-            ${escapeHtml(o.status)}
+
+          <span
+            class="status ${
+              o.status==="pending"
+              ? "pending"
+              : o.status==="completed"
+              ? "completed"
+              : o.status==="accepted"
+              ? "accepted"
+              : "cancelled"
+            }"
+          >
+
+            ${escapeHtml(
+              o.status
+            )}
+
           </span>
 
         </div>
@@ -3273,23 +4435,33 @@ function renderRecentOrders(){
 function updateNotification(){
 
   const count =
-    orders.filter(o=>o.status==="pending").length;
+    orders.filter(
+      o=>o.status==="pending"
+    ).length;
 
 
   const badge =
-    document.getElementById("notificationBadge");
+    document.getElementById(
+      "notificationBadge"
+    );
 
 
   if(count>0){
 
-    badge.style.display="flex";
+    badge.style.display =
+      "flex";
 
-    badge.textContent=
-      count>99 ? "99+" : count;
 
-  }else{
+    badge.textContent =
+      count>99
+      ? "99+"
+      : count;
 
-    badge.style.display="none";
+  }
+  else{
+
+    badge.style.display =
+      "none";
 
   }
 
@@ -3300,27 +4472,39 @@ function updateNotification(){
    SEARCH
 ========================= */
 
-document.getElementById("globalSearch")
-.addEventListener("input",function(){
+document.getElementById(
+  "globalSearch"
+).addEventListener(
+  "input",
+  function(){
 
-  const q=
-    this.value.toLowerCase().trim();
+    const q =
+      this.value
+        .toLowerCase()
+        .trim();
 
 
-  document.querySelectorAll(".searchable")
-    .forEach(el=>{
+    document.querySelectorAll(
+      ".searchable"
+    ).forEach(
+      el=>{
 
-      const text=
-        el.textContent.toLowerCase();
+        const text =
+          el.textContent
+            .toLowerCase();
 
-      el.style.display=
-        !q || text.includes(q)
-        ? ""
-        : "none";
 
-    });
+        el.style.display =
+          !q ||
+          text.includes(q)
+          ? ""
+          : "none";
 
-});
+      }
+    );
+
+  }
+);
 
 
 /* =========================
@@ -3330,7 +4514,10 @@ document.getElementById("globalSearch")
 function toggleAI(){
 
   const modal =
-    document.getElementById("aiModal");
+    document.getElementById(
+      "aiModal"
+    );
+
 
   modal.style.display =
     modal.style.display==="block"
@@ -3340,22 +4527,39 @@ function toggleAI(){
 }
 
 
-function addAIMessage(text,type){
+function addAIMessage(
+  text,
+  type
+){
 
   const body =
-    document.getElementById("aiBody");
+    document.getElementById(
+      "aiBody"
+    );
 
 
   const div =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
-  div.className="message "+type;
 
-  div.textContent=text;
+  div.className =
+    "message " +
+    type;
 
-  body.appendChild(div);
 
-  body.scrollTop=body.scrollHeight;
+  div.textContent =
+    text;
+
+
+  body.appendChild(
+    div
+  );
+
+
+  body.scrollTop =
+    body.scrollHeight;
 
 }
 
@@ -3363,7 +4567,10 @@ function addAIMessage(text,type){
 function sendAI(){
 
   const input =
-    document.getElementById("aiInput");
+    document.getElementById(
+      "aiInput"
+    );
+
 
   const text =
     input.value.trim();
@@ -3372,14 +4579,22 @@ function sendAI(){
   if(!text) return;
 
 
-  addAIMessage(text,"user");
+  addAIMessage(
+    text,
+    "user"
+  );
 
-  input.value="";
+
+  input.value =
+    "";
 
 
-  const q=text.toLowerCase();
+  const q =
+    text.toLowerCase();
 
-  let answer="";
+
+  let answer =
+    "";
 
 
   if(
@@ -3387,87 +4602,100 @@ function sendAI(){
     q.includes("ऑर्डर")
   ){
 
-    answer=
+    answer =
       "Orders section mein retailer ke orders dikhenge. Pending order ko accept ya reject kar sakte hain.";
 
   }
+
 
   else if(
     q.includes("wallet") ||
     q.includes("balance")
   ){
 
-    answer=
+    answer =
       "Wallet section mein available balance, total added aur commission history dekh sakte hain.";
 
   }
+
 
   else if(
     q.includes("commission")
   ){
 
-    answer=
+    answer =
       "Pehle 5 completed orders par commission nahi hai. 6th completed order se general commission 8% hai. Special products ke rules alag ho sakte hain.";
 
   }
+
 
   else if(
     q.includes("product") ||
     q.includes("product add")
   ){
 
-    answer=
-      "Add Product section mein category, product name, MRP, wholesale price, unit, stock aur image add karke product save karein.";
+    answer =
+      "Add Product section mein 34 categories mein se category select karein, phir product name, MRP, wholesale price, unit, stock aur image add karke product save karein.";
 
   }
+
 
   else if(
     q.includes("stock")
   ){
 
-    answer=
+    answer =
       "Stock Management section mein product ka current stock dekhkar + Add Stock se quantity badha sakte hain.";
 
   }
+
 
   else if(
     q.includes("delivery")
   ){
 
-    answer=
+    answer =
       "Delivery section mein accepted orders ka status Preparing, Out for Delivery aur Delivered kar sakte hain.";
 
   }
+
 
   else if(
     q.includes("customer")
   ){
 
-    answer=
+    answer =
       "Customers section mein aapke retailer customers aur available mobile number dikh sakte hain.";
 
   }
+
 
   else if(
     q.includes("hisaab") ||
     q.includes("payment")
   ){
 
-    answer=
+    answer =
       "Hisaab section mein customer payment records dekhe ja sakte hain.";
 
   }
 
+
   else{
 
-    answer=
+    answer =
       "Main Products, Orders, Stock, Customers, Delivery, Hisaab, Wallet aur Commission ke baare mein help kar sakta hoon.";
 
   }
 
 
   setTimeout(()=>{
-    addAIMessage(answer,"bot");
+
+    addAIMessage(
+      answer,
+      "bot"
+    );
+
   },350);
 
 }
